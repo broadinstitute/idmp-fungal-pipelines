@@ -1,0 +1,21 @@
+
+# This workflow validates all pipeline WDL files (those found in the workflows and tasks directories) using the 'womtool' tool.
+name: WomtoolCheck
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate_wdl_job:
+    runs-on: ubuntu-latest
+    name: Validate all wdl using womtool
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: broadinstitute/idmp-fungal-pipelines
+      - name: Run womtools
+        run: |
+          ./scripts/validate_wdls.sh

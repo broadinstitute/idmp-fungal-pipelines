@@ -57,11 +57,11 @@ task shovill_pe {
         mv out/contigs.fa out/~{samplename}_contigs.fasta
 
         if [ "~{assembler}" == "spades" ] ; then
-        mv out/contigs.gfa out/~{samplename}_contigs.gfa
+            mv out/contigs.gfa out/~{samplename}_contigs.gfa
         elif [ "~{assembler}" == "megahit" ] ; then
-        mv out/contigs.fastg out/~{samplename}_contigs.fastg
+            mv out/contigs.fastg out/~{samplename}_contigs.fastg
         elif [ "~{assembler}" == "velvet" ] ; then
-        mv out/contigs.LastGraph out/~{samplename}_contigs.LastGraph
+            mv out/contigs.LastGraph out/~{samplename}_contigs.LastGraph
         fi
     >>>
     output {
@@ -134,11 +134,11 @@ task shovill_se {
         mv out/contigs.fa out/~{samplename}_contigs.fasta
 
         if [ "~{assembler}" == "spades" ] ; then
-        mv out/contigs.gfa out/~{samplename}_contigs.gfa
+            mv out/contigs.gfa out/~{samplename}_contigs.gfa
         elif [ "~{assembler}" == "megahit" ] ; then
-        mv out/contigs.fastg out/~{samplename}_contigs.fastg
+            mv out/contigs.fastg out/~{samplename}_contigs.fastg
         elif [ "~{assembler}" == "velvet" ] ; then
-        mv out/contigs.LastGraph out/~{samplename}_contigs.LastGraph
+            mv out/contigs.LastGraph out/~{samplename}_contigs.LastGraph
         fi
     >>>
     output {

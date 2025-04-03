@@ -38,23 +38,23 @@ task cauris_cladetyper {
         top_clade=$(sort -k7 -t ',' "~{samplename}_matrix.csv" | head -3 | tail -n-1 | awk -F',' '{print$1}')
 
         if [ "${top_clade}" == "~{ref_clade1}" ] ; then
-        echo "~{ref_clade1_annotated}" > CLADEREF
-        echo "Clade1" > CLADETYPE
+            echo "~{ref_clade1_annotated}" > CLADEREF
+            echo "Clade1" > CLADETYPE
         elif [ "${top_clade}" == "~{ref_clade2}" ] ; then
-        echo "~{ref_clade2_annotated}" > CLADEREF
-        echo "Clade2" > CLADETYPE
+            echo "~{ref_clade2_annotated}" > CLADEREF
+            echo "Clade2" > CLADETYPE
         elif [ "${top_clade}" == "~{ref_clade3}" ] ; then
-        echo "~{ref_clade3_annotated}" > CLADEREF
-        echo "Clade3" > CLADETYPE
+            echo "~{ref_clade3_annotated}" > CLADEREF
+            echo "Clade3" > CLADETYPE
         elif [ "${top_clade}" == "~{ref_clade4}" ] ; then
-        echo "~{ref_clade4_annotated}" > CLADEREF
-        echo "Clade4" > CLADETYPE
+            echo "~{ref_clade4_annotated}" > CLADEREF
+            echo "Clade4" > CLADETYPE
         elif [ "${top_clade}" == "~{ref_clade5}" ] ; then
-        echo "~{ref_clade5_annotated}" > CLADEREF
-        echo "Clade5" > CLADETYPE
+            echo "~{ref_clade5_annotated}" > CLADEREF
+            echo "Clade5" > CLADETYPE
         else
-        echo "None" > CLADEREF
-        echo "" > CLADETYPE
+            echo "None" > CLADEREF
+            echo "" > CLADETYPE
         fi
 
     >>>

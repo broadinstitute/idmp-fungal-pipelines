@@ -50,19 +50,19 @@ task midas {
         secondary_genus_abundance = filtered_sorted_df.relative_abundance.iloc[0]
         # if secondary genus abundance is less than one, replace genus with text indicating no secondary genus detected
         if secondary_genus_abundance < 0.01:
-        secondary_genus="No secondary genus detected (>1% relative abundance)"
+            secondary_genus="No secondary genus detected (>1% relative abundance)"
         # capture absolute coverage of secondary genus
         secondary_genus_coverage = filtered_sorted_df.coverage.iloc[0]
 
         # write text files
         with open("PRIMARY_GENUS", 'wt') as pg:
-        pg.write(str(primary_genus))
+            pg.write(str(primary_genus))
         with open("SECONDARY_GENUS", 'wt') as sg:
-        sg.write(str(secondary_genus))
+            sg.write(str(secondary_genus))
         with open("SECONDARY_GENUS_ABUNDANCE", 'wt') as sga:
-        sga.write(str(secondary_genus_abundance))
+            sga.write(str(secondary_genus_abundance))
         with open("SECONDARY_GENUS_COVERAGE", 'wt') as sgc:
-        sgc.write(str(secondary_genus_coverage))
+            sgc.write(str(secondary_genus_coverage))
 
         CODE
     >>>

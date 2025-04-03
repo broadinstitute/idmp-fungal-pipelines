@@ -20,9 +20,9 @@ task fastq_scan_pe {
 
         # set cat command based on compression
         if [[ "~{read1}" == *".gz" ]] ; then
-        cat_reads="zcat"
+            cat_reads="zcat"
         else
-        cat_reads="cat"
+            cat_reads="cat"
         fi
 
         # capture forward read stats
@@ -45,9 +45,9 @@ task fastq_scan_pe {
 
         # capture number of read pairs
         if [ "${read1_seqs}" == "${read2_seqs}" ]; then
-        read_pairs=${read1_seqs}
+            read_pairs=${read1_seqs}
         else
-        read_pairs="Uneven pairs: R1=${read1_seqs}, R2=${read2_seqs}"
+            read_pairs="Uneven pairs: R1=${read1_seqs}, R2=${read2_seqs}"
         fi
 
         # use simple redirect so STDOUT is not confusing
@@ -92,9 +92,9 @@ task fastq_scan_se {
 
         # set cat command based on compression
         if [[ "~{read1}" == *".gz" ]] ; then
-        cat_reads="zcat"
+            cat_reads="zcat"
         else
-        cat_reads="cat"
+            cat_reads="cat"
         fi
 
         # capture forward read stats

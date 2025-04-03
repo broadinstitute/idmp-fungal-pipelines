@@ -18,20 +18,20 @@ task bbduk {
 
         # set adapter fasta
         if [[ ! -z "~{adapters}" ]]; then
-        echo "Using user supplied FASTA file for adapters..."
-        adapter_fasta="~{adapters}"
+            echo "Using user supplied FASTA file for adapters..."
+            adapter_fasta="~{adapters}"
         else
-        echo "User did not supply adapters FASTA file, using default adapters.fa file..."
-        adapter_fasta="/bbmap/resources/adapters.fa"
+            echo "User did not supply adapters FASTA file, using default adapters.fa file..."
+            adapter_fasta="/bbmap/resources/adapters.fa"
         fi
 
         # set phix fasta
         if [[ ! -z "~{phix}" ]]; then
-        echo "Using user supplied FASTA file for phiX..."
-        phix_fasta="~{phix}"
+            echo "Using user supplied FASTA file for phiX..."
+            phix_fasta="~{phix}"
         else
-        echo "User did not supply phiX FASTA file, using default phix174_ill.ref.fa.gz file..."
-        phix_fasta="/bbmap/resources/phix174_ill.ref.fa.gz"
+            echo "User did not supply phiX FASTA file, using default phix174_ill.ref.fa.gz file..."
+            phix_fasta="/bbmap/resources/phix174_ill.ref.fa.gz"
         fi
 
         repair.sh in1=~{read1_trimmed} in2=~{read2_trimmed} out1=~{samplename}.paired_1.fastq.gz out2=~{samplename}.paired_2.fastq.gz
@@ -76,20 +76,20 @@ task bbduk_se {
 
         # set adapter fasta
         if [[ ! -z "~{adapters}" ]]; then
-        echo "Using user supplied FASTA file for adapters..."
-        adapter_fasta="~{adapters}"
+            echo "Using user supplied FASTA file for adapters..."
+            adapter_fasta="~{adapters}"
         else
-        echo "User did not supply adapters FASTA file, using default adapters.fa file..."
-        adapter_fasta="/bbmap/resources/adapters.fa"
+            echo "User did not supply adapters FASTA file, using default adapters.fa file..."
+            adapter_fasta="/bbmap/resources/adapters.fa"
         fi
 
         # set phix fasta
         if [[ ! -z "~{phix}" ]]; then
-        echo "Using user supplied FASTA file for phiX..."
-        phix_fasta="~{phix}"
+            echo "Using user supplied FASTA file for phiX..."
+            phix_fasta="~{phix}"
         else
-        echo "User did not supply phiX FASTA file, using default phix174_ill.ref.fa.gz file..."
-        phix_fasta="/bbmap/resources/phix174_ill.ref.fa.gz"
+            echo "User did not supply phiX FASTA file, using default phix174_ill.ref.fa.gz file..."
+            phix_fasta="/bbmap/resources/phix174_ill.ref.fa.gz"
         fi
 
         bbduk.sh in1=~{read1_trimmed} out1=~{samplename}.rmadpt_1.fastq.gz ref=${adapter_fasta} stats=~{samplename}.adapters.stats.txt ktrim=r k=23 mink=11 hdist=1 tpe tbo ordered=t

@@ -22,26 +22,26 @@ task quast {
         import csv
         #grab output genome length and number contigs by column header
         with open("~{samplename}_report.tsv",'r') as tsv_file:
-        tsv_reader = csv.reader(tsv_file, delimiter="\t")
-        for line in tsv_reader:
-        if "Total length" in line[0]:
-        with open("GENOME_LENGTH", 'wt') as genome_length:
-        genome_length.write(line[1])
-        if "# contigs" in line[0]:
-        with open("NUMBER_CONTIGS", 'wt') as number_contigs:
-        number_contigs.write(line[1])
-        if "N50" in line[0]:
-        with open("N50_VALUE", 'wt') as n50_value:
-        n50_value.write(line[1])
-        if "GC" in line[0]:
-        with open("GC_PERCENT", 'wt') as gc_percent:
-        gc_percent.write(line[1])
-        if "Largest contig" in line[0]:
-        with open("LARGEST_CONTIG", 'wt') as largest_contig:
-        largest_contig.write(line[1])
-        if "# N's per 100 kbp" in line[0]:
-        with open("UNCALLED_BASES", "wt") as uncalled_bases:
-        uncalled_bases.write(line[1])
+            tsv_reader = csv.reader(tsv_file, delimiter="\t")
+            for line in tsv_reader:
+                if "Total length" in line[0]:
+                    with open("GENOME_LENGTH", 'wt') as genome_length:
+                        genome_length.write(line[1])
+                if "# contigs" in line[0]:
+                    with open("NUMBER_CONTIGS", 'wt') as number_contigs:
+                        number_contigs.write(line[1])
+                if "N50" in line[0]:
+                    with open("N50_VALUE", 'wt') as n50_value:
+                        n50_value.write(line[1])
+                if "GC" in line[0]:
+                    with open("GC_PERCENT", 'wt') as gc_percent:
+                        gc_percent.write(line[1])
+                if "Largest contig" in line[0]:
+                    with open("LARGEST_CONTIG", 'wt') as largest_contig:
+                        largest_contig.write(line[1])
+                if "# N's per 100 kbp" in line[0]:
+                    with open("UNCALLED_BASES", "wt") as uncalled_bases:
+                        uncalled_bases.write(line[1])
 
         CODE
 

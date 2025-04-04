@@ -33,21 +33,21 @@ task busco {
         # check for existence of output file; otherwise display a string that says the output was not created
         if [ -f ~{samplename}/short_summary.specific.*.~{samplename}.txt ]; then
 
-        # grab the database version and format it according to BUSCO recommendations
-        # pull line out of final specific summary file
-        # cut out the database name and date it was created
-        # sed is to remove extra comma and to add parentheses around the date and remove all tabs
-        # finally write to a file called DATABASE
-        cat ~{samplename}/short_summary.specific.*.~{samplename}.txt | grep "dataset is:" | cut -d' ' -f 6,9 | sed 's/,//; s/ / (/; s/$/)/; s|[\t]||g' | tee DATABASE
+            # grab the database version and format it according to BUSCO recommendations
+            # pull line out of final specific summary file
+            # cut out the database name and date it was created
+            # sed is to remove extra comma and to add parentheses around the date and remove all tabs
+            # finally write to a file called DATABASE
+            cat ~{samplename}/short_summary.specific.*.~{samplename}.txt | grep "dataset is:" | cut -d' ' -f 6,9 | sed 's/,//; s/ / (/; s/$/)/; s|[\t]||g' | tee DATABASE
 
-        # extract the results string; strip off all tab and space characters; write to a file called BUSCO_RESULTS
-        cat ~{samplename}/short_summary.specific.*.~{samplename}.txt | grep "C:" | sed 's|[\t]||g; s| ||g' | tee BUSCO_RESULTS
+            # extract the results string; strip off all tab and space characters; write to a file called BUSCO_RESULTS
+            cat ~{samplename}/short_summary.specific.*.~{samplename}.txt | grep "C:" | sed 's|[\t]||g; s| ||g' | tee BUSCO_RESULTS
 
-        # rename final output file to predictable name
-        cp -v ~{samplename}/short_summary.specific.*.~{samplename}.txt ~{samplename}_busco-summary.txt
+            # rename final output file to predictable name
+            cp -v ~{samplename}/short_summary.specific.*.~{samplename}.txt ~{samplename}_busco-summary.txt
         else
-        echo "BUSCO FAILED" | tee BUSCO_RESULTS
-        echo "NA" > DATABASE
+            echo "BUSCO FAILED" | tee BUSCO_RESULTS
+            echo "NA" > DATABASE
         fi
     >>>
     output {

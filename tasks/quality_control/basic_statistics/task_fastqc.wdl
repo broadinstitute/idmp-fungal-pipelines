@@ -32,9 +32,9 @@ task fastqc {
 
         # capture number of read pairs
         if [ "${read1_seqs}" == "${read2_seqs}" ]; then
-        read_pairs=${read1_seqs}
+            read_pairs=${read1_seqs}
         else
-        read_pairs="Uneven pairs: R1=${read1_seqs}, R2=${read2_seqs}"
+            read_pairs="Uneven pairs: R1=${read1_seqs}, R2=${read2_seqs}"
         fi
 
         echo "$read_pairs" | tee READ_PAIRS

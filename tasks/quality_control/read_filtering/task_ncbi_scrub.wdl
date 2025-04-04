@@ -17,10 +17,10 @@ task ncbi_scrub_pe {
         # detect compression and define cat command
         if [[ "~{read1}" == *.gz ]]
         then
-        echo "DEGUB: Gzipped input reads detected"
-        cat_command="zcat"
+            echo "DEGUB: Gzipped input reads detected"
+            cat_command="zcat"
         else
-        cat_command="cat"
+            cat_command="cat"
         fi
 
         # Count the number of reads in each file
@@ -32,9 +32,9 @@ task ncbi_scrub_pe {
 
         if [[ $read1_count -ne $read2_count ]]
         then
-        echo "ERROR: The number of reads in the two input files do not match."
-        echo "ERROR: The number of reads in read1 is $read1_count and the number of reads in read2 is $read2_count."
-        echo "ERROR: The unpaired reads will be ignored from the interleaved file..."
+            echo "ERROR: The number of reads in the two input files do not match."
+            echo "ERROR: The number of reads in read1 is $read1_count and the number of reads in read2 is $read2_count."
+            echo "ERROR: The unpaired reads will be ignored from the interleaved file..."
         fi
 
         # if compressed, unzip read files as scrub tool does not take in .gz fastq files, and interleave them
@@ -95,12 +95,12 @@ task ncbi_scrub_se {
         # unzip fwd file as scrub tool does not take in .gz fastq files
         if [[ "~{read1}" == *.gz ]]
         then
-        echo "DEGUB: Gzipped input reads detected"
-        echo "Unzipping reads to r1.fastq"
-        gunzip -c ~{read1} > r1.fastq
-        read1_unzip=r1.fastq
+            echo "DEGUB: Gzipped input reads detected"
+            echo "Unzipping reads to r1.fastq"
+            gunzip -c ~{read1} > r1.fastq
+            read1_unzip=r1.fastq
         else
-        read1_unzip=~{read1}
+            read1_unzip=~{read1}
         fi
 
         # dehost reads

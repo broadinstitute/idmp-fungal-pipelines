@@ -23,14 +23,14 @@ task kraken2_theiacov {
         tar -C ./db/ -xzvf ~{kraken2_db}
 
         if ! [ -z ~{read2} ]; then
-        mode="--paired"
+            mode="--paired"
         fi
         echo $mode
 
         # determine if reads are compressed
         if [[ ~{read1} == *.gz ]]; then
-        echo "Reads are compressed..."
-        compressed="--gzip-compressed"
+            echo "Reads are compressed..."
+            compressed="--gzip-compressed"
         fi
         echo $compressed
 
@@ -52,20 +52,20 @@ task kraken2_theiacov {
 
         # capture target org percentage
         if [ ! -z "~{target_organism}" ]; then
-        echo "Target org designated: ~{target_organism}"
-        # if target organisms is sc2, report it in a special legacy column called PERCENT_SC2
-        if [[ "~{target_organism}" == "Severe acute respiratory syndrome coronavirus 2" ]]; then
-        percentage_sc2=$(grep "Severe acute respiratory syndrome coronavirus 2" ~{samplename}_kraken2_report.txt  | cut -f1 )
-        percent_target_organism=""
-        if [ -z "$percentage_sc2" ] ; then percentage_sc2="0" ; fi
+            echo "Target org designated: ~{target_organism}"
+            # if target organisms is sc2, report it in a special legacy column called PERCENT_SC2
+            if [[ "~{target_organism}" == "Severe acute respiratory syndrome coronavirus 2" ]]; then
+                percentage_sc2=$(grep "Severe acute respiratory syndrome coronavirus 2" ~{samplename}_kraken2_report.txt  | cut -f1 )
+                percent_target_organism=""
+                if [ -z "$percentage_sc2" ] ; then percentage_sc2="0" ; fi
+            else
+                percentage_sc2=""
+                percent_target_organism=$(grep "~{target_organism}" ~{samplename}_kraken2_report.txt  | cut -f1 | head -n1 )
+                if [ -z "$percent_target_organism" ] ; then percent_target_organism="0" ; fi
+            fi
         else
-        percentage_sc2=""
-        percent_target_organism=$(grep "~{target_organism}" ~{samplename}_kraken2_report.txt  | cut -f1 | head -n1 )
-        if [ -z "$percent_target_organism" ] ; then percent_target_organism="0" ; fi
-        fi
-        else
-        percent_target_organism=""
-        percentage_sc2=""
+            percent_target_organism=""
+            percentage_sc2=""
         fi
         echo $percentage_sc2 | tee PERCENT_SC2
         echo $percent_target_organism | tee PERCENT_TARGET_ORGANISM
@@ -119,14 +119,14 @@ task kraken2_standalone {
 
         # determine if paired-end or not
         if ! [ -z ~{read2} ]; then
-        echo "Reads are paired..."
-        mode="--paired"
+            echo "Reads are paired..."
+            mode="--paired"
         fi
 
         # determine if reads are compressed
         if [[ ~{read1} == *.gz ]]; then
-        echo "Reads are compressed..."
-        compressed="--gzip-compressed"
+            echo "Reads are compressed..."
+            compressed="--gzip-compressed"
         fi
 
         # Run Kraken2
@@ -152,10 +152,10 @@ task kraken2_standalone {
 
         # rename classified and unclassified read files if SE
         if [ -e "~{samplename}.classified#.fastq.gz" ]; then
-        mv "~{samplename}.classified#.fastq.gz" ~{samplename}.classified_1.fastq.gz
+            mv "~{samplename}.classified#.fastq.gz" ~{samplename}.classified_1.fastq.gz
         fi
         if [ -e "~{samplename}.unclassified#.fastq.gz" ]; then
-        mv "~{samplename}.unclassified#.fastq.gz" ~{samplename}.unclassified_1.fastq.gz
+            mv "~{samplename}.unclassified#.fastq.gz" ~{samplename}.unclassified_1.fastq.gz
         fi
 
     >>>
@@ -212,14 +212,14 @@ task kraken2_parse_classified {
         # for each taxon_id in the report table, check if exists in the classified reads output and if so get the percent, num basepairs, rank, and name
         # write results to dataframe
         for taxon_id in report_table["taxon_id"].unique():
-        if taxon_id in reads_table["taxon_id"].unique():
+            if taxon_id in reads_table["taxon_id"].unique():
 
-        taxon_name = report_table.loc[report_table["taxon_id"] == taxon_id, "name"].values[0].strip()
-        rank = report_table.loc[report_table["taxon_id"] == taxon_id, "rank"].values[0].strip()
-        taxon_basepairs = reads_table.loc[reads_table["taxon_id"] == taxon_id, "read_len"].sum()
-        taxon_percent = taxon_basepairs / total_basepairs * 100
+                taxon_name = report_table.loc[report_table["taxon_id"] == taxon_id, "name"].values[0].strip()
+                rank = report_table.loc[report_table["taxon_id"] == taxon_id, "rank"].values[0].strip()
+                taxon_basepairs = reads_table.loc[reads_table["taxon_id"] == taxon_id, "read_len"].sum()
+                taxon_percent = taxon_basepairs / total_basepairs * 100
 
-        results_table = pd.concat([results_table, pd.DataFrame({"percent":taxon_percent, "num_basepairs":taxon_basepairs, "rank":rank, "taxon_id":taxon_id, "name":taxon_name}, index=[0])], ignore_index=True)
+                results_table = pd.concat([results_table, pd.DataFrame({"percent":taxon_percent, "num_basepairs":taxon_basepairs, "rank":rank, "taxon_id":taxon_id, "name":taxon_name}, index=[0])], ignore_index=True)
 
         # write results to file
         results_table.to_csv("~{samplename}.report_parsed.txt", sep="\t", index=False, header=False)
@@ -233,20 +233,20 @@ task kraken2_parse_classified {
 
         # capture target org percentage
         if [ ! -z "~{target_organism}" ]; then
-        echo "Target org designated: ~{target_organism}"
-        # if target organisms is sc2, report it in a special legacy column called PERCENT_SC2
-        if [[ "~{target_organism}" == "Severe acute respiratory syndrome coronavirus 2" ]]; then
-        percentage_sc2=$(grep "Severe acute respiratory syndrome coronavirus 2" ~{samplename}.report_parsed.txt  | cut -f1 )
-        percent_target_organism=""
-        if [ -z "$percentage_sc2" ] ; then percentage_sc2="0" ; fi
+            echo "Target org designated: ~{target_organism}"
+            # if target organisms is sc2, report it in a special legacy column called PERCENT_SC2
+            if [[ "~{target_organism}" == "Severe acute respiratory syndrome coronavirus 2" ]]; then
+                percentage_sc2=$(grep "Severe acute respiratory syndrome coronavirus 2" ~{samplename}.report_parsed.txt  | cut -f1 )
+                percent_target_organism=""
+                if [ -z "$percentage_sc2" ] ; then percentage_sc2="0" ; fi
+            else
+                percentage_sc2=""
+                percent_target_organism=$(grep "~{target_organism}" ~{samplename}.report_parsed.txt  | cut -f1 | head -n1 )
+                if [ -z "$percent_target_organism" ] ; then percent_target_organism="0" ; fi
+            fi
         else
-        percentage_sc2=""
-        percent_target_organism=$(grep "~{target_organism}" ~{samplename}.report_parsed.txt  | cut -f1 | head -n1 )
-        if [ -z "$percent_target_organism" ] ; then percent_target_organism="0" ; fi
-        fi
-        else
-        percent_target_organism=""
-        percentage_sc2=""
+            percent_target_organism=""
+            percentage_sc2=""
         fi
         echo $percentage_sc2 | tee PERCENT_SC2
         echo $percent_target_organism | tee PERCENT_TARGET_ORGANISM

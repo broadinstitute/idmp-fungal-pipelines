@@ -4,9 +4,9 @@ task EukCC {
 
     input {
         String docker = "us.gcr.io/broad-gotc-prod/eukcc:2.1.3"
-        String memory = "8"
+        String memory = "16"
         String disk_size = "50"
-        String cpu = "2"
+        String cpu = "8"
         File assembly
 
     }

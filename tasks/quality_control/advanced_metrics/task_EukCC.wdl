@@ -11,6 +11,7 @@ task EukCC {
 
     }
     command <<<
+        set -euo pipefail
 
         mkdir eukccdb
         cd eukccdb

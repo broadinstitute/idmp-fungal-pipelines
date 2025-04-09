@@ -22,9 +22,11 @@ task EukCC {
 
         eukcc single --out outfolder --threads 8 ~{assembly}
 
+        tar -czvf outfolder.tar.gz outfolder
+
     >>>
     output {
-        File outfolder = "outfolder"
+        File outfolder = "outfolder.tar.gz"
 
     }
     runtime {

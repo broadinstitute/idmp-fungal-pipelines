@@ -3,7 +3,7 @@ version 1.0
 task EukCC {
 
     input {
-        String docker = "quay.io/microbiome-informatics/eukcc:2.1.3"
+        String docker = "us.gcr.io/broad-gotc-prod/eukcc:2.1.3"
         String memory = "8"
         String disk_size = "50"
         String cpu = "2"

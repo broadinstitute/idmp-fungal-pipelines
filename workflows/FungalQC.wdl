@@ -11,6 +11,7 @@ import "../tasks/taxon_id/task_gambit.wdl" as gambit_task
 import "../tasks/utilities/task_rasusa.wdl" as rasusa
 import "utilities/wf_merlin_magic.wdl" as merlin_magic_workflow
 import "utilities/wf_read_QC_trim_pe.wdl" as read_qc
+import "../tasks/quality_control/advanced_metrics/task_EukCC.wdl" as eukcc_task
 
 workflow theiaeuk_illumina_pe {
     meta {
@@ -106,6 +107,10 @@ workflow theiaeuk_illumina_pe {
                     read2_cleaned = read_QC_trim.read2_clean,
                     cpu = cpu,
                     memory = memory
+            }
+            call eukcc_task.EukCC {
+                input:
+                    assembly = shovill_pe.assembly_fasta,
             }
             call quast_task.quast {
                 input:

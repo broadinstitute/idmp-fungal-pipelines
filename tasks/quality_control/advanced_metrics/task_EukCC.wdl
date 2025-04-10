@@ -13,6 +13,7 @@ task EukCC {
     command <<<
         set -euo pipefail
 
+        # Load the EukCC2 database
         mkdir eukccdb
         cd eukccdb
         wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/eukcc/eukcc2_db_ver_1.1.tar.gz
@@ -21,7 +22,18 @@ task EukCC {
         pwd
         cd ..
 
-        eukcc single --out outfolder --threads 8 ~{assembly}
+        # Run EukCC2
+        eukcc single --out outfolder --threads ~{cpu} ~{assembly}
+
+        # Extract contamination percentage from 3rd column, skipping header
+        contamination=$(awk -F'\t' 'NR==2 {print $3}' outfolder/eukcc.csv)
+
+        # Fail if contamination > 10
+        # TODO check with Marco on this threshold!
+        if (( $(echo "$contamination > 10.0" | bc -l) )); then
+            echo "Contamination level too high: ${contamination}"
+            exit 1
+        fi
 
         tar -czvf outfolder.tar.gz outfolder
 
@@ -34,7 +46,7 @@ task EukCC {
         docker: "~{docker}"
         memory: "~{memory} GB"
         cpu: cpu
-        disks: "local-disk " + disk_size + " SSD"
+        disks: "local-disk " + disk_size + " HDD"
         disk: disk_size + " GB"
         preemptible: 1
     }

@@ -32,19 +32,11 @@ task kraken2 {
         grep -P "^\s+\d+\.\d+\s+\d+\s+\d+\s+S\s+\d+\s+" ~{samplename}.kraken2.report.txt | sort -k1,1nr | head -n 1 | awk '{for(i=6;i<=NF;i++) printf "%s ", $i; print ""}' | sed 's/ $//' > TOP_TAXON_NAME
         grep -P "^\s+\d+\.\d+\s+\d+\s+\d+\s+S\s+\d+\s+" ~{samplename}.kraken2.report.txt | sort -k1,1nr | head -n 1 | awk '{print $1}' > TOP_TAXON_PERCENT
 
-        # Calculate overall percentage of reads classified
-        total_classified=$(grep -P "^\s+\d+\.\d+\s+\d+\s+\d+\s+U\s+0\s+unclassified" ~{samplename}.kraken2.report.txt | awk '{print $1}')
-        if [ -z "$total_classified" ]; then
-            total_classified=0
-        fi
-        echo "scale=2; 100 - $total_classified" | bc > PERCENT_CLASSIFIED
-    >>>
+      >>>
     output {
         File kraken2_report = "~{samplename}.kraken2.report.txt"
         File classified_reads = "~{samplename}.kraken2.classified_reads.txt"
-        String version = read_string("VERSION")
         String kraken2_report_taxon_name = read_string("TOP_TAXON_NAME")
-        Float kraken2_top_percent = read_float("TOP_TAXON_PERCENT")
         Float percent_classified = read_float("PERCENT_CLASSIFIED")
     }
     runtime {

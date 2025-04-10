@@ -11,6 +11,8 @@ import "../tasks/taxon_id/task_gambit.wdl" as gambit_task
 import "../tasks/utilities/task_rasusa.wdl" as rasusa
 import "utilities/wf_merlin_magic.wdl" as merlin_magic_workflow
 import "utilities/wf_read_QC_trim_pe.wdl" as read_qc
+import "../tasks/taxon_id/task_kraken2.wdl" as kraken2_task
+
 
 workflow theiaeuk_illumina_pe {
     meta {
@@ -140,6 +142,12 @@ workflow theiaeuk_illumina_pe {
                     gambit_db_signatures = gambit_db_signatures,
                     cpu = cpu,
                     memory = memory
+            }
+            call kraken2_task.kraken2 {
+                input:
+                    read1 = read_QC_trim.read1_clean,
+                    read2 = read_QC_trim.read2_clean,
+                    samplename = samplename
             }
             call busco_task.busco {
                 input:

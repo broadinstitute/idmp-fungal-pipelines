@@ -28,22 +28,20 @@ task kraken2 {
         cat ~{samplename}.kraken2.report.txt
 
         # Extract top hit from report - taking species with highest abundance
-        # Format of report: %percent_reads  #reads_clade  #reads_taxon  rank  taxid  sci_name
+        # Format of report: %percent of fragments covered by the clade,  #reads_clade  #reads_taxon  rank  taxid  sci_name
         grep -P "^\s+\d+\.\d+\s+\d+\s+\d+\s+S\s+\d+\s+" ~{samplename}.kraken2.report.txt | sort -k1,1nr | head -n 1 | awk '{for(i=6;i<=NF;i++) printf "%s ", $i; print ""}' | sed 's/ $//' > TOP_TAXON_NAME
-        grep -P "^\s+\d+\.\d+\s+\d+\s+\d+\s+S\s+\d+\s+" ~{samplename}.kraken2.report.txt | sort -k1,1nr | head -n 1 | awk '{print $1}' > TOP_TAXON_PERCENT
 
       >>>
     output {
         File kraken2_report = "~{samplename}.kraken2.report.txt"
         File classified_reads = "~{samplename}.kraken2.classified_reads.txt"
         String kraken2_report_taxon_name = read_string("TOP_TAXON_NAME")
-        Float percent_classified = read_float("PERCENT_CLASSIFIED")
     }
     runtime {
         docker: docker
         memory: "~{memory} GB"
         cpu: cpu
-        disks: "local-disk 120 HDD"
+        disks: "local-disk 50 HDD"
         preemptible: 0
     }
 }

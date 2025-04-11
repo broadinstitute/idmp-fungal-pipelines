@@ -8,7 +8,7 @@ task kraken2 {
         String samplename
         String kraken2_db_path = "https://genome-idx.s3.amazonaws.com/kraken/k2_standard_16gb_20241228.tar.gz"
         Int cpu = 4
-        Int memory = 16
+        Int memory = 32
         String docker = "marcoteix/bracken:1.0.0"
     }
     command <<<
@@ -43,7 +43,7 @@ task kraken2 {
         docker: docker
         memory: "~{memory} GB"
         cpu: cpu
-        disks: "local-disk 100 HDD"
+        disks: "local-disk 120 HDD"
         preemptible: 0
     }
 }

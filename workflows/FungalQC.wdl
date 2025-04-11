@@ -46,7 +46,7 @@ workflow theiaeuk_illumina_pe {
         File gambit_db_genomes = "gs://gambit-databases-rp/fungal-version/1.0.0/gambit-fungal-metadata-1.0.0-20241213.gdb"
         File gambit_db_signatures = "gs://gambit-databases-rp/fungal-version/1.0.0/gambit-fungal-signatures-1.0.0-20241213.gs"
         # EukCC inputs
-        Float contamination_percent_threshold = 0.0
+        Float contamination_percent_threshold = 5.0
     }
     call versioning.version_capture {
         input:

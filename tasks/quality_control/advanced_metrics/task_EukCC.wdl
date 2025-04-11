@@ -27,7 +27,6 @@ task EukCC {
 
         # Extract contamination percentage from 3rd column, skipping header
         contamination=$(awk -F'\t' 'NR==2 {print $3}' outfolder/eukcc.csv)
-        echo "Contamination level: ${contamination}"
 
         # Determine if contamination is too high (≥ threshold)
         contamination_too_high=$(awk "BEGIN {print ($contamination >= ~{contamination_percent_threshold})}")

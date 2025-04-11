@@ -8,6 +8,7 @@ task EukCC {
         String disk_size = "50"
         String cpu = "8"
         File assembly
+        Float contamination_percent_threshold = 5.0
 
     }
     command <<<
@@ -19,7 +20,6 @@ task EukCC {
         wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/eukcc/eukcc2_db_ver_1.1.tar.gz
         tar -xzvf eukcc2_db_ver_1.1.tar.gz
         export EUKCC2_DB=`pwd`/eukcc2_db_ver_1.1
-        pwd
         cd ..
 
         # Run EukCC2
@@ -28,9 +28,8 @@ task EukCC {
         # Extract contamination percentage from 3rd column, skipping header
         contamination=$(awk -F'\t' 'NR==2 {print $3}' outfolder/eukcc.csv)
 
-        # Fail if contamination > 10
-        # TODO check with Marco on this threshold!
-        if (( $(echo "$contamination > 10.0" | bc -l) )); then
+        # Fail if contamination > 5%
+        if (( $(echo "$contamination > ~{contamination_percent_threshold}" | bc -l) )); then
             echo "Contamination level too high: ${contamination}"
             exit 1
         fi

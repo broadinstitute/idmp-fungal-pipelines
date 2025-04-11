@@ -29,11 +29,15 @@ task EukCC {
         contamination=$(awk -F'\t' 'NR==2 {print $3}' outfolder/eukcc.csv)
         echo "Contamination level: ${contamination}"
 
-        # Fail if contamination > 5%
-        if awk "BEGIN {exit !($contamination > ~{contamination_percent_threshold})}"; then
+        # Determine if contamination is too high (≥ threshold)
+        contamination_too_high=$(awk "BEGIN {print ($contamination >= ~{contamination_percent_threshold})}")
+
+        if [[ "$contamination_too_high" == "1" ]]; then
             echo "Contamination level too high: ${contamination}"
             exit 1
         fi
+
+
 
         tar -czvf outfolder.tar.gz outfolder
 

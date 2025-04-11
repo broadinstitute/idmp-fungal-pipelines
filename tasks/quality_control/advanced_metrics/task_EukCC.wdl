@@ -8,7 +8,7 @@ task EukCC {
         String disk_size = "50"
         String cpu = "8"
         File assembly
-        Float contamination_percent_threshold = 5.0
+        Float contamination_percent_threshold
 
     }
     command <<<

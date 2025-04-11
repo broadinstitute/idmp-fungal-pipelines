@@ -45,6 +45,8 @@ workflow theiaeuk_illumina_pe {
         # default gambit outputs
         File gambit_db_genomes = "gs://gambit-databases-rp/fungal-version/1.0.0/gambit-fungal-metadata-1.0.0-20241213.gdb"
         File gambit_db_signatures = "gs://gambit-databases-rp/fungal-version/1.0.0/gambit-fungal-signatures-1.0.0-20241213.gs"
+        # EukCC inputs
+        Float ccontamination_percent_threshold = 5.0
     }
     call versioning.version_capture {
         input:
@@ -111,6 +113,7 @@ workflow theiaeuk_illumina_pe {
             call eukcc_task.EukCC {
                 input:
                     assembly = shovill_pe.assembly_fasta,
+                    ccontamination_percent_threshold = ccontamination_percent_threshold
             }
             call quast_task.quast {
                 input:

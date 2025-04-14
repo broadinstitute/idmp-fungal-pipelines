@@ -32,7 +32,7 @@ task EukCC {
         contamination_too_high=$(awk "BEGIN {print ($contamination >= ~{contamination_percent_threshold})}")
 
         if [[ "$contamination_too_high" == "1" ]]; then
-            echo "Contamination level too high: ${contamination}"
+            echo "The contamination level too high: ${contamination}"
             exit 1
         fi
 

@@ -48,6 +48,8 @@ workflow theiaeuk_illumina_pe {
         File gambit_db_signatures = "gs://gambit-databases-rp/fungal-version/1.0.0/gambit-fungal-signatures-1.0.0-20241213.gs"
         # EukCC inputs
         Float contamination_percent_threshold = 5.0
+        # Gambit unputs
+        String gambit_expected_taxon = "Candidozyma auris"
     }
     call versioning.version_capture {
         input:
@@ -147,6 +149,7 @@ workflow theiaeuk_illumina_pe {
                     samplename = samplename,
                     gambit_db_genomes = gambit_db_genomes,
                     gambit_db_signatures = gambit_db_signatures,
+                    gambit_expected_taxon = gambit_expected_taxon,
                     cpu = cpu,
                     memory = memory
             }
@@ -206,6 +209,7 @@ workflow theiaeuk_illumina_pe {
             }
         }
     }
+
     output {
         # Version Captures
         String theiaeuk_illumina_pe_version = version_capture.phb_version

@@ -21,6 +21,7 @@ task kraken2 {
         kraken2 --paired \
         --db ./db/ \
         --threads ~{cpu} \
+        --report-zero-counts \
         --report ~{samplename}.kraken2.report.txt \
         --output ~{samplename}.kraken2.classified_reads.txt \
         ~{read1} ~{read2}

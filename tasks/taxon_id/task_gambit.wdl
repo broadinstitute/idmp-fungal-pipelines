@@ -10,7 +10,7 @@ task gambit {
         Int disk_size = 20
         Int memory = 2
         Int cpu = 1
-        String expected_taxon = "Candidozyma auris"
+        String expected_taxon = "Candidozyma auri"
 
     }
     # If "File" type is used Cromwell attempts to localize it, which fails because it doesn't exist yet.
@@ -147,7 +147,7 @@ task gambit {
         with open('MERLIN_TAG', 'w') as merlin:
             merlin.write(merlin_tag)
 
-        # Fail the task if the predicted taxon is not "Candidozyma auris"
+        # Fail the task if the predicted taxon is not the expected taxon
         expected_taxon = "~{expected_taxon}"
         if merlin_tag != expected_taxon:
             print(f"Pipeline is configured to only proceed for {expected_taxon}. Found: {merlin_tag}", file=sys.stderr)

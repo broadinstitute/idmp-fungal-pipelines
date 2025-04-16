@@ -154,9 +154,9 @@ workflow theiaeuk_illumina_pe {
                     memory = memory
             }
 
-            Boolean is_expected_organism = gambit.merlin_tag == gambit_expected_taxon
+            #Boolean is_expected_organism = gambit.merlin_tag == gambit_expected_taxon
 
-            if (is_expected_organism) {
+            #if (is_expected_organism) {
                 call kraken2_task.kraken2 {
                     input:
                         read1 = read_QC_trim.read1_clean,
@@ -213,7 +213,7 @@ workflow theiaeuk_illumina_pe {
                 }
             }
         }
-    }
+    #}
 
     output {
         # Version Captures

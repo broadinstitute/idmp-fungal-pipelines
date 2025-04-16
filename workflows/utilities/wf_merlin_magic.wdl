@@ -724,58 +724,58 @@ workflow merlin_magic {
         #     }
         #   }
         # }
-        #if (merlin_tag == "Aspergillus fumigatus") {
-        #    if (!assembly_only && !ont_data) {
-        #        call snippy.snippy_variants as snippy_afumigatus {
-        #            input:
-        #                reference_genome_file = snippy_reference_afumigatus,
-        #                read1 = select_first([read1]),
-        #                read2 = read2,
-        #                samplename = samplename,
-        #                map_qual = snippy_map_qual,
-        #                base_quality = snippy_base_quality,
-        #                min_coverage = snippy_min_coverage,
-        #                min_frac = snippy_min_frac,
-        #                min_quality = snippy_min_quality,
-        #                maxsoft = snippy_maxsoft,
-        #                docker = snippy_variants_docker_image
-        #        }
-        #        call snippy_gene_query.snippy_gene_query as snippy_gene_query_afumigatus {
-        #            input:
-        #                samplename = samplename,
-        #                snippy_variants_results = snippy_afumigatus.snippy_variants_results,
-        #                reference = snippy_reference_afumigatus,
-        #                query_gene = select_first([snippy_query_gene, "Cyp51A,HapE,AFUA_4G08340"]), # AFUA_4G08340 is COX10 according to MARDy
-        #                docker = snippy_gene_query_docker_image
-        #        }
-        #    }
-        #}
-        #if (merlin_tag == "Cryptococcus neoformans") {
-        #    if (!assembly_only && !ont_data) {
-        #        call snippy.snippy_variants as snippy_crypto {
-        #            input:
-        #                reference_genome_file = snippy_reference_cryptoneo,
-        #                read1 = select_first([read1]),
-        #                read2 = read2,
-        #                samplename = samplename,
-        #                map_qual = snippy_map_qual,
-        #                base_quality = snippy_base_quality,
-        #                min_coverage = snippy_min_coverage,
-        #                min_frac = snippy_min_frac,
-        #                min_quality = snippy_min_quality,
-        #                maxsoft = snippy_maxsoft,
-        #                docker = snippy_variants_docker_image
-        #        }
-        #        call snippy_gene_query.snippy_gene_query as snippy_gene_query_crypto {
-        #            input:
-        #                samplename = samplename,
-        #                snippy_variants_results = snippy_crypto.snippy_variants_results,
-        #                reference = snippy_reference_cryptoneo,
-        #                query_gene = select_first([snippy_query_gene, "CNA00300"]), # CNA00300 is ERG11 for this reference genome
-        #                docker = snippy_gene_query_docker_image
-        #        }
-        #    }
-        #}
+        if (merlin_tag == "Aspergillus fumigatus") {
+            if (!assembly_only && !ont_data) {
+                call snippy.snippy_variants as snippy_afumigatus {
+                    input:
+                        reference_genome_file = snippy_reference_afumigatus,
+                        read1 = select_first([read1]),
+                        read2 = read2,
+                        samplename = samplename,
+                        map_qual = snippy_map_qual,
+                        base_quality = snippy_base_quality,
+                        min_coverage = snippy_min_coverage,
+                        min_frac = snippy_min_frac,
+                        min_quality = snippy_min_quality,
+                        maxsoft = snippy_maxsoft,
+                        docker = snippy_variants_docker_image
+                }
+                call snippy_gene_query.snippy_gene_query as snippy_gene_query_afumigatus {
+                    input:
+                        samplename = samplename,
+                        snippy_variants_results = snippy_afumigatus.snippy_variants_results,
+                        reference = snippy_reference_afumigatus,
+                        query_gene = select_first([snippy_query_gene, "Cyp51A,HapE,AFUA_4G08340"]), # AFUA_4G08340 is COX10 according to MARDy
+                        docker = snippy_gene_query_docker_image
+                }
+            }
+        }
+        if (merlin_tag == "Cryptococcus neoformans") {
+            if (!assembly_only && !ont_data) {
+                call snippy.snippy_variants as snippy_crypto {
+                    input:
+                        reference_genome_file = snippy_reference_cryptoneo,
+                        read1 = select_first([read1]),
+                        read2 = read2,
+                        samplename = samplename,
+                        map_qual = snippy_map_qual,
+                        base_quality = snippy_base_quality,
+                        min_coverage = snippy_min_coverage,
+                        min_frac = snippy_min_frac,
+                        min_quality = snippy_min_quality,
+                        maxsoft = snippy_maxsoft,
+                        docker = snippy_variants_docker_image
+                }
+                call snippy_gene_query.snippy_gene_query as snippy_gene_query_crypto {
+                    input:
+                        samplename = samplename,
+                        snippy_variants_results = snippy_crypto.snippy_variants_results,
+                        reference = snippy_reference_cryptoneo,
+                        query_gene = select_first([snippy_query_gene, "CNA00300"]), # CNA00300 is ERG11 for this reference genome
+                        docker = snippy_gene_query_docker_image
+                }
+            }
+        }
     }
     output {
 #        # theiaprok
@@ -1050,20 +1050,20 @@ workflow merlin_magic {
         String? cladetyper_docker_image = cladetyper.gambit_cladetyper_docker_image
         String? cladetype_annotated_ref = cladetyper.annotated_reference
         # snippy variants
-       #String snippy_variants_reference_genome = select_first([snippy_cauris.snippy_variants_reference_genome, snippy_afumigatus.snippy_variants_reference_genome, snippy_crypto.snippy_variants_reference_genome, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-       #String snippy_variants_version = select_first([snippy_cauris.snippy_variants_version, snippy_afumigatus.snippy_variants_version, snippy_crypto.snippy_variants_version, "No matching taxon detected"])
-       #String snippy_variants_query = select_first([snippy_gene_query_cauris.snippy_variants_query, snippy_gene_query_afumigatus.snippy_variants_query, snippy_gene_query_crypto.snippy_variants_query, "No matching taxon detected"])
-       #String snippy_variants_query_check = select_first([snippy_gene_query_cauris.snippy_variants_query_check, snippy_gene_query_afumigatus.snippy_variants_query_check, snippy_gene_query_crypto.snippy_variants_query_check, "No matching taxon detected"])
-       #String snippy_variants_hits = select_first([snippy_gene_query_cauris.snippy_variants_hits, snippy_gene_query_afumigatus.snippy_variants_hits, snippy_gene_query_crypto.snippy_variants_hits, "No matching taxon detected"])
-       #String snippy_variants_gene_query_results = select_first([snippy_gene_query_cauris.snippy_variants_gene_query_results, snippy_gene_query_afumigatus.snippy_variants_gene_query_results, snippy_gene_query_crypto.snippy_variants_gene_query_results, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-       #String snippy_variants_outdir_tarball = select_first([snippy_cauris.snippy_variants_outdir_tarball, snippy_afumigatus.snippy_variants_outdir_tarball, snippy_crypto.snippy_variants_outdir_tarball, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-       #String snippy_variants_results = select_first([snippy_cauris.snippy_variants_results, snippy_afumigatus.snippy_variants_results, snippy_crypto.snippy_variants_results, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-       #String snippy_variants_bam = select_first([snippy_cauris.snippy_variants_bam, snippy_afumigatus.snippy_variants_bam, snippy_crypto.snippy_variants_bam, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-       #String snippy_variants_bai = select_first([snippy_cauris.snippy_variants_bai, snippy_afumigatus.snippy_variants_bai, snippy_crypto.snippy_variants_bai, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-       #String snippy_variants_summary = select_first([snippy_cauris.snippy_variants_summary, snippy_afumigatus.snippy_variants_summary, snippy_crypto.snippy_variants_summary, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-       #String snippy_variants_num_reads_aligned = select_first([snippy_cauris.snippy_variants_num_reads_aligned, snippy_afumigatus.snippy_variants_num_reads_aligned, snippy_crypto.snippy_variants_num_reads_aligned, "No matching taxon detected"])
-       #String snippy_variants_coverage_tsv = select_first([snippy_cauris.snippy_variants_coverage_tsv, snippy_afumigatus.snippy_variants_coverage_tsv, snippy_crypto.snippy_variants_coverage_tsv, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-       #String snippy_variants_num_variants = select_first([snippy_cauris.snippy_variants_num_variants, snippy_afumigatus.snippy_variants_num_variants, snippy_crypto.snippy_variants_num_variants, "No matching taxon detected"])
-       #String snippy_variants_percent_ref_coverage = select_first([snippy_cauris.snippy_variants_percent_ref_coverage, snippy_afumigatus.snippy_variants_percent_ref_coverage, snippy_crypto.snippy_variants_percent_ref_coverage, "No matching taxon detected"])
+        String snippy_variants_reference_genome = select_first([snippy_cauris.snippy_variants_reference_genome, snippy_afumigatus.snippy_variants_reference_genome, snippy_crypto.snippy_variants_reference_genome, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        String snippy_variants_version = select_first([snippy_cauris.snippy_variants_version, snippy_afumigatus.snippy_variants_version, snippy_crypto.snippy_variants_version, "No matching taxon detected"])
+        String snippy_variants_query = select_first([snippy_gene_query_cauris.snippy_variants_query, snippy_gene_query_afumigatus.snippy_variants_query, snippy_gene_query_crypto.snippy_variants_query, "No matching taxon detected"])
+        String snippy_variants_query_check = select_first([snippy_gene_query_cauris.snippy_variants_query_check, snippy_gene_query_afumigatus.snippy_variants_query_check, snippy_gene_query_crypto.snippy_variants_query_check, "No matching taxon detected"])
+        String snippy_variants_hits = select_first([snippy_gene_query_cauris.snippy_variants_hits, snippy_gene_query_afumigatus.snippy_variants_hits, snippy_gene_query_crypto.snippy_variants_hits, "No matching taxon detected"])
+        String snippy_variants_gene_query_results = select_first([snippy_gene_query_cauris.snippy_variants_gene_query_results, snippy_gene_query_afumigatus.snippy_variants_gene_query_results, snippy_gene_query_crypto.snippy_variants_gene_query_results, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        String snippy_variants_outdir_tarball = select_first([snippy_cauris.snippy_variants_outdir_tarball, snippy_afumigatus.snippy_variants_outdir_tarball, snippy_crypto.snippy_variants_outdir_tarball, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        String snippy_variants_results = select_first([snippy_cauris.snippy_variants_results, snippy_afumigatus.snippy_variants_results, snippy_crypto.snippy_variants_results, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        String snippy_variants_bam = select_first([snippy_cauris.snippy_variants_bam, snippy_afumigatus.snippy_variants_bam, snippy_crypto.snippy_variants_bam, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        String snippy_variants_bai = select_first([snippy_cauris.snippy_variants_bai, snippy_afumigatus.snippy_variants_bai, snippy_crypto.snippy_variants_bai, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        String snippy_variants_summary = select_first([snippy_cauris.snippy_variants_summary, snippy_afumigatus.snippy_variants_summary, snippy_crypto.snippy_variants_summary, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        String snippy_variants_num_reads_aligned = select_first([snippy_cauris.snippy_variants_num_reads_aligned, snippy_afumigatus.snippy_variants_num_reads_aligned, snippy_crypto.snippy_variants_num_reads_aligned, "No matching taxon detected"])
+        String snippy_variants_coverage_tsv = select_first([snippy_cauris.snippy_variants_coverage_tsv, snippy_afumigatus.snippy_variants_coverage_tsv, snippy_crypto.snippy_variants_coverage_tsv, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        String snippy_variants_num_variants = select_first([snippy_cauris.snippy_variants_num_variants, snippy_afumigatus.snippy_variants_num_variants, snippy_crypto.snippy_variants_num_variants, "No matching taxon detected"])
+        String snippy_variants_percent_ref_coverage = select_first([snippy_cauris.snippy_variants_percent_ref_coverage, snippy_afumigatus.snippy_variants_percent_ref_coverage, snippy_crypto.snippy_variants_percent_ref_coverage, "No matching taxon detected"])
     }
 }

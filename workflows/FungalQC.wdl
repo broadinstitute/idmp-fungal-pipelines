@@ -153,59 +153,64 @@ workflow theiaeuk_illumina_pe {
                     cpu = cpu,
                     memory = memory
             }
-            call kraken2_task.kraken2 {
-                input:
-                    read1 = read_QC_trim.read1_clean,
-                    read2 = read_QC_trim.read2_clean,
-                    samplename = samplename
-            }
-            call busco_task.busco {
-                input:
-                    assembly = shovill_pe.assembly_fasta,
-                    samplename = samplename,
-                    eukaryote = true,
-                    memory = busco_memory,
-                    docker = busco_docker_image
-            }
-            if (defined(qc_check_table)) {
-                call qc_check.qc_check_phb as qc_check_task {
+
+            Boolean is_expected_organism = gambit.merlin_tag == gambit_expected_taxon
+
+            if (is_expected_organism) {
+                call kraken2_task.kraken2 {
                     input:
-                        qc_check_table = qc_check_table,
-                        expected_taxon = expected_taxon,
-                        gambit_predicted_taxon = gambit.gambit_predicted_taxon,
-                        num_reads_raw1 = read_QC_trim.fastq_scan_raw1,
-                        num_reads_raw2 = read_QC_trim.fastq_scan_raw2,
-                        num_reads_clean1 = read_QC_trim.fastq_scan_clean1,
-                        num_reads_clean2 = read_QC_trim.fastq_scan_clean2,
-                        r1_mean_q_raw = cg_pipeline_raw.r1_mean_q,
-                        r2_mean_q_raw = cg_pipeline_raw.r2_mean_q,
-                        combined_mean_q_raw = cg_pipeline_raw.combined_mean_q,
-                        r1_mean_readlength_raw = cg_pipeline_raw.r1_mean_readlength,
-                        r2_mean_readlength_raw = cg_pipeline_raw.r2_mean_readlength,
-                        combined_mean_readlength_raw = cg_pipeline_raw.combined_mean_readlength,
-                        r1_mean_q_clean = cg_pipeline_clean.r1_mean_q,
-                        r2_mean_q_clean = cg_pipeline_clean.r2_mean_q,
-                        combined_mean_q_clean = cg_pipeline_clean.combined_mean_q,
-                        r1_mean_readlength_clean = cg_pipeline_clean.r1_mean_readlength,
-                        r2_mean_readlength_clean = cg_pipeline_clean.r2_mean_readlength,
-                        combined_mean_readlength_clean = cg_pipeline_clean.combined_mean_readlength,
-                        est_coverage_raw = cg_pipeline_raw.est_coverage,
-                        est_coverage_clean = cg_pipeline_clean.est_coverage,
-                        assembly_length = quast.genome_length,
-                        number_contigs = quast.number_contigs,
-                        n50_value = quast.n50_value,
-                        quast_gc_percent = quast.gc_percent,
-                        busco_results = busco.busco_results
+                        read1 = read_QC_trim.read1_clean,
+                        read2 = read_QC_trim.read2_clean,
+                        samplename = samplename
                 }
-            }
-            call merlin_magic_workflow.merlin_magic {
-                input:
-                    merlin_tag = gambit.merlin_tag,
-                    assembly = shovill_pe.assembly_fasta,
-                    samplename = samplename,
-                    read1 = read_QC_trim.read1_clean,
-                    read2 = read_QC_trim.read2_clean,
-                    theiaeuk = true
+                call busco_task.busco {
+                    input:
+                        assembly = shovill_pe.assembly_fasta,
+                        samplename = samplename,
+                        eukaryote = true,
+                        memory = busco_memory,
+                        docker = busco_docker_image
+                }
+                if (defined(qc_check_table)) {
+                    call qc_check.qc_check_phb as qc_check_task {
+                        input:
+                            qc_check_table = qc_check_table,
+                            expected_taxon = expected_taxon,
+                            gambit_predicted_taxon = gambit.gambit_predicted_taxon,
+                            num_reads_raw1 = read_QC_trim.fastq_scan_raw1,
+                            num_reads_raw2 = read_QC_trim.fastq_scan_raw2,
+                            num_reads_clean1 = read_QC_trim.fastq_scan_clean1,
+                            num_reads_clean2 = read_QC_trim.fastq_scan_clean2,
+                            r1_mean_q_raw = cg_pipeline_raw.r1_mean_q,
+                            r2_mean_q_raw = cg_pipeline_raw.r2_mean_q,
+                            combined_mean_q_raw = cg_pipeline_raw.combined_mean_q,
+                            r1_mean_readlength_raw = cg_pipeline_raw.r1_mean_readlength,
+                            r2_mean_readlength_raw = cg_pipeline_raw.r2_mean_readlength,
+                            combined_mean_readlength_raw = cg_pipeline_raw.combined_mean_readlength,
+                            r1_mean_q_clean = cg_pipeline_clean.r1_mean_q,
+                            r2_mean_q_clean = cg_pipeline_clean.r2_mean_q,
+                            combined_mean_q_clean = cg_pipeline_clean.combined_mean_q,
+                            r1_mean_readlength_clean = cg_pipeline_clean.r1_mean_readlength,
+                            r2_mean_readlength_clean = cg_pipeline_clean.r2_mean_readlength,
+                            combined_mean_readlength_clean = cg_pipeline_clean.combined_mean_readlength,
+                            est_coverage_raw = cg_pipeline_raw.est_coverage,
+                            est_coverage_clean = cg_pipeline_clean.est_coverage,
+                            assembly_length = quast.genome_length,
+                            number_contigs = quast.number_contigs,
+                            n50_value = quast.n50_value,
+                            quast_gc_percent = quast.gc_percent,
+                            busco_results = busco.busco_results
+                    }
+                }
+                call merlin_magic_workflow.merlin_magic {
+                    input:
+                        merlin_tag = gambit.merlin_tag,
+                        assembly = shovill_pe.assembly_fasta,
+                        samplename = samplename,
+                        read1 = read_QC_trim.read1_clean,
+                        read2 = read_QC_trim.read2_clean,
+                        theiaeuk = true
+                }
             }
         }
     }

@@ -6,7 +6,7 @@ task kraken2 {
         File read1
         File read2
         String samplename
-        String kraken2_db_path = "https://genome-idx.s3.amazonaws.com/kraken/k2_standard_16gb_20241228.tar.gz"
+        String kraken2_db_path = "https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_16gb_20250402.tar.gz"
         Int cpu = 4
         Int memory = 32
         String docker = "marcoteix/bracken:1.0.0"

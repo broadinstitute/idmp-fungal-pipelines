@@ -53,56 +53,56 @@ workflow merlin_magic {
         # subworkflow logic
         Boolean assembly_only = false
         Boolean ont_data = false
-        Boolean paired_end = true
+        #Boolean paired_end = true
         Boolean theiaeuk = false
         # activating tool logic
-        Boolean call_poppunk = true
-        Boolean call_shigeifinder_reads_input = false
-        Boolean call_tbp_parser = false
+        #Boolean call_poppunk = true
+        #Boolean call_shigeifinder_reads_input = false
+        #Boolean call_tbp_parser = false
         # docker options
-        String? abricate_abaum_docker_image
-        String? abricate_vibrio_docker_image
-        String? agrvate_docker_image
+        #String? abricate_abaum_docker_image
+        #String? abricate_vibrio_docker_image
+        #String? agrvate_docker_image
         String? cauris_cladetyper_docker_image
-        String? clockwork_docker_image
-        String? ectyper_docker_image
-        String? emmtyper_docker_image
-        String? emmtypingtool_docker_image
-        String? genotyphi_docker_image
-        String? hicap_docker_image
-        String? kaptive_docker_image
-        String? kleborate_docker_image
-        String? legsta_docker_image
-        String? lissero_docker_image
-        String? meningotype_docker_image
-        String? ngmaster_docker_image
-        String? pasty_docker_image
-        String? pbptyper_docker_image
-        String? poppunk_docker_image
-        String? seqsero2_docker_image
-        String? seroba_docker_image
-        String? serotypefinder_docker_image
-        String? shigatyper_docker_image
-        String? shigeifinder_docker_image
-        String? sistr_docker_image
+        #String? clockwork_docker_image
+        #String? ectyper_docker_image
+        #String? emmtyper_docker_image
+        #String? emmtypingtool_docker_image
+        #String? genotyphi_docker_image
+        #String? hicap_docker_image
+        #String? kaptive_docker_image
+        #String? kleborate_docker_image
+        #String? legsta_docker_image
+        #String? lissero_docker_image
+        #String? meningotype_docker_image
+        #String? ngmaster_docker_image
+        #String? pasty_docker_image
+        #String? pbptyper_docker_image
+        #String? poppunk_docker_image
+        #String? seqsero2_docker_image
+        #String? seroba_docker_image
+        #String? serotypefinder_docker_image
+        #String? shigatyper_docker_image
+        #String? shigeifinder_docker_image
+        #String? sistr_docker_image
         String? snippy_gene_query_docker_image
         String? snippy_variants_docker_image
-        String? sonneityping_docker_image
-        String? spatyper_docker_image
-        String? srst2_docker_image
-        String? staphopia_sccmec_docker_image
-        String? tbprofiler_docker_image
-        String? tbp_parser_docker_image
-        String? vibecheck_docker_image
-        String? virulencefinder_docker_image
+        #String? sonneityping_docker_image
+        #String? spatyper_docker_image
+        #String? srst2_docker_image
+        #String? staphopia_sccmec_docker_image
+        #String? tbprofiler_docker_image
+        #String? tbp_parser_docker_image
+        #String? vibecheck_docker_image
+        #String? virulencefinder_docker_image
         # abricate abaum options
-        Int abricate_abaum_min_percent_identity = 95 # strict threshold of 95% identity for typing purposes
-        Int? abricate_abaum_min_percent_coverage
+        #Int abricate_abaum_min_percent_identity = 95 # strict threshold of 95% identity for typing purposes
+        #Int? abricate_abaum_min_percent_coverage
         # abricate vibrio options
-        Int abricate_vibrio_min_percent_identity = 80
-        Int abricate_vibrio_min_percent_coverage = 80
+        #Int abricate_vibrio_min_percent_identity = 80
+        #Int abricate_vibrio_min_percent_coverage = 80
         # agrvate options
-        Boolean? agrvate_agr_typing_only
+        #Boolean? agrvate_agr_typing_only
         # cladetyper options - primarily files we host
         Int? cladetyper_kmer_size
         File? cladetyper_ref_clade1
@@ -116,75 +116,75 @@ workflow merlin_magic {
         File? cladetyper_ref_clade5
         File? cladetyper_ref_clade5_annotated
         # ectyper options
-        Int? ectyper_o_min_percent_identity
-        Int? ectyper_h_min_percent_identity
-        Int? ectyper_o_min_percent_coverage
-        Int? ectyper_h_min_percent_coverage
-        Boolean? ectyper_verify
-        Boolean? ectyper_print_alleles
+        #Int? ectyper_o_min_percent_identity
+        #Int? ectyper_h_min_percent_identity
+        #Int? ectyper_o_min_percent_coverage
+        #Int? ectyper_h_min_percent_coverage
+        #Boolean? ectyper_verify
+        #Boolean? ectyper_print_alleles
         # emmtyper options
-        String? emmtyper_wf
-        Int? emmtyper_cluster_distance
-        Int? emmtyper_min_percent_identity
-        Int? emmtyper_culling_limit
-        Int? emmtyper_mismatch
-        Int? emmtyper_align_diff
-        Int? emmtyper_gap
-        Int? emmtyper_min_perfect
-        Int? emmtyper_min_good
-        Int? emmtyper_max_size
+        #String? emmtyper_wf
+        #Int? emmtyper_cluster_distance
+        #Int? emmtyper_min_percent_identity
+        #Int? emmtyper_culling_limit
+        #Int? emmtyper_mismatch
+        #Int? emmtyper_align_diff
+        #Int? emmtyper_gap
+        #Int? emmtyper_min_perfect
+        #Int? emmtyper_min_good
+        #Int? emmtyper_max_size
         # hicap options
-        Float? hicap_min_gene_percent_identity
-        Float? hicap_min_gene_percent_coverage
-        Float? hicap_min_broken_gene_percent_identity
-        Int? hicap_broken_gene_length
+        #Float? hicap_min_gene_percent_identity
+        #Float? hicap_min_gene_percent_coverage
+        #Float? hicap_min_broken_gene_percent_identity
+        #Int? hicap_broken_gene_length
         # kaptive options
-        Int? kaptive_start_end_margin
-        Float? kaptive_min_percent_identity
-        Float? kaptive_min_percent_coverage
-        Float? kaptive_low_gene_percent_identity
+        #Int? kaptive_start_end_margin
+        #Float? kaptive_min_percent_identity
+        #Float? kaptive_min_percent_coverage
+        #Float? kaptive_low_gene_percent_identity
         # kleborate options
-        Boolean? kleborate_skip_resistance
-        Boolean? kleborate_skip_kaptive
-        Float? kleborate_min_percent_identity
-        Float? kleborate_min_percent_coverage
-        Float? kleborate_min_spurious_percent_identity
-        Float? kleborate_min_spurious_percent_coverage
-        String? kleborate_min_kaptive_confidence
+        #Boolean? kleborate_skip_resistance
+        #Boolean? kleborate_skip_kaptive
+        #Float? kleborate_min_percent_identity
+        #Float? kleborate_min_percent_coverage
+        #Float? kleborate_min_spurious_percent_identity
+        #Float? kleborate_min_spurious_percent_coverage
+        #String? kleborate_min_kaptive_confidence
         # lissero options
-        Float? lissero_min_percent_identity
-        Float? lissero_min_percent_coverage
+        #Float? lissero_min_percent_identity
+        #Float? lissero_min_percent_coverage
         # pasty options
-        Int? pasty_min_percent_identity
-        Int? pasty_min_percent_coverage
+        #Int? pasty_min_percent_identity
+        #Int? pasty_min_percent_coverage
         # pbptyper options
-        Int? pbptyper_min_percent_identity
-        Int? pbptyper_min_percent_coverage
+        #Int? pbptyper_min_percent_identity
+        #Int? pbptyper_min_percent_coverage
         # popppunk options - primarily files we host
-        File? poppunk_gps_dists_npy
-        File? poppunk_gps_dists_pkl
-        File? poppunk_gps_h5
-        File? poppunk_gps_refs
-        File? poppunk_gps_refs_dists_npy
-        File? poppunk_gps_refs_dists_pkl
-        File? poppunk_gps_refs_h5
-        File? poppunk_gps_clusters_csv
-        File? poppunk_gps_fit_npz
-        File? poppunk_gps_fit_pkl
-        File? poppunk_gps_graph_gt
-        File? poppunk_gps_qcreport_txt
-        File? poppunk_gps_unword_clusters_csv
-        File? poppunk_gps_refs_graph_gt
-        File? poppunk_gps_external_clusters_csv
+        #File? poppunk_gps_dists_npy
+        #File? poppunk_gps_dists_pkl
+        #File? poppunk_gps_h5
+        #File? poppunk_gps_refs
+        #File? poppunk_gps_refs_dists_npy
+        #File? poppunk_gps_refs_dists_pkl
+        #File? poppunk_gps_refs_h5
+        #File? poppunk_gps_clusters_csv
+        #File? poppunk_gps_fit_npz
+        #File? poppunk_gps_fit_pkl
+        #File? poppunk_gps_graph_gt
+        #File? poppunk_gps_qcreport_txt
+        #File? poppunk_gps_unword_clusters_csv
+        #File? poppunk_gps_refs_graph_gt
+        #File? poppunk_gps_external_clusters_csv
         # sistr options
-        Boolean? sistr_use_full_cgmlst_db
-        Int? sistr_cpu
-        Int? sistr_memory
-        Int? sistr_disk_size
+        #Boolean? sistr_use_full_cgmlst_db
+        #Int? sistr_cpu
+        #Int? sistr_memory
+        #Int? sistr_disk_size
         # snippy options - mostly files we host
         String? snippy_query_gene
-        File snippy_reference_afumigatus = "gs://theiagen-public-files/terra/theiaeuk_files/Aspergillus_fumigatus_GCF_000002655.1_ASM265v1_genomic.gbff"
-        File snippy_reference_cryptoneo = "gs://theiagen-public-files/terra/theiaeuk_files/Cryptococcus_neoformans_GCF_000091045.1_ASM9104v1_genomic.gbff"
+        #File snippy_reference_afumigatus = "gs://theiagen-public-files/terra/theiaeuk_files/Aspergillus_fumigatus_GCF_000002655.1_ASM265v1_genomic.gbff"
+        #File snippy_reference_cryptoneo = "gs://theiagen-public-files/terra/theiaeuk_files/Cryptococcus_neoformans_GCF_000091045.1_ASM9104v1_genomic.gbff"
         Int? snippy_map_qual
         Int? snippy_base_quality
         Int? snippy_min_coverage
@@ -193,59 +193,59 @@ workflow merlin_magic {
         Int? snippy_maxsoft
         #File snippy_reference_calbicans = "gs://theiagen-public-files/terra/theiaeuk_files/Candida_albicans_GCF_000182965.3_ASM18296v3_genomic.gbff"
         # sonneityping options
-        String? sonneityping_mykrobe_opts
+        #String? sonneityping_mykrobe_opts
         # spatyper options
-        Boolean? spatyper_do_enrich
+        #Boolean? spatyper_do_enrich
         # srst2 options
-        Int srst2_min_percent_coverage = 80
-        Int srst2_max_divergence = 20
-        Int srst2_min_depth = 5
-        Int srst2_min_edge_depth = 2
-        Int srst2_gene_max_mismatch = 2000
+        #Int srst2_min_percent_coverage = 80
+        #Int srst2_max_divergence = 20
+        #Int srst2_min_depth = 5
+        #Int srst2_min_edge_depth = 2
+        #Int srst2_gene_max_mismatch = 2000
         # tbprofiler options
-        Boolean tbprofiler_run_custom_db = false
-        Boolean tbprofiler_run_cdph_db = false
-        File? tbprofiler_custom_db
-        Float? tbprofiler_min_af
-        Int? tbprofiler_min_depth
-        String? tbprofiler_mapper
-        String? tbprofiler_variant_caller
-        String? tbprofiler_variant_calling_params
-        String? tbprofiler_additional_parameters
+        #Boolean tbprofiler_run_custom_db = false
+        #Boolean tbprofiler_run_cdph_db = false
+        #File? tbprofiler_custom_db
+        #Float? tbprofiler_min_af
+        #Int? tbprofiler_min_depth
+        #String? tbprofiler_mapper
+        #String? tbprofiler_variant_caller
+        #String? tbprofiler_variant_calling_params
+        #String? tbprofiler_additional_parameters
         # tbp-parser options
-        File? tbp_parser_config
-        String tbp_parser_output_seq_method_type = "WGS"
-        String? tbp_parser_operator
-        Int? tbp_parser_min_depth
-        Int? tbp_parser_min_frequency
-        Int? tbp_parser_min_read_support
-        Int? tbp_parser_min_percent_coverage
-        File? tbp_parser_coverage_regions_bed
-        Boolean? tbp_parser_debug
-        Boolean? tbp_parser_add_cs_lims
-        Boolean? tbp_parser_tngs_data
-        Float? tbp_parser_rrs_frequency
-        Int? tbp_parser_rrs_read_support
-        Float? tbp_parser_rrl_frequency
-        Int? tbp_parser_rrl_read_support
-        Float? tbp_parser_rpob449_frequency
-        Float? tbp_parser_etha237_frequency
-        File? tbp_parser_expert_rule_regions_bed
+        #File? tbp_parser_config
+        #String tbp_parser_output_seq_method_type = "WGS"
+        #String? tbp_parser_operator
+        #Int? tbp_parser_min_depth
+        #Int? tbp_parser_min_frequency
+        #Int? tbp_parser_min_read_support
+        #Int? tbp_parser_min_percent_coverage
+        #File? tbp_parser_coverage_regions_bed
+        #Boolean? tbp_parser_debug
+        #Boolean? tbp_parser_add_cs_lims
+        #Boolean? tbp_parser_tngs_data
+        #Float? tbp_parser_rrs_frequency
+        #Int? tbp_parser_rrs_read_support
+        #Float? tbp_parser_rrl_frequency
+        #Int? tbp_parser_rrl_read_support
+        #Float? tbp_parser_rpob449_frequency
+        #Float? tbp_parser_etha237_frequency
+        #File? tbp_parser_expert_rule_regions_bed
         # Vibecheck options
-        File? vibecheck_lineage_barcodes
-        Float? vibecheck_subsampling_fraction
-        Boolean? vibecheck_skip_subsampling
+        #File? vibecheck_lineage_barcodes
+        #Float? vibecheck_subsampling_fraction
+        #Boolean? vibecheck_skip_subsampling
         # virulencefinder options
-        Float? virulencefinder_min_percent_coverage
-        Float? virulencefinder_min_percent_identity
-        String? virulencefinder_database
+        #Float? virulencefinder_min_percent_coverage
+        #Float? virulencefinder_min_percent_identity
+        #String? virulencefinder_database
         # stxtyper options
-        Boolean call_stxtyper = false # set to true to run stxtyper on any bacterial sample
-        Boolean? stxtyper_enable_debug
-        String? stxtyper_docker_image
-        Int? stxtyper_disk_size
-        Int? stxtyper_cpu
-        Int? stxtyper_memory
+        #Boolean call_stxtyper = false # set to true to run stxtyper on any bacterial sample
+        #Boolean? stxtyper_enable_debug
+        #String? stxtyper_docker_image
+        #Int? stxtyper_disk_size
+        #Int? stxtyper_cpu
+        #Int? stxtyper_memory
     }
     # theiaprok
 #    if (merlin_tag == "Acinetobacter baumannii") {
@@ -724,58 +724,58 @@ workflow merlin_magic {
         #     }
         #   }
         # }
-        if (merlin_tag == "Aspergillus fumigatus") {
-            if (!assembly_only && !ont_data) {
-                call snippy.snippy_variants as snippy_afumigatus {
-                    input:
-                        reference_genome_file = snippy_reference_afumigatus,
-                        read1 = select_first([read1]),
-                        read2 = read2,
-                        samplename = samplename,
-                        map_qual = snippy_map_qual,
-                        base_quality = snippy_base_quality,
-                        min_coverage = snippy_min_coverage,
-                        min_frac = snippy_min_frac,
-                        min_quality = snippy_min_quality,
-                        maxsoft = snippy_maxsoft,
-                        docker = snippy_variants_docker_image
-                }
-                call snippy_gene_query.snippy_gene_query as snippy_gene_query_afumigatus {
-                    input:
-                        samplename = samplename,
-                        snippy_variants_results = snippy_afumigatus.snippy_variants_results,
-                        reference = snippy_reference_afumigatus,
-                        query_gene = select_first([snippy_query_gene, "Cyp51A,HapE,AFUA_4G08340"]), # AFUA_4G08340 is COX10 according to MARDy
-                        docker = snippy_gene_query_docker_image
-                }
-            }
-        }
-        if (merlin_tag == "Cryptococcus neoformans") {
-            if (!assembly_only && !ont_data) {
-                call snippy.snippy_variants as snippy_crypto {
-                    input:
-                        reference_genome_file = snippy_reference_cryptoneo,
-                        read1 = select_first([read1]),
-                        read2 = read2,
-                        samplename = samplename,
-                        map_qual = snippy_map_qual,
-                        base_quality = snippy_base_quality,
-                        min_coverage = snippy_min_coverage,
-                        min_frac = snippy_min_frac,
-                        min_quality = snippy_min_quality,
-                        maxsoft = snippy_maxsoft,
-                        docker = snippy_variants_docker_image
-                }
-                call snippy_gene_query.snippy_gene_query as snippy_gene_query_crypto {
-                    input:
-                        samplename = samplename,
-                        snippy_variants_results = snippy_crypto.snippy_variants_results,
-                        reference = snippy_reference_cryptoneo,
-                        query_gene = select_first([snippy_query_gene, "CNA00300"]), # CNA00300 is ERG11 for this reference genome
-                        docker = snippy_gene_query_docker_image
-                }
-            }
-        }
+        #if (merlin_tag == "Aspergillus fumigatus") {
+        #    if (!assembly_only && !ont_data) {
+        #        call snippy.snippy_variants as snippy_afumigatus {
+        #            input:
+        #                reference_genome_file = snippy_reference_afumigatus,
+        #                read1 = select_first([read1]),
+        #                read2 = read2,
+        #                samplename = samplename,
+        #                map_qual = snippy_map_qual,
+        #                base_quality = snippy_base_quality,
+        #                min_coverage = snippy_min_coverage,
+        #                min_frac = snippy_min_frac,
+        #                min_quality = snippy_min_quality,
+        #                maxsoft = snippy_maxsoft,
+        #                docker = snippy_variants_docker_image
+        #        }
+        #        call snippy_gene_query.snippy_gene_query as snippy_gene_query_afumigatus {
+        #            input:
+        #                samplename = samplename,
+        #                snippy_variants_results = snippy_afumigatus.snippy_variants_results,
+        #                reference = snippy_reference_afumigatus,
+        #                query_gene = select_first([snippy_query_gene, "Cyp51A,HapE,AFUA_4G08340"]), # AFUA_4G08340 is COX10 according to MARDy
+        #                docker = snippy_gene_query_docker_image
+        #        }
+        #    }
+        #}
+        #if (merlin_tag == "Cryptococcus neoformans") {
+        #    if (!assembly_only && !ont_data) {
+        #        call snippy.snippy_variants as snippy_crypto {
+        #            input:
+        #                reference_genome_file = snippy_reference_cryptoneo,
+        #                read1 = select_first([read1]),
+        #                read2 = read2,
+        #                samplename = samplename,
+        #                map_qual = snippy_map_qual,
+        #                base_quality = snippy_base_quality,
+        #                min_coverage = snippy_min_coverage,
+        #                min_frac = snippy_min_frac,
+        #                min_quality = snippy_min_quality,
+        #                maxsoft = snippy_maxsoft,
+        #                docker = snippy_variants_docker_image
+        #        }
+        #        call snippy_gene_query.snippy_gene_query as snippy_gene_query_crypto {
+        #            input:
+        #                samplename = samplename,
+        #                snippy_variants_results = snippy_crypto.snippy_variants_results,
+        #                reference = snippy_reference_cryptoneo,
+        #                query_gene = select_first([snippy_query_gene, "CNA00300"]), # CNA00300 is ERG11 for this reference genome
+        #                docker = snippy_gene_query_docker_image
+        #        }
+        #    }
+        #}
     }
     output {
 #        # theiaprok
@@ -1050,20 +1050,26 @@ workflow merlin_magic {
         String? cladetyper_docker_image = cladetyper.gambit_cladetyper_docker_image
         String? cladetype_annotated_ref = cladetyper.annotated_reference
         # snippy variants
-        String snippy_variants_reference_genome = select_first([snippy_cauris.snippy_variants_reference_genome, snippy_afumigatus.snippy_variants_reference_genome, snippy_crypto.snippy_variants_reference_genome, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-        String snippy_variants_version = select_first([snippy_cauris.snippy_variants_version, snippy_afumigatus.snippy_variants_version, snippy_crypto.snippy_variants_version, "No matching taxon detected"])
-        String snippy_variants_query = select_first([snippy_gene_query_cauris.snippy_variants_query, snippy_gene_query_afumigatus.snippy_variants_query, snippy_gene_query_crypto.snippy_variants_query, "No matching taxon detected"])
-        String snippy_variants_query_check = select_first([snippy_gene_query_cauris.snippy_variants_query_check, snippy_gene_query_afumigatus.snippy_variants_query_check, snippy_gene_query_crypto.snippy_variants_query_check, "No matching taxon detected"])
-        String snippy_variants_hits = select_first([snippy_gene_query_cauris.snippy_variants_hits, snippy_gene_query_afumigatus.snippy_variants_hits, snippy_gene_query_crypto.snippy_variants_hits, "No matching taxon detected"])
-        String snippy_variants_gene_query_results = select_first([snippy_gene_query_cauris.snippy_variants_gene_query_results, snippy_gene_query_afumigatus.snippy_variants_gene_query_results, snippy_gene_query_crypto.snippy_variants_gene_query_results, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-        String snippy_variants_outdir_tarball = select_first([snippy_cauris.snippy_variants_outdir_tarball, snippy_afumigatus.snippy_variants_outdir_tarball, snippy_crypto.snippy_variants_outdir_tarball, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-        String snippy_variants_results = select_first([snippy_cauris.snippy_variants_results, snippy_afumigatus.snippy_variants_results, snippy_crypto.snippy_variants_results, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-        String snippy_variants_bam = select_first([snippy_cauris.snippy_variants_bam, snippy_afumigatus.snippy_variants_bam, snippy_crypto.snippy_variants_bam, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-        String snippy_variants_bai = select_first([snippy_cauris.snippy_variants_bai, snippy_afumigatus.snippy_variants_bai, snippy_crypto.snippy_variants_bai, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-        String snippy_variants_summary = select_first([snippy_cauris.snippy_variants_summary, snippy_afumigatus.snippy_variants_summary, snippy_crypto.snippy_variants_summary, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-        String snippy_variants_num_reads_aligned = select_first([snippy_cauris.snippy_variants_num_reads_aligned, snippy_afumigatus.snippy_variants_num_reads_aligned, snippy_crypto.snippy_variants_num_reads_aligned, "No matching taxon detected"])
-        String snippy_variants_coverage_tsv = select_first([snippy_cauris.snippy_variants_coverage_tsv, snippy_afumigatus.snippy_variants_coverage_tsv, snippy_crypto.snippy_variants_coverage_tsv, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-        String snippy_variants_num_variants = select_first([snippy_cauris.snippy_variants_num_variants, snippy_afumigatus.snippy_variants_num_variants, snippy_crypto.snippy_variants_num_variants, "No matching taxon detected"])
-        String snippy_variants_percent_ref_coverage = select_first([snippy_cauris.snippy_variants_percent_ref_coverage, snippy_afumigatus.snippy_variants_percent_ref_coverage, snippy_crypto.snippy_variants_percent_ref_coverage, "No matching taxon detected"])
+        String snippy_variants_query = select_first([snippy_gene_query_cauris.snippy_variants_query, "No matching taxon detected"])
+        String snippy_variants_query_check = select_first([snippy_gene_query_cauris.snippy_variants_query_check, "No matching taxon detected"])
+        String snippy_variants_hits = select_first([snippy_gene_query_cauris.snippy_variants_hits, "No matching taxon detected"])
+        String snippy_variants_gene_query_results = select_first([snippy_gene_query_cauris.snippy_variants_gene_query_results, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+
+        # snippy variants
+        #String snippy_variants_reference_genome = select_first([snippy_cauris.snippy_variants_reference_genome, snippy_afumigatus.snippy_variants_reference_genome, snippy_crypto.snippy_variants_reference_genome, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        #String snippy_variants_version = select_first([snippy_cauris.snippy_variants_version, snippy_afumigatus.snippy_variants_version, snippy_crypto.snippy_variants_version, "No matching taxon detected"])
+        #String snippy_variants_query = select_first([snippy_gene_query_cauris.snippy_variants_query, snippy_gene_query_afumigatus.snippy_variants_query, snippy_gene_query_crypto.snippy_variants_query, "No matching taxon detected"])
+        #String snippy_variants_query_check = select_first([snippy_gene_query_cauris.snippy_variants_query_check, snippy_gene_query_afumigatus.snippy_variants_query_check, snippy_gene_query_crypto.snippy_variants_query_check, "No matching taxon detected"])
+        #String snippy_variants_hits = select_first([snippy_gene_query_cauris.snippy_variants_hits, snippy_gene_query_afumigatus.snippy_variants_hits, snippy_gene_query_crypto.snippy_variants_hits, "No matching taxon detected"])
+        #String snippy_variants_gene_query_results = select_first([snippy_gene_query_cauris.snippy_variants_gene_query_results, snippy_gene_query_afumigatus.snippy_variants_gene_query_results, snippy_gene_query_crypto.snippy_variants_gene_query_results, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        #String snippy_variants_outdir_tarball = select_first([snippy_cauris.snippy_variants_outdir_tarball, snippy_afumigatus.snippy_variants_outdir_tarball, snippy_crypto.snippy_variants_outdir_tarball, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        #String snippy_variants_results = select_first([snippy_cauris.snippy_variants_results, snippy_afumigatus.snippy_variants_results, snippy_crypto.snippy_variants_results, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        #String snippy_variants_bam = select_first([snippy_cauris.snippy_variants_bam, snippy_afumigatus.snippy_variants_bam, snippy_crypto.snippy_variants_bam, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        #String snippy_variants_bai = select_first([snippy_cauris.snippy_variants_bai, snippy_afumigatus.snippy_variants_bai, snippy_crypto.snippy_variants_bai, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        #String snippy_variants_summary = select_first([snippy_cauris.snippy_variants_summary, snippy_afumigatus.snippy_variants_summary, snippy_crypto.snippy_variants_summary, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        #String snippy_variants_num_reads_aligned = select_first([snippy_cauris.snippy_variants_num_reads_aligned, snippy_afumigatus.snippy_variants_num_reads_aligned, snippy_crypto.snippy_variants_num_reads_aligned, "No matching taxon detected"])
+        #String snippy_variants_coverage_tsv = select_first([snippy_cauris.snippy_variants_coverage_tsv, snippy_afumigatus.snippy_variants_coverage_tsv, snippy_crypto.snippy_variants_coverage_tsv, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        #String snippy_variants_num_variants = select_first([snippy_cauris.snippy_variants_num_variants, snippy_afumigatus.snippy_variants_num_variants, snippy_crypto.snippy_variants_num_variants, "No matching taxon detected"])
+        #String snippy_variants_percent_ref_coverage = select_first([snippy_cauris.snippy_variants_percent_ref_coverage, snippy_afumigatus.snippy_variants_percent_ref_coverage, snippy_crypto.snippy_variants_percent_ref_coverage, "No matching taxon detected"])
     }
 }

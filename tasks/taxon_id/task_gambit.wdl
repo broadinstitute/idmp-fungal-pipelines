@@ -10,6 +10,8 @@ task gambit {
         Int disk_size = 20
         Int memory = 2
         Int cpu = 1
+        String gambit_expected_taxon = "Candidozyma auris"
+
     }
     # If "File" type is used Cromwell attempts to localize it, which fails because it doesn't exist yet.
     String report_path = "~{samplename}_gambit.json"
@@ -41,6 +43,7 @@ task gambit {
         import json
         import csv
         import re
+        import sys
 
         def fmt_dist(d): return format(d, '.4f')
 
@@ -143,6 +146,13 @@ task gambit {
         print(merlin_tag)
         with open('MERLIN_TAG', 'w') as merlin:
             merlin.write(merlin_tag)
+
+        # Fail the task if the predicted taxon is not the expected taxon
+        gambit_expected_taxon = "~{gambit_expected_taxon}"
+        if merlin_tag != gambit_expected_taxon:
+            print(f"Pipeline is configured to only proceed for {gambit_expected_taxon}. Found: {merlin_tag}", file=sys.stderr)
+            sys.exit(1)
+
 
         EOF
     >>>

@@ -157,6 +157,7 @@ workflow theiaeuk_illumina_pe {
                     memory = busco_memory,
                     docker = busco_docker_image
             }
+
             if (defined(qc_check_table)) {
                 call qc_check.qc_check_phb as qc_check_task {
                     input:

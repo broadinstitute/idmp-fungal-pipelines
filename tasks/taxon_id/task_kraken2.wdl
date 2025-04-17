@@ -29,7 +29,8 @@ task kraken2 {
         cat ~{samplename}.kraken2.report.txt
 
         # Extract top hit from report - taking species with highest abundance
-        # Format of report: %percent of fragments covered by the clade,  #reads_clade  #reads_taxon  rank  taxid  sci_name
+        # Format of report: percent abundance,  clade reads  #reads_taxon  rank  taxid  sci_name
+        # Filters for lines where the rank is "S", i.e., species level, sorts numerically in reverse (% abundance), take the species with highest percent abundance
         grep -P "^\s+\d+\.\d+\s+\d+\s+\d+\s+S\s+\d+\s+" ~{samplename}.kraken2.report.txt | sort -k1,1nr | head -n 1 | awk '{for(i=6;i<=NF;i++) printf "%s ", $i; print ""}' | sed 's/ $//' > TOP_TAXON_NAME
 
       >>>

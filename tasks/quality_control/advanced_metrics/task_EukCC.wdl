@@ -37,12 +37,10 @@ task EukCC {
         fi
 
 
-
-        tar -czvf outfolder.tar.gz outfolder
-
+        tar -czvf EukCC_output_folder.tar.gz outfolder
     >>>
     output {
-        File outfolder = "outfolder.tar.gz"
+        File EukCC_output_folder = "EukCC_output_folder.tar.gz"
 
     }
     runtime {

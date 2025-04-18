@@ -280,6 +280,8 @@ workflow theiaeuk_illumina_pe {
         File? contigs_fastg = shovill_pe.contigs_fastg
         File? contigs_lastgraph = shovill_pe.contigs_lastgraph
         String? shovill_pe_version = shovill_pe.shovill_version
+        # EukCC outputs
+        File? EukCC_output_folder = EukCC.EukCC_output_folder
         # Assembly QC - quast outputs
         File? quast_report = quast.quast_report
         String? quast_version = quast.version
@@ -307,6 +309,8 @@ workflow theiaeuk_illumina_pe {
         String? gambit_version = gambit.gambit_version
         String? gambit_db_version = gambit.gambit_db_version
         String? gambit_docker = gambit.gambit_docker
+        # Kraken2
+        File? kraken2_report = kraken2.kraken2_report
         # QC_Check Results
         String? qc_check = qc_check_task.qc_check
         File? qc_standard = qc_check_task.qc_standard

@@ -5,7 +5,7 @@ import "../../tasks/gene_typing/variant_detection/task_snippy_gene_query.wdl" as
 import "../../tasks/gene_typing/variant_detection/task_snippy_variants.wdl" as snippy
 import "../../tasks/species_typing/candida/task_cauris_cladetyper.wdl" as cauris_cladetyper
 
-workflow merlin_magic {
+workflow theiaeuk_merlin_typing {
     meta {
         description: "Workflow for bacterial and fungal species typing; based on the Bactopia subworkflow Merlin (https://bactopia.github.io/bactopia-tools/merlin/)"
     }

@@ -9,7 +9,7 @@ import "../tasks/quality_control/comparisons/task_screen.wdl" as screen
 import "../tasks/task_versioning.wdl" as versioning
 import "../tasks/taxon_id/task_gambit.wdl" as gambit_task
 import "../tasks/utilities/task_rasusa.wdl" as rasusa
-import "utilities/wf_merlin_magic.wdl" as merlin_magic_workflow
+import "utilities/theiaeuk_merlin_typing.wdl" as theiaeuk_merlin_typing
 import "utilities/wf_read_QC_trim_pe.wdl" as read_qc
 import "../tasks/taxon_id/task_kraken2.wdl" as kraken2_task
 import "../tasks/quality_control/advanced_metrics/task_EukCC.wdl" as eukcc_task
@@ -202,7 +202,7 @@ workflow theiaeuk_illumina_pe {
                             busco_results = busco.busco_results
                     }
                 }
-                call merlin_magic_workflow.merlin_magic {
+                call theiaeuk_merlin_typing.theiaeuk_merlin_typing {
                     input:
                         merlin_tag = gambit.merlin_tag,
                         assembly = shovill_pe.assembly_fasta,
@@ -315,14 +315,14 @@ workflow theiaeuk_illumina_pe {
         String? qc_check = qc_check_task.qc_check
         File? qc_standard = qc_check_task.qc_standard
         # Cladetyper Outputs
-        String? cladetyper_clade = merlin_magic.clade_type
-        String? cladetyper_gambit_version = merlin_magic.cladetyper_version
-        String? cladetyper_docker_image = merlin_magic.cladetyper_docker_image
-        String? cladetyper_annotated_reference = merlin_magic.cladetype_annotated_ref
+        String? cladetyper_clade = theiaeuk_merlin_typing.clade_type
+        String? cladetyper_gambit_version = theiaeuk_merlin_typing.cladetyper_version
+        String? cladetyper_docker_image = theiaeuk_merlin_typing.cladetyper_docker_image
+        String? cladetyper_annotated_reference = theiaeuk_merlin_typing.cladetype_annotated_ref
         # Snippy Outputs
-        String? theiaeuk_snippy_variants_query = merlin_magic.snippy_variants_query
-        String? theiaeuk_snippy_variants_query_check = merlin_magic.snippy_variants_query_check
-        String? theiaeuk_snippy_variants_hits = merlin_magic.snippy_variants_hits
-        String? theiaeuk_snippy_variants_gene_query_results = merlin_magic.snippy_variants_gene_query_results
+        String? theiaeuk_snippy_variants_query = theiaeuk_merlin_typing.snippy_variants_query
+        String? theiaeuk_snippy_variants_query_check = theiaeuk_merlin_typing.snippy_variants_query_check
+        String? theiaeuk_snippy_variants_hits = theiaeuk_merlin_typing.snippy_variants_hits
+        String? theiaeuk_snippy_variants_gene_query_results = theiaeuk_merlin_typing.snippy_variants_gene_query_results
     }
 }

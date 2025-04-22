@@ -324,5 +324,6 @@ workflow theiaeuk_illumina_pe {
         String? theiaeuk_snippy_variants_query_check = theiaeuk_merlin_typing.snippy_variants_query_check
         String? theiaeuk_snippy_variants_hits = theiaeuk_merlin_typing.snippy_variants_hits
         String? theiaeuk_snippy_variants_gene_query_results = theiaeuk_merlin_typing.snippy_variants_gene_query_results
+        File? snippy_variants_bam = theiaeuk_merlin_typing.snippy_variants_bam
     }
 }

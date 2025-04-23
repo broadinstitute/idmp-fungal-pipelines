@@ -197,7 +197,6 @@ workflow FungalTree {
 ## TASK DEFINITIONS
 
 task GenerateRefFiles {
-
     File ref_fasta
     String ref_fasta_basename = basename(ref_fasta, ".fasta")
 

@@ -211,6 +211,9 @@ task GenerateRefFiles {
         /usr/gitc/bwa index ${ref_fasta_basename}.fasta
         ls -l
 
+        java -Xms1000m -Xmx1000m  -jar /usr/gitc/picard.jar CreateSequenceDictionary R=${ref_fasta_basename}.fasta O=${ref_fasta_basename}.dict
+        ls -l
+
 
     }
     output {

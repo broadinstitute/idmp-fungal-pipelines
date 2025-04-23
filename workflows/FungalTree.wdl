@@ -197,14 +197,14 @@ workflow FungalTree {
 ## TASK DEFINITIONS
 
 task GenerateRefFiles {
-    input {
+
     File ref_fasta
+    String ref_fasta_basename = basename(ref_fasta, ".fasta")
 
     Int disk_size = 50
     Int mem_size_gb = 16
     String docker = "us.gcr.io/broad-gotc-prod/samtools-picard-bwa:1.0.0-0.7.15-2.26.3-1634165082"
-    }
-    String ref_fasta_basename = basename(ref_fasta, ".fasta")
+
     command {
         echo ${ref_fasta_basename}
 

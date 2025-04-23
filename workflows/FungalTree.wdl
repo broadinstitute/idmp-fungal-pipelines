@@ -204,11 +204,13 @@ task GenerateRefFiles {
     Int mem_size_gb = 16
     String docker = "us.gcr.io/broad-gotc-prod/samtools-picard-bwa:1.0.0-0.7.15-2.26.3-1634165082"
 
-    command <<<
+    command {
 
         set -e
 
         /usr/gitc/bwa index ${ref_fasta}
+        echo $?
+        ls -l
         mv ref.sa  ${ref_fasta_basename}.sa
         mv ref.bwt ${ref_fasta_basename}.bwt
         mv ref.amb ${ref_fasta_basename}.amb
@@ -221,7 +223,7 @@ task GenerateRefFiles {
         echo $?
         ls -l
 
-    >>>
+    }
     output {
     File ref_sa = "${ref_fasta_basename}.sa"
     File ref_bwt = "${ref_fasta_basename}.bwt"

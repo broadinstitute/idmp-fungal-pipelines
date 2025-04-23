@@ -207,9 +207,12 @@ task GenerateRefFiles {
 
         set -e
 
-        #cp ${ref_fasta} ./ref.fa
         /usr/gitc/bwa index ${ref_fasta}
+
+        echo $?
+
         java -Xms1000m -Xmx1000m  -jar /usr/gitc/picard.jar CreateSequenceDictionary R=${ref_fasta} O=ref.dict
+        echo $?
         ls -l
 
     >>>

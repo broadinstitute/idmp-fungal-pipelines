@@ -41,28 +41,27 @@ task cauris_cladetyper {
         if [ "${top_clade}" == "~{ref_clade1}" ] ; then
             echo "~{ref_clade1_annotated}" > CLADEREF
             echo "Clade1" > CLADETYPE
-            cp ~{ref_clade1} CLADEREF_FASTA
+            cp ~{ref_clade1} CLADEREF_FASTA.fasta
         elif [ "${top_clade}" == "~{ref_clade2}" ] ; then
             echo "~{ref_clade2_annotated}" > CLADEREF
             echo "Clade2" > CLADETYPE
-            cp ~{ref_clade2} CLADEREF_FASTA
+            cp ~{ref_clade2} CLADEREF_FASTA.fasta
         elif [ "${top_clade}" == "~{ref_clade3}" ] ; then
             echo "~{ref_clade3_annotated}" > CLADEREF
             echo "Clade3" > CLADETYPE
-            echo "command is cp ~{ref_clade3} CLADEREF_FASTA"
-            cp ~{ref_clade3} CLADEREF_FASTA
+            cp ~{ref_clade3} CLADEREF_FASTA.fasta
         elif [ "${top_clade}" == "~{ref_clade4}" ] ; then
             echo "~{ref_clade4_annotated}" > CLADEREF
             echo "Clade4" > CLADETYPE
-            cp ~{ref_clade4} CLADEREF_FASTA
+            cp ~{ref_clade4} CLADEREF_FASTA.fasta
         elif [ "${top_clade}" == "~{ref_clade5}" ] ; then
             echo "~{ref_clade5_annotated}" > CLADEREF
             echo "Clade5" > CLADETYPE
-            cp ~{ref_clade5} CLADEREF_FASTA
+            cp ~{ref_clade5} CLADEREF_FASTA.fasta
         else
             echo "None" > CLADEREF
             echo "" > CLADETYPE
-            touch CLADEREF_FASTA
+            touch CLADEREF_FASTA.fasta
         fi
 
     >>>
@@ -70,7 +69,7 @@ task cauris_cladetyper {
         String gambit_version = read_string("VERSION")
         String gambit_cladetype = read_string("CLADETYPE")
         String annotated_reference = read_string("CLADEREF")
-        File claderef_fasta = "CLADEREF_FASTA"
+        File claderef_fasta = "CLADEREF_FASTA.fasta"
         String gambit_cladetyper_docker_image = docker
     }
     runtime {

@@ -198,6 +198,7 @@ workflow FungalTree {
 
 task GenerateRefFiles {
     File ref_fasta
+    String ref_fasta_basename = basename(ref_fasta) + ".fasta"
 
     Int disk_size = 50
     Int mem_size_gb = 16
@@ -208,21 +209,26 @@ task GenerateRefFiles {
         set -e
 
         /usr/gitc/bwa index ${ref_fasta}
+        mv ref.sa  ${ref_fasta_basename}.sa
+        mv ref.bwt ${ref_fasta_basename}.bwt
+        mv ref.amb ${ref_fasta_basename}.amb
+        mv ref.ann ${ref_fasta_basename}.ann
+        mv ref.pac ${ref_fasta_basename}.pac
 
         echo $?
 
-        java -Xms1000m -Xmx1000m  -jar /usr/gitc/picard.jar CreateSequenceDictionary R=${ref_fasta} O=ref.dict
+        java -Xms1000m -Xmx1000m  -jar /usr/gitc/picard.jar CreateSequenceDictionary R=${ref_fasta} O=${ref_fasta_basename}.dict
         echo $?
         ls -l
 
     >>>
     output {
-    File ref_sa = "ref.sa"
-    File ref_bwt = "ref.bwt"
-    File ref_amb = "ref.amb"
-    File ref_ann = "ref.ann"
-    File ref_pac = "ref.pac"
-    File ref_dict = "reference.dict"
+    File ref_sa = "${ref_fasta_basename}.sa"
+    File ref_bwt = "${ref_fasta_basename}.bwt"
+    File ref_amb = "${ref_fasta_basename}.amb"
+    File ref_ann = "${ref_fasta_basename}.ann"
+    File ref_pac = "${ref_fasta_basename}.pac"
+    File ref_dict = "${ref_fasta_basename}.dict"
     File ref_index = "ref.index"
 
     }

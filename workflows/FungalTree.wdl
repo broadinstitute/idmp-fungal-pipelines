@@ -207,6 +207,11 @@ task GenerateRefFiles {
     command {
 
         set -e
+        echo "FASTA location: ${ref_fasta}"
+        ls -l $(dirname ${ref_fasta})
+        cp ${ref_fasta} ref.fasta
+        /usr/gitc/bwa index ref.fasta
+        ls -l
 
         /usr/gitc/bwa index ${ref_fasta}
         echo $?

@@ -18,7 +18,7 @@ workflow theiaeuk_merlin_typing {
         # subworkflow logic
         Boolean assembly_only = false
         Boolean ont_data = false
-        Boolean theiaeuk = true
+        Boolean theiaeuk = false
         # docker options
         String? cauris_cladetyper_docker_image
         String? snippy_gene_query_docker_image

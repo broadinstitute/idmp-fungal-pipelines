@@ -207,20 +207,15 @@ task GenerateRefFiles {
     command {
 
         set -e
-        echo "FASTA location: ${ref_fasta}"
-        ls -l $(dirname ${ref_fasta})
-        cp ${ref_fasta} ref.fasta
-        /usr/gitc/bwa index ref.fasta
-        ls -l
 
-        /usr/gitc/bwa index ${ref_fasta}
-        echo $?
-        ls -l
-        mv ref.sa  ${ref_fasta_basename}.sa
-        mv ref.bwt ${ref_fasta_basename}.bwt
-        mv ref.amb ${ref_fasta_basename}.amb
-        mv ref.ann ${ref_fasta_basename}.ann
-        mv ref.pac ${ref_fasta_basename}.pac
+        mv ${ref_fasta} ~{ref_fasta_basename}.fasta
+        /usr/gitc/bwa index  ~{ref_fasta_basename}.fasta
+
+       #mv ref.sa  ${ref_fasta_basename}.sa
+       #mv ref.bwt ${ref_fasta_basename}.bwt
+       #mv ref.amb ${ref_fasta_basename}.amb
+       #mv ref.ann ${ref_fasta_basename}.ann
+       #mv ref.pac ${ref_fasta_basename}.pac
 
         echo $?
 

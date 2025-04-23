@@ -31,13 +31,13 @@ workflow FungalTree {
     String run_name
 
     File ref
-    File ref_sa
-    File ref_bwt
-    File ref_amb
-    File ref_ann
-    File ref_pac
-    File ref_dict
-    File ref_index
+    #File ref_sa
+    #File ref_bwt
+    #File ref_amb
+    #File ref_ann
+    #File ref_pac
+    #File ref_dict
+    #File ref_index
     Array[String] input_samples
     Array[File] input_bams
 
@@ -114,11 +114,16 @@ workflow FungalTree {
             disk_size = disk_size
         }
 
+        call GenerateRefFiles {
+            input:
+                ref_fasta = ref
+
+        }
         call ReorderBam {
             input:
             bam = MarkDuplicates.bam,
             ref = ref,
-            dict = ref_dict,
+            dict = GenerateRefFiles.ref_dict,
             docker = docker,
             picard_path = picard_path,
             mem_size_gb = med_mem_size_gb,
@@ -133,8 +138,8 @@ workflow FungalTree {
             gvcf_name = "${sample_name}.g.vcf",
             gvcf_index = "${sample_name}.g.vcf.idx",
             ref = ref,
-            ref_dict = ref_dict,
-            ref_index = ref_index,
+            ref_dict = GenerateRefFiles.ref_dict,
+            ref_index = GenerateRefFiles.ref_index,
             mem_size_gb = med_mem_size_gb,
             disk_size = med_disk_size,
             docker = docker,
@@ -147,8 +152,8 @@ workflow FungalTree {
         vcf_files = HaplotypeCaller.output_gvcf,
         vcf_index_files = HaplotypeCaller.output_gvcf_index,
         ref = ref,
-        ref_dict = ref_dict,
-        ref_index = ref_index,
+        ref_dict = GenerateRefFiles.ref_dict,
+        ref_index = GenerateRefFiles.ref_index,
         docker = docker,
         gatk_path = gatk_path,
         mem_size_gb = med_mem_size_gb,
@@ -160,8 +165,8 @@ workflow FungalTree {
         vcf_file = CombineGVCFs.out,
         vcf_index_file = CombineGVCFs.out_index,
         ref = ref,
-        ref_dict = ref_dict,
-        ref_index = ref_index,
+        ref_dict = GenerateRefFiles.ref_dict,
+        ref_index = GenerateRefFiles.ref_index,
         docker = docker,
         gatk_path = gatk_path,
         mem_size_gb = med_mem_size_gb,
@@ -175,8 +180,8 @@ workflow FungalTree {
         snp_filter_expr = snp_filter_expr,
         indel_filter_expr = indel_filter_expr,
         ref = ref,
-        ref_dict = ref_dict,
-        ref_index = ref_index,
+        ref_dict = GenerateRefFiles.ref_dict,
+        ref_index = GenerateRefFiles.ref_index,
         output_filename = "${run_name}.hard_filtered.vcf.gz",
         docker = docker,
         gatk_path = gatk_path,
@@ -190,6 +195,39 @@ workflow FungalTree {
 }
 
 ## TASK DEFINITIONS
+
+task GenerateRefFiles {
+    File ref_fasta
+
+    Int disk_size = 50
+    Int mem_size_gb = 16
+    String docker = "us.gcr.io/broad-gotc-prod/samtools-picard-bwa:1.0.0-0.7.15-2.26.3-1634165082"
+
+    command <<<
+        bwa index ~{ref_fasta}
+
+        java -Xms1000m -Xmx1000m -jar /usr/gitc/picard.jar CreateSequenceDictionary R=~{ref_fasta} O=reference.dict
+
+        ls -l
+
+    >>>
+    output {
+    File ref_sa = "ref.sa"
+    File ref_bwt = "ref.bwt"
+    File ref_amb = "ref.amb"
+    File ref_ann = "ref.ann"
+    File ref_pac = "ref.pac"
+    File ref_dict = "reference.dict"
+    File ref_index = "ref.index"
+
+    }
+    runtime {
+    docker: docker
+    memory: mem_size_gb + " GB"
+    disks: "local-disk " + disk_size + " HDD"
+
+    }
+}
 task SamToFastq {
     File in_bam
     String sample_name

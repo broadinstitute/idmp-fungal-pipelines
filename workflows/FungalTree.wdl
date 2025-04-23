@@ -206,22 +206,11 @@ task GenerateRefFiles {
 
     command {
 
-        set -e
 
-        mv ${ref_fasta} ~{ref_fasta_basename}.fasta
-        /usr/gitc/bwa index  ~{ref_fasta_basename}.fasta
-
-       #mv ref.sa  ${ref_fasta_basename}.sa
-       #mv ref.bwt ${ref_fasta_basename}.bwt
-       #mv ref.amb ${ref_fasta_basename}.amb
-       #mv ref.ann ${ref_fasta_basename}.ann
-       #mv ref.pac ${ref_fasta_basename}.pac
-
-        echo $?
-
-        java -Xms1000m -Xmx1000m  -jar /usr/gitc/picard.jar CreateSequenceDictionary R=${ref_fasta} O=${ref_fasta_basename}.dict
-        echo $?
+        cp ${ref_fasta} ${ref_fasta_basename}.fasta
+        /usr/gitc/bwa index ${ref_fasta_basename}.fasta
         ls -l
+
 
     }
     output {

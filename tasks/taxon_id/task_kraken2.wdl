@@ -15,7 +15,7 @@ task kraken2 {
 
         # Run Kraken2
         kraken2 --paired \
-        --db /db/ \
+        --db /app/db/ \
         --threads ~{cpu} \
         --report-zero-counts \
         --report ~{samplename}.kraken2.report.txt \

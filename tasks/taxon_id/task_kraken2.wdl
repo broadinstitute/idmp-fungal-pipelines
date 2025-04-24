@@ -9,17 +9,13 @@ task kraken2 {
         String kraken2_db_path = "https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_16gb_20250402.tar.gz"
         Int cpu = 4
         Int memory = 32
-        String docker = "marcoteix/bracken:1.0.0"
+        String docker = "us.gcr.io/broad-gotc-prod/kraken2/kraken2_1.0.0"
     }
     command <<<
-        # Create database directory and download/extract database
-        mkdir -p db
-        wget -O kraken2_db.tar.gz ~{kraken2_db_path}
-        tar -C ./db/ -xzvf kraken2_db.tar.gz
 
         # Run Kraken2
         kraken2 --paired \
-        --db ./db/ \
+        --db /db/ \
         --threads ~{cpu} \
         --report-zero-counts \
         --report ~{samplename}.kraken2.report.txt \

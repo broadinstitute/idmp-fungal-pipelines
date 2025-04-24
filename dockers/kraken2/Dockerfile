@@ -1,4 +1,4 @@
-FROM marcoteix/bracken:1.0.0
+FROM --platform=linux/amd64 marcoteix/bracken:1.0.0
 
 # Set the working directory
 WORKDIR /app

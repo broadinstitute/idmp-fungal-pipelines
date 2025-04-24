@@ -3,7 +3,7 @@ version 1.0
 task EukCC {
 
     input {
-        String docker = "us.gcr.io/broad-gotc-prod/eukcc:2.1.3"
+        String docker = "us.gcr.io/broad-gotc-prod/eukcc/eukcc_1.0.0:latest"
         String memory = "16"
         String disk_size = "50"
         String cpu = "8"
@@ -15,12 +15,6 @@ task EukCC {
         set -euo pipefail
 
         # Load the EukCC2 database
-        mkdir eukccdb
-        cd eukccdb
-        wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/eukcc/eukcc2_db_ver_1.1.tar.gz
-        tar -xzvf eukcc2_db_ver_1.1.tar.gz
-        export EUKCC2_DB=`pwd`/eukcc2_db_ver_1.1
-        cd ..
 
         # Run EukCC2
         eukcc single --out outfolder --threads ~{cpu} ~{assembly}

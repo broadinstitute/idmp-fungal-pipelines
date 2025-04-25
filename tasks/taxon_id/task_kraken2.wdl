@@ -17,9 +17,11 @@ task kraken2 {
         # Determine Kraken2 DB path
         # If no kraken2_db_path is provided, then use the db baked into the docker (https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_16gb_20250402.tar.gz)
         if [ -z "$kraken2_db_path" ]; then
+            echo "kraken2_db_path is empty...Using the db baked into the docker"
             DB_PATH="/app/db"
         else
         # If kraken2_db_path is provided, use it
+            echo "kraken2_db_path is not empty...Using the db baked into the docker"
             echo "Downloading Kraken2 database..."
             mkdir -p /app/db && \
             wget -O /app/db/kraken2_db.tar.gz $kraken2_db_path

@@ -15,9 +15,24 @@ task EukCC {
     command <<<
         set -euo pipefail
 
-        # Determine which EukCC DB to use.
-        # If eukcc_db_path is provided, use it; otherwise use the baked-in one (http://ftp.ebi.ac.uk/pub/databases/metagenomics/eukcc/eukcc2_db_ver_1.1.tar.gz)
-        DB_PATH="~{if defined(eukcc_db_path) then eukcc_db_path else "/app/db/"}"
+        eukcc_db_path=~{eukcc_db_path}
+
+        # Determine EukCC DB path
+        # If no eukcc_db_path is provided, then use the db baked into the docker (http://ftp.ebi.ac.uk/pub/databases/metagenomics/eukcc/eukcc2_db_ver_1.1.tar.gz)
+        if [ -z "$eukcc_db_path" ]; then
+            echo "eukcc_db_path is empty...Using the db baked into the docker"
+        else
+            # If eukcc_db_path is provided, use it
+            echo "eukcc_db_path is not empty..."
+            echo "Downloading EukCC database..."
+            mkdir -p /app/db && \
+            wget -O /app/db/eukcc_db.tar.gz $eukcc_db_path
+            tar -C /app/db/ -xzvf /app/db/eukcc_db.tar.gz && \
+            rm /app/db/eukcc_db.tar.gz
+            # Find the top-level directory that was extracted and set EUKCC2_DB to its absolute path
+            export EUKCC2_DB=$(find /app/db -mindepth 1 -maxdepth 1 -type d | head -n 1)
+            echo "EUKCC2_DB set to $EUKCC2_DB"
+        fi
 
         # Run EukCC2
         eukcc single --out outfolder --threads ~{cpu} ~{assembly}

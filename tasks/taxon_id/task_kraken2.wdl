@@ -21,8 +21,8 @@ task kraken2 {
             echo "kraken2_db_path is empty...Using the db baked into the docker"
             DB_PATH="/app/db"
         else
-        # If kraken2_db_path is provided, use it
-            echo "kraken2_db_path is not empty...Using the db baked into the docker"
+            # If kraken2_db_path is provided, use it
+            echo "kraken2_db_path is not empty..."
             echo "Downloading Kraken2 database..."
             mkdir -p /app/db && \
             wget -O /app/db/kraken2_db.tar.gz $kraken2_db_path

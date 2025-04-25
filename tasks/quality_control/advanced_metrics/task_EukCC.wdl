@@ -7,6 +7,7 @@ task EukCC {
         String memory = "16"
         String disk_size = "50"
         String cpu = "8"
+        String? eukcc_db_path
         File assembly
         Float contamination_percent_threshold
 
@@ -14,7 +15,9 @@ task EukCC {
     command <<<
         set -euo pipefail
 
-        # Load the EukCC2 database
+        # Determine which EukCC DB to use.
+        # If eukcc_db_path is provided, use it; otherwise use the baked-in one (http://ftp.ebi.ac.uk/pub/databases/metagenomics/eukcc/eukcc2_db_ver_1.1.tar.gz)
+        DB_PATH="~{if defined(eukcc_db_path) then eukcc_db_path else "/app/db/"}"
 
         # Run EukCC2
         eukcc single --out outfolder --threads ~{cpu} ~{assembly}

@@ -6,12 +6,18 @@ task kraken2 {
         File read1
         File read2
         String samplename
-        String kraken2_db_path = "https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_16gb_20250402.tar.gz"
+        String? kraken2_db_path
+        #String kraken2_db_path = "https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_16gb_20250402.tar.gz"
         Int cpu = 4
         Int memory = 32
         String docker = "us.gcr.io/broad-gotc-prod/kraken2/kraken2_1.0.0"
     }
     command <<<
+
+        # Determine which Kraken2 DB to use.
+        # If kraken2_db_path is provided, use it; otherwise use the baked-in one (https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_16gb_20250402.tar.gz)
+        DB_PATH="~{if defined(kraken2_db_path) then kraken2_db_path else "/app/db/"}"
+
 
         # Run Kraken2
         kraken2 --paired \

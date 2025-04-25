@@ -14,14 +14,23 @@ task kraken2 {
     }
     command <<<
 
-        # Determine which Kraken2 DB to use.
-        # If kraken2_db_path is provided, use it; otherwise use the baked-in one (https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_16gb_20250402.tar.gz)
-        DB_PATH="~{if defined(kraken2_db_path) then kraken2_db_path else "/app/db/"}"
-
+        # Determine Kraken2 DB path
+        # If no kraken2_db_path is provided, then use the db baked into the docker (https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_16gb_20250402.tar.gz)
+        if [ -z "$kraken2_db_path" ]; then
+            DB_PATH="/app/db"
+        else
+        # If kraken2_db_path is provided, use it
+            echo "Downloading Kraken2 database..."
+            mkdir -p /app/db && \
+            wget -O /app/db/kraken2_db.tar.gz $kraken2_db_path
+            tar -C /app/db/ -xzvf /app/db/kraken2_db.tar.gz && \
+            rm /app/db/kraken2_db.tar.gz
+            DB_PATH="/app/db"
+        fi
 
         # Run Kraken2
         kraken2 --paired \
-        --db /app/db/ \
+        --db $DB_PATH \
         --threads ~{cpu} \
         --report-zero-counts \
         --report ~{samplename}.kraken2.report.txt \

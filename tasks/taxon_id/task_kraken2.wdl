@@ -13,6 +13,7 @@ task kraken2 {
         String docker = "us.gcr.io/broad-gotc-prod/kraken2/kraken2_1.0.0"
     }
     command <<<
+        kraken2_db_path=~{kraken2_db_path}
 
         # Determine Kraken2 DB path
         # If no kraken2_db_path is provided, then use the db baked into the docker (https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_16gb_20250402.tar.gz)

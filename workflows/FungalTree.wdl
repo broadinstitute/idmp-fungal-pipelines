@@ -71,36 +71,35 @@ workflow FungalTree {
         String input_bam = input_bams[i]
 
         if (do_align) {
-            #call SamToFastq {
-            #    input:
-            #    in_bam = input_bam,
-            #    sample_name = sample_name,
-            #    disk_size = large_disk_size,
-            #    mem_size_gb = small_mem_size_gb,
-            #    docker = docker,
-            #    picard_path = picard_path
-            #}
-#
-            #call AlignAndSortBAM {
-            #    input:
-            #    sample_name = sample_name,
-            #    fq1 = SamToFastq.fq1,
-            #    fq2 = SamToFastq.fq2,
-#
-            #    ref = ref,
-            #    sa = ref_sa,
-            #    bwt = ref_bwt,
-            #    amb = ref_amb,
-            #    ann = ref_ann,
-            #    pac = ref_pac,
-            #    dict = ref_dict,
-            #    fai = ref_index,
-#
-            #    docker = docker,
-            #    mem_size_gb = small_mem_size_gb,
-            #    disk_size = large_disk_size,
-            #    picard_path = picard_path
-            #}
+            call SamToFastq {
+                input:
+                in_bam = input_bam,
+                sample_name = sample_name,
+                disk_size = large_disk_size,
+                mem_size_gb = small_mem_size_gb,
+                docker = docker,
+                picard_path = picard_path
+            }
+
+            call AlignAndSortBAM {
+                input:
+                sample_name = sample_name,
+                fq1 = SamToFastq.fq1,
+                fq2 = SamToFastq.fq2,
+
+                ref = ref,
+                sa = GenerateRefFiles.ref_sa,
+                bwt = GenerateRefFiles.ref_bwt,
+                amb = GenerateRefFiles.ref_amb,
+                ann = GenerateRefFiles.ref_ann,
+                pac = GenerateRefFiles.ref_pac,
+                dict = GenerateRefFiles.ref_dict,
+                fai = GenerateRefFiles.ref_index,
+                docker = docker,
+                mem_size_gb = small_mem_size_gb,
+                disk_size = large_disk_size,
+                picard_path = picard_path
+            }
         }
 
         call MarkDuplicates {

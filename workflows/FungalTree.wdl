@@ -106,7 +106,7 @@ workflow FungalTree {
             input:
             sample_name = sample_name,
             #sorted_bam = select_first([AlignAndSortBAM.bam, input_bam]),
-            sorted_bam = input_bam,
+            sorted_bam = AlignAndSortBAM.input_bam,
             docker = docker,
             picard_path = picard_path,
             mem_size_gb = small_mem_size_gb,

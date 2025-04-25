@@ -5,7 +5,7 @@ task EukCC {
     input {
         String docker = "us.gcr.io/broad-gotc-prod/eukcc/eukcc_1.0.0:latest"
         String memory = "16"
-        String disk_size = "50"
+        String disk_size = "80"
         String cpu = "8"
         String? eukcc_db_path
         File assembly

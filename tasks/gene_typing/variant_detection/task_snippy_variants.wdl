@@ -61,6 +61,18 @@ task snippy_variants {
         ~{'--minqual ' + min_quality} \
         ~{'--maxsoft ' + maxsoft}
 
+        # Save original BAM before filtering
+        cp "~{samplename}/~{samplename}.bam" "~{samplename}/~{samplename}_original.bam"
+        cp "~{samplename}/~{samplename}.bam.bai" "~{samplename}/~{samplename}_original.bam.bai"
+
+        # Filter the BAM to fix improper flags caused by old samtools version
+        samtools view -h -F 64 "~{samplename}/~{samplename}.bam" | samtools view -b -o "~{samplename}/~{samplename}_filtered.bam"
+        mv "~{samplename}/~{samplename}_filtered.bam" "~{samplename}/~{samplename}.bam"
+
+        # Re-index the filtered BAM
+        samtools index "~{samplename}/~{samplename}.bam"
+
+
         # Compress output dir
         tar -cvzf "./~{samplename}_snippy_variants_outdir.tar" "./~{samplename}"
 
@@ -147,7 +159,10 @@ task snippy_variants {
         Array[File] snippy_variants_outputs = glob("~{samplename}/~{samplename}*")
         File snippy_variants_results = "~{samplename}/~{samplename}.csv"
         File snippy_variants_bam = "~{samplename}/~{samplename}.bam"
-        File snippy_variants_bai ="~{samplename}/~{samplename}.bam.bai"
+        File snippy_variants_bai = "~{samplename}/~{samplename}.bam.bai"
+        ## new
+        File snippy_variants_original_bam = "~{samplename}/~{samplename}_original.bam"
+        File snippy_variants_original_bai = "~{samplename}/~{samplename}_original.bam.bai"
         File snippy_variants_summary = "~{samplename}/~{samplename}.txt"
         String snippy_variants_num_reads_aligned = read_string("READS_ALIGNED_TO_REFERENCE")
         File snippy_variants_coverage_tsv = "~{samplename}/~{samplename}_coverage.tsv"

@@ -25,12 +25,12 @@ task EukCC {
             # If eukcc_db_path is provided, use it
             echo "eukcc_db_path is not empty..."
             echo "Downloading EukCC database..."
-            mkdir -p /app/db && \
-            wget -O /app/db/eukcc_db.tar.gz $eukcc_db_path
-            tar -C /app/db/ -xzvf /app/db/eukcc_db.tar.gz && \
-            rm /app/db/eukcc_db.tar.gz
+            mkdir -p ./db
+            wget -O ./db/eukcc_db.tar.gz $eukcc_db_path
+            tar -C ./db/ -xzvf ./db/eukcc_db.tar.gz
+            rm ./db/eukcc_db.tar.gz
             # Find the top-level directory that was extracted and set EUKCC2_DB to its absolute path
-            export EUKCC2_DB=$(find /app/db -mindepth 1 -maxdepth 1 -type d | head -n 1)
+            export EUKCC2_DB=$(find ./db -mindepth 1 -maxdepth 1 -type d | head -n 1)
             echo "EUKCC2_DB set to $EUKCC2_DB"
         fi
 

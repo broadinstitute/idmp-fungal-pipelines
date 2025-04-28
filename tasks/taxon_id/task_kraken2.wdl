@@ -57,7 +57,7 @@ task kraken2 {
         docker: docker
         memory: "~{memory} GB"
         cpu: cpu
-        disks: "local-disk 500 HDD"
+        disks: "local-disk 750 HDD"
         preemptible: 0
     }
 }

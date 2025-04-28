@@ -6,7 +6,7 @@ task bam_filter_fixmates {
         String output_prefix
         Int cpu = 2
         Int memory = 8
-        String docker = "biocontainers/samtools:v1.21-1-deb_cv1"
+        String docker = "staphb/samtools:1.21"
     }
 
     command <<<

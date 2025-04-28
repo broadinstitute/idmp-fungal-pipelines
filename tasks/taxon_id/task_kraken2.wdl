@@ -13,22 +13,24 @@ task kraken2 {
         String docker = "us.gcr.io/broad-gotc-prod/kraken2/kraken2_1.0.0"
     }
     command <<<
+        set -euo pipefail
         kraken2_db_path=~{kraken2_db_path}
 
         # Determine Kraken2 DB path
         # If no kraken2_db_path is provided, then use the db baked into the docker (https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_16gb_20250402.tar.gz)
         if [ -z "$kraken2_db_path" ]; then
-            echo "kraken2_db_path is empty...Using the db baked into the docker"
-            DB_PATH="/app/db"
+          echo "kraken2_db_path is empty...Using the db baked into the docker"
+          DB_PATH="/app/db"
         else
-            # If kraken2_db_path is provided, use it
-            echo "kraken2_db_path is not empty..."
-            echo "Downloading Kraken2 database..."
-            mkdir -p /app/db && \
-            wget -O /app/db/kraken2_db.tar.gz $kraken2_db_path
-            tar -C /app/db/ -xzvf /app/db/kraken2_db.tar.gz && \
-            rm /app/db/kraken2_db.tar.gz
-            DB_PATH="/app/db"
+          # If kraken2_db_path is provided, download and extract it into the working directory
+          echo "kraken2_db_path is not empty..."
+          echo "Downloading Kraken2 database into working directory..."
+          mkdir -p ./db
+          wget -O ./db/kraken2_db.tar.gz "$kraken2_db_path"
+          tar -C ./db/ -xzvf ./db/kraken2_db.tar.gz
+          rm ./db/kraken2_db.tar.gz
+          DB_PATH="$(find ./db -mindepth 1 -maxdepth 1 -type d | head -n 1)"
+          echo "DB_PATH set to $DB_PATH"
         fi
 
         # Run Kraken2
@@ -57,7 +59,7 @@ task kraken2 {
         docker: docker
         memory: "~{memory} GB"
         cpu: cpu
-        disks: "local-disk 750 HDD"
+        disks: "local-disk 50 HDD"
         preemptible: 0
     }
 }

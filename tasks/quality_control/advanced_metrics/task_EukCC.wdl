@@ -4,8 +4,8 @@ task EukCC {
 
     input {
         String docker = "us.gcr.io/broad-gotc-prod/eukcc/eukcc_1.0.0:latest"
-        String memory = "32"
-        String disk_size = "750"
+        String memory = "16"
+        String disk_size = "50"
         String cpu = "8"
         String? eukcc_db_path
         File assembly
@@ -29,6 +29,7 @@ task EukCC {
             wget -O ./db/eukcc_db.tar.gz $eukcc_db_path
             tar -C ./db/ -xzvf ./db/eukcc_db.tar.gz
             rm ./db/eukcc_db.tar.gz
+
             # Find the top-level directory that was extracted and set EUKCC2_DB to its absolute path
             export EUKCC2_DB=$(find ./db -mindepth 1 -maxdepth 1 -type d | head -n 1)
             echo "EUKCC2_DB set to $EUKCC2_DB"

@@ -97,6 +97,7 @@ workflow theiaeuk_merlin_typing {
         String? cladetyper_version = cladetyper.gambit_version
         String? cladetyper_docker_image = cladetyper.gambit_cladetyper_docker_image
         String? cladetype_annotated_ref = cladetyper.annotated_reference
+        File? claderef_fasta = cladetyper.claderef_fasta
         # snippy variants
         String snippy_variants_query = select_first([snippy_gene_query_cauris.snippy_variants_query, "No matching taxon detected"])
         String snippy_variants_query_check = select_first([snippy_gene_query_cauris.snippy_variants_query_check, "No matching taxon detected"])

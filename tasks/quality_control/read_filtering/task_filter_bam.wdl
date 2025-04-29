@@ -16,10 +16,9 @@ task bam_filter_fixmates {
         cp "~{input_bam}" "~{output_prefix}_original.bam"
         samtools index "~{output_prefix}_original.bam"
 
-        # Filter BAM: keep reads that are properly paired, OR unpaired reads with no first/second flags
-        samtools view -h "~{input_bam}" | \
-        samtools view -b -o "~{output_prefix}_filtered.bam" -h - \
-        -F 64
+        # Filter BAM: keep reads that are properly paired
+
+        samtools view -h -f 2 -b "~{output_prefix}_original.bam" -o > "~{output_prefix}_filtered.bam"
 
         # Index the filtered BAM
         samtools index "~{output_prefix}_filtered.bam"

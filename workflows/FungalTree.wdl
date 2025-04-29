@@ -121,7 +121,7 @@ workflow FungalTree {
         call ReorderBam {
             input:
             bam = MarkDuplicates.bam,
-            ref = GenerateRefFiles.ref_fasta,
+            ref = GenerateRefFiles.reference_fasta,
             dict = GenerateRefFiles.ref_dict,
             docker = docker,
             picard_path = picard_path,
@@ -136,7 +136,7 @@ workflow FungalTree {
             sample_name = sample_name,
             gvcf_name = "${sample_name}.g.vcf",
             gvcf_index = "${sample_name}.g.vcf.idx",
-            ref = GenerateRefFiles.ref_fasta,
+            ref = GenerateRefFiles.reference_fasta,
             ref_dict = GenerateRefFiles.ref_dict,
             ref_index = GenerateRefFiles.ref_index,
             mem_size_gb = med_mem_size_gb,
@@ -150,7 +150,7 @@ workflow FungalTree {
         input:
         vcf_files = HaplotypeCaller.output_gvcf,
         vcf_index_files = HaplotypeCaller.output_gvcf_index,
-        ref = GenerateRefFiles.ref_fasta,
+        ref = GenerateRefFiles.reference_fasta,
         ref_dict = GenerateRefFiles.ref_dict,
         ref_index = GenerateRefFiles.ref_index,
         docker = docker,
@@ -163,7 +163,7 @@ workflow FungalTree {
         input:
         vcf_file = CombineGVCFs.out,
         vcf_index_file = CombineGVCFs.out_index,
-        ref = GenerateRefFiles.ref_fasta,
+        ref = GenerateRefFiles.reference_fasta,
         ref_dict = GenerateRefFiles.ref_dict,
         ref_index = GenerateRefFiles.ref_index,
         docker = docker,
@@ -178,7 +178,7 @@ workflow FungalTree {
         vcf_index = GenotypeGVCFs.output_vcf_index_name,
         snp_filter_expr = snp_filter_expr,
         indel_filter_expr = indel_filter_expr,
-        ref = GenerateRefFiles.ref_fasta,
+        ref = GenerateRefFiles.reference_fasta,
         ref_dict = GenerateRefFiles.ref_dict,
         ref_index = GenerateRefFiles.ref_index,
         output_filename = "${run_name}.hard_filtered.vcf.gz",
@@ -225,7 +225,7 @@ task GenerateRefFiles {
     File ref_pac = "${ref_fasta_basename}.fasta.pac"
     File ref_dict = "${ref_fasta_basename}.dict"
     File ref_index = "${ref_fasta_basename}.fasta.fai"
-    File ref_fasta = "${ref_fasta_basename}.fasta"
+    File reference_fasta = "${ref_fasta_basename}.fasta"
 
     }
     runtime {

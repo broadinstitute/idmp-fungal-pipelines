@@ -115,7 +115,8 @@ workflow FungalTree {
 
         call GenerateRefFiles {
             input:
-                ref_fasta = ref
+                ref_fasta = ref,
+                input_bam = input_bam
 
         }
         call ReorderBam {
@@ -197,26 +198,28 @@ workflow FungalTree {
 
 task GenerateRefFiles {
     File ref_fasta
+    File input_bam
     String ref_fasta_basename = basename(ref_fasta, ".fasta")
 
     Int disk_size = 50
     Int mem_size_gb = 16
     String docker = "us.gcr.io/broad-gotc-prod/samtools-picard-bwa:1.0.0-0.7.15-2.26.3-1634165082"
 
-    command {
+    command <<<
         echo ${ref_fasta_basename}
 
         cp ${ref_fasta} ${ref_fasta_basename}.fasta
         /usr/gitc/bwa index ${ref_fasta_basename}.fasta
         ls -l
 
-        java -Xms1000m -Xmx1000m  -jar /usr/gitc/picard.jar CreateSequenceDictionary R=${ref_fasta_basename}.fasta O=${ref_fasta_basename}.dict
+        #java -Xms1000m -Xmx1000m  -jar /usr/gitc/picard.jar CreateSequenceDictionary R=${ref_fasta_basename}.fasta O=${ref_fasta_basename}.dict
+        samtools view -H ${input_bam} | grep '@SQ' | cut -f 2,3 | sed 's/SN://;s/LN://' | awk '{print "@SQ\tSN:"$1"\tLN:"$2}' > ${ref_fasta_basename}.dict
         ls -l
 
         samtools faidx ${ref_fasta_basename}.fasta
 
 
-    }
+    >>>
     output {
     File ref_sa = "${ref_fasta_basename}.fasta.sa"
     File ref_bwt = "${ref_fasta_basename}.fasta.bwt"

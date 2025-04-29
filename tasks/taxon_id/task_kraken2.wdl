@@ -29,7 +29,7 @@ task kraken2 {
           wget -O ./db/kraken2_db.tar.gz "$kraken2_db_path"
           tar -C ./db/ -xzvf ./db/kraken2_db.tar.gz
           rm ./db/kraken2_db.tar.gz
-          DB_PATH="$(find ./db -mindepth 1 -maxdepth 1 -type d | head -n 1)"
+          DB_PATH="./db"
           echo "DB_PATH set to $DB_PATH"
         fi
 

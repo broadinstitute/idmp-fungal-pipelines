@@ -287,7 +287,9 @@ workflow theiaeuk_illumina_pe {
         File? contigs_lastgraph = shovill_pe.contigs_lastgraph
         String? shovill_pe_version = shovill_pe.shovill_version
         # EukCC outputs
-        File? EukCC_output_folder = EukCC.EukCC_output_folder
+        File? EukCC_report = EukCC.eukcc_csv
+        String? EukCC_completeness = EukCC.completeness
+        String? EukCC_contamination = EukCC.contamination
         # Assembly QC - quast outputs
         File? quast_report = quast.quast_report
         String? quast_version = quast.version

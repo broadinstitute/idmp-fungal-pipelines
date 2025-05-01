@@ -49,12 +49,15 @@ task EukCC {
             exit 1
         fi
 
+        # Extract completeness and contamination from eukcc.csv (columns 2 and 3)
+        awk -F'\t' 'NR==2 {print $2}' outfolder/eukcc.csv > COMPLETENESS
+        awk -F'\t' 'NR==2 {print $3}' outfolder/eukcc.csv > CONTAMINATION
 
-        tar -czvf EukCC_output_folder.tar.gz outfolder
     >>>
     output {
-        File EukCC_output_folder = "EukCC_output_folder.tar.gz"
-
+        File eukcc_csv = "outfolder/eukcc.csv"
+        String completeness = read_string("COMPLETENESS")
+        String contamination = read_string("CONTAMINATION")
     }
     runtime {
         docker: "~{docker}"

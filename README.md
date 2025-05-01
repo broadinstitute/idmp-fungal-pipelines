@@ -88,6 +88,7 @@ A custom Python block was added to enforce species-specific gating:
 gambit_expected_taxon = "~{gambit_expected_taxon}"
 if merlin_tag != gambit_expected_taxon:
     print(f"WARNING! Pipeline is configured to only proceed for {gambit_expected_taxon}.
+```
 
 This allows the overall FungalQC workflow to fail early if the sample is not identified as Candidozyma auris, preventing unnecessary downstream processing for non-target species.
 

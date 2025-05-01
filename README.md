@@ -82,18 +82,20 @@ Performs taxonomic identification using GAMBIT on an assembled genome and produc
 - `merlin_tag`: Canonical tag used to gate further workflow execution
 
 **Enhancement:**
+
 A custom Python block was added to enforce species-specific gating:
+
 ```python
+
 # Write out warning if the predicted taxon is not the expected taxon
+
 gambit_expected_taxon = "~{gambit_expected_taxon}"
+
 if merlin_tag != gambit_expected_taxon:
-    print(f"WARNING! Pipeline is configured to only proceed for {gambit_expected_taxon}.
-```
+
+    print(f"WARNING! Pipeline is configured to only proceed for {gambit_expected_taxon}. Found: {merlin_tag}", file=sys.stderr)
 
 This allows the overall FungalQC workflow to fail early if the sample is not identified as Candidozyma auris, preventing unnecessary downstream processing for non-target species.
-
-References
-----------
 
 -   [TheiaEuk Pipeline Documentation](https://theiagen.github.io/public_health_bioinformatics/latest/workflows/genomic_characterization/theiaeuk/)
 

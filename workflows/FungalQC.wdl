@@ -319,7 +319,7 @@ workflow theiaeuk_illumina_pe {
         String? gambit_docker = gambit.gambit_docker
         # Kraken2
         File? kraken2_report = kraken2.kraken2_report
-        Strin? kraken2_top_taxon_name = kraken2.kraken2_report_taxon_name
+        String? kraken2_top_taxon_name = kraken2.kraken2_report_taxon_name
         # QC_Check Results
         String? qc_check = qc_check_task.qc_check
         File? qc_standard = qc_check_task.qc_standard

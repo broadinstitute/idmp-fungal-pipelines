@@ -34,27 +34,32 @@ This version of the workflow introduces several key changes and additions:
 
 -   **Content Simplification:** All functionality unrelated to *Candida auris* processing has been removed. The resulting WDL is streamlined to focus exclusively on *C. auris* species detection and typing workflows.
 
-Requirements
-------------
+Task Descriptions
+-----------------
 
--   Paired-end Illumina sequencing data (FASTQ format)
+### `bam_filter_fixmates` Task (version 1.0)
 
--   Reference databases for Kraken2 and GAMBIT
+**Purpose:**
+This task filters a BAM file to retain only properly paired reads and indexes the resulting BAM for downstream processing.
 
--   A WDL execution engine such as Cromwell
+**Description:**
+`bam_filter_fixmates` takes a BAM file as input and produces a filtered BAM containing only reads with the SAM flag `0x2` (properly paired). The task also creates indexes for both the original and filtered BAM files.
 
-Outputs
--------
+**Inputs:**
 
-The workflow generates:
+- `input_bam`: Input BAM file
+- `output_prefix`: Prefix for output files
+- `cpu`: Number of CPUs to use (default: 2)
+- `memory`: Memory in GB (default: 8)
+- `docker`: Docker image for `samtools` (default: `staphb/samtools:1.19`)
 
--   Assembled genome FASTAs
+**Outputs:**
 
--   Taxonomic reports from GAMBIT and Kraken2
+- Filtered BAM file (`*_filtered.bam`)
+- BAM index file (`*_filtered.bam.bai`)
 
--   Assembly quality metrics from EukCC, BUSCO, and QUAST
-
--   *C. auris*-specific typing results (if applicable)
+**Role in Workflow:**
+This task is part of `theiaeuk_merlin_typing.wdl`, which is a refined module focused on *Candida auris* typing. Filtering for properly paired reads ensures accurate variant calling and typing within the *C. auris* analysis pipeline by removing ambiguous or low-quality alignments.
 
 References
 ----------

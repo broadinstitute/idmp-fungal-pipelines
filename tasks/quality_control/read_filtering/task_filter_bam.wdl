@@ -17,7 +17,6 @@ task bam_filter_fixmates {
         samtools index "~{output_prefix}_original.bam"
 
         # Filter BAM: keep reads that are properly paired
-
         samtools view -h -f 2 -b "~{output_prefix}_original.bam" -o "~{output_prefix}_filtered.bam"
 
         # Index the filtered BAM
@@ -28,8 +27,6 @@ task bam_filter_fixmates {
     output {
         File filtered_bam = "~{output_prefix}_filtered.bam"
         File filtered_bai = "~{output_prefix}_filtered.bam.bai"
-        File original_bam = "~{output_prefix}_original.bam"
-        File original_bai = "~{output_prefix}_original.bam.bai"
     }
 
     runtime {

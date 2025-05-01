@@ -88,7 +88,7 @@ workflow theiaeuk_merlin_typing {
                         query_gene = select_first([snippy_query_gene, "FKS1,lanosterol.14-alpha.demethylase,uracil.phosphoribosyltransferase,B9J08_005340,B9J08_000401,B9J08_003102,B9J08_003737,B9J08_005343"]),
                         docker = snippy_gene_query_docker_image
                 }
-                call bam_filter.bam_filter_fixmates {
+                call bam_filter.bam_filter_fixmates as filter_bam {
                     input:
                         input_bam = snippy_cauris.snippy_variants_bam,
                         output_prefix = samplename
@@ -108,5 +108,7 @@ workflow theiaeuk_merlin_typing {
         String snippy_variants_query_check = select_first([snippy_gene_query_cauris.snippy_variants_query_check, "No matching taxon detected"])
         String snippy_variants_hits = select_first([snippy_gene_query_cauris.snippy_variants_hits, "No matching taxon detected"])
         String snippy_variants_gene_query_results = select_first([snippy_gene_query_cauris.snippy_variants_gene_query_results, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
+        # filter_bam
+        File? filtered_bam = filter_bam.filtered_bam
     }
 }

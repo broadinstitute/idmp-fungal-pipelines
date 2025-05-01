@@ -65,6 +65,12 @@ workflow FungalTree {
     String indel_filter_expr
 
     ## task calls
+    call GenerateRefFiles {
+        input:
+            ref_fasta = ref,
+            input_bam = input_bams[0] # Just need one BAM for this?
+    }
+
     # run pipeline on each sample, in parallel
     scatter(i in range(length(input_samples))) {
         String sample_name = input_samples[i]
@@ -113,12 +119,6 @@ workflow FungalTree {
             disk_size = disk_size
         }
 
-        call GenerateRefFiles {
-            input:
-                ref_fasta = ref,
-                input_bam = input_bam
-
-        }
         call ReorderBam {
             input:
             bam = MarkDuplicates.bam,

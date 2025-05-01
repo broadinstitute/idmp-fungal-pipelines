@@ -37,7 +37,7 @@ This version of the workflow introduces several key changes and additions:
 Task Descriptions
 -----------------
 
-### `bam_filter_fixmates` Task (version 1.0)
+### `bam_filter_fixmates` Task
 
 **Purpose:**
 This task filters a BAM file to retain only properly paired reads and indexes the resulting BAM for downstream processing.
@@ -60,6 +60,36 @@ This task filters a BAM file to retain only properly paired reads and indexes th
 
 **Role in Workflow:**
 This task is part of `theiaeuk_merlin_typing.wdl`, which is a refined module focused on *Candida auris* typing. Filtering for properly paired reads ensures accurate variant calling and typing within the *C. auris* analysis pipeline by removing ambiguous or low-quality alignments.
+
+### `gambit` Task
+
+**Purpose:**
+Performs taxonomic identification using GAMBIT on an assembled genome and produces detailed species-level classification, along with closest genome matches.
+
+**Inputs:**
+
+- `assembly`: Input genome assembly FASTA
+- `samplename`: Sample identifier
+- `docker`: GAMBIT Docker image
+- `gambit_db_genomes`, `gambit_db_signatures`: GAMBIT reference databases
+- `gambit_expected_taxon`: Expected taxon name, e.g., `"Candidozyma auris"`
+
+**Outputs:**
+
+- JSON report (`*_gambit.json`)
+- CSV of closest genome matches (`*_gambit_closest.csv`)
+- Predicted taxon information and version metadata
+- `merlin_tag`: Canonical tag used to gate further workflow execution
+
+**Enhancement:**
+A custom Python block was added to enforce species-specific gating:
+```python
+# Write out warning if the predicted taxon is not the expected taxon
+gambit_expected_taxon = "~{gambit_expected_taxon}"
+if merlin_tag != gambit_expected_taxon:
+    print(f"WARNING! Pipeline is configured to only proceed for {gambit_expected_taxon}.
+
+This allows the overall FungalQC workflow to fail early if the sample is not identified as Candidozyma auris, preventing unnecessary downstream processing for non-target species.
 
 References
 ----------

@@ -6,20 +6,35 @@ task kraken2 {
         File read1
         File read2
         String samplename
-        String kraken2_db_path = "https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_16gb_20250402.tar.gz"
+        String? kraken2_db_path
         Int cpu = 4
         Int memory = 32
-        String docker = "marcoteix/bracken:1.0.0"
+        String docker = "us.gcr.io/broad-gotc-prod/kraken2/kraken2_1.0.0"
     }
     command <<<
-        # Create database directory and download/extract database
-        mkdir -p db
-        wget -O kraken2_db.tar.gz ~{kraken2_db_path}
-        tar -C ./db/ -xzvf kraken2_db.tar.gz
+        set -euo pipefail
+        kraken2_db_path=~{kraken2_db_path}
+
+        # Determine Kraken2 DB path
+        # If no kraken2_db_path is provided, then use the db baked into the docker (https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_16gb_20250402.tar.gz)
+        if [ -z "$kraken2_db_path" ]; then
+          echo "kraken2_db_path is empty...Using the db baked into the docker"
+          DB_PATH="/app/db"
+        else
+          # If kraken2_db_path is provided, download and extract it into the working directory
+          echo "kraken2_db_path is not empty..."
+          echo "Downloading Kraken2 database into working directory..."
+          mkdir -p ./db
+          wget -O ./db/kraken2_db.tar.gz "$kraken2_db_path"
+          tar -C ./db/ -xzvf ./db/kraken2_db.tar.gz
+          rm ./db/kraken2_db.tar.gz
+          DB_PATH="./db"
+          echo "DB_PATH set to $DB_PATH"
+        fi
 
         # Run Kraken2
         kraken2 --paired \
-        --db ./db/ \
+        --db $DB_PATH \
         --threads ~{cpu} \
         --report-zero-counts \
         --report ~{samplename}.kraken2.report.txt \
@@ -31,8 +46,24 @@ task kraken2 {
         # Extract top hit from report - taking species with highest abundance
         # Format of report: percent abundance,  clade reads  #reads_taxon  rank  taxid  sci_name
         # Filters for lines where the rank is "S", i.e., species level, sorts numerically in reverse (% abundance), take the species with highest percent abundance
-        grep -P "^\s+\d+\.\d+\s+\d+\s+\d+\s+S\s+\d+\s+" ~{samplename}.kraken2.report.txt | sort -k1,1nr | head -n 1 | awk '{for(i=6;i<=NF;i++) printf "%s ", $i; print ""}' | sed 's/ $//' > TOP_TAXON_NAME
 
+        awk '
+          $4 == "S" {
+            percent = $1
+            name = ""
+            for (i = 6; i <= NF; i++) {
+              name = name $i " "
+            }
+            gsub(/ $/, "", name)
+            if (percent + 0 > max_percent + 0) {
+              max_percent = percent
+              top_name = name
+            }
+          }
+          END {
+            if (top_name != "") print top_name
+          }
+        ' ~{samplename}.kraken2.report.txt > TOP_TAXON_NAME
       >>>
     output {
         File kraken2_report = "~{samplename}.kraken2.report.txt"

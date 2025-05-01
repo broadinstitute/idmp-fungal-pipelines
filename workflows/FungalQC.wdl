@@ -48,8 +48,12 @@ workflow theiaeuk_illumina_pe {
         File gambit_db_signatures = "gs://gambit-databases-rp/fungal-version/1.0.0/gambit-fungal-signatures-1.0.0-20241213.gs"
         # EukCC inputs
         Float contamination_percent_threshold = 5.0
-        # Gambit unputs
+        String? eukcc_db_path
+        # Gambit inputs
         String gambit_expected_taxon = "Candidozyma auris"
+        # Krakin2 inputs
+        String? kraken2_db_path
+
     }
     call versioning.version_capture {
         input:
@@ -116,7 +120,8 @@ workflow theiaeuk_illumina_pe {
             call eukcc_task.EukCC {
                 input:
                     assembly = shovill_pe.assembly_fasta,
-                    contamination_percent_threshold = contamination_percent_threshold
+                    contamination_percent_threshold = contamination_percent_threshold,
+                    eukcc_db_path = eukcc_db_path
             }
             call quast_task.quast {
                 input:
@@ -161,7 +166,8 @@ workflow theiaeuk_illumina_pe {
                     input:
                         read1 = read_QC_trim.read1_clean,
                         read2 = read_QC_trim.read2_clean,
-                        samplename = samplename
+                        samplename = samplename,
+                        kraken2_db_path = kraken2_db_path
                 }
                 call busco_task.busco {
                     input:
@@ -281,7 +287,9 @@ workflow theiaeuk_illumina_pe {
         File? contigs_lastgraph = shovill_pe.contigs_lastgraph
         String? shovill_pe_version = shovill_pe.shovill_version
         # EukCC outputs
-        File? EukCC_output_folder = EukCC.EukCC_output_folder
+        File? EukCC_report = EukCC.eukcc_csv
+        String? EukCC_completeness = EukCC.completeness
+        String? EukCC_contamination = EukCC.contamination
         # Assembly QC - quast outputs
         File? quast_report = quast.quast_report
         String? quast_version = quast.version
@@ -311,6 +319,7 @@ workflow theiaeuk_illumina_pe {
         String? gambit_docker = gambit.gambit_docker
         # Kraken2
         File? kraken2_report = kraken2.kraken2_report
+        String? kraken2_top_taxon_name = kraken2.kraken2_report_taxon_name
         # QC_Check Results
         String? qc_check = qc_check_task.qc_check
         File? qc_standard = qc_check_task.qc_standard

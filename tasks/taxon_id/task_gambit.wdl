@@ -147,13 +147,10 @@ task gambit {
         with open('MERLIN_TAG', 'w') as merlin:
             merlin.write(merlin_tag)
 
-        # Fail the task if the predicted taxon is not the expected taxon
+        # Write out warning if the predicted taxon is not the expected taxon
         gambit_expected_taxon = "~{gambit_expected_taxon}"
         if merlin_tag != gambit_expected_taxon:
-            print(f"Pipeline is configured to only proceed for {gambit_expected_taxon}. Found: {merlin_tag}", file=sys.stderr)
-            sys.exit(1)
-
-
+          print(f"WARNING! Pipeline is configured to only proceed for {gambit_expected_taxon}. Found: {merlin_tag}", file=sys.stderr)
         EOF
     >>>
     output {

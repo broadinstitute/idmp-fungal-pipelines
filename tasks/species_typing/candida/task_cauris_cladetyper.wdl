@@ -36,6 +36,7 @@ task cauris_cladetyper {
         ## take bottom of these three rows (top hit)
         ## grab only file name (top_clade)
         top_clade=$(sort -k7 -t ',' "~{samplename}_matrix.csv" | head -3 | tail -n-1 | awk -F',' '{print$1}')
+        echo "top clade is $top_clade"
 
         if [ "${top_clade}" == "~{ref_clade1}" ] ; then
             echo "~{ref_clade1_annotated}" > CLADEREF

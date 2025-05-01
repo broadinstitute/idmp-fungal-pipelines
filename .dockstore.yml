@@ -4,3 +4,7 @@ workflows:
   - name: FungalQC
     subclass: WDL
     primaryDescriptorPath: /workflows/FungalQC.wdl
+
+  - name: FungalTree
+    subclass: WDL
+    primaryDescriptorPath: /workflows/FungalTree.wdl

@@ -108,7 +108,7 @@ workflow theiaeuk_merlin_typing {
         String snippy_variants_query_check = select_first([snippy_gene_query_cauris.snippy_variants_query_check, "No matching taxon detected"])
         String snippy_variants_hits = select_first([snippy_gene_query_cauris.snippy_variants_hits, "No matching taxon detected"])
         String snippy_variants_gene_query_results = select_first([snippy_gene_query_cauris.snippy_variants_gene_query_results, "gs://theiagen-public-files/terra/theiaeuk_files/no_match_detected.txt"])
-        # filter_bam
+        # filtered bam
         File? filtered_bam = filter_bam.filtered_bam
     }
 }

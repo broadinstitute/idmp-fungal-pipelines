@@ -147,15 +147,10 @@ task gambit {
         with open('MERLIN_TAG', 'w') as merlin:
             merlin.write(merlin_tag)
 
-        # Fail the task if the predicted taxon is not the expected taxon
+        # Write out warning if the predicted taxon is not the expected taxon
         gambit_expected_taxon = "~{gambit_expected_taxon}"
         if merlin_tag != gambit_expected_taxon:
-            with open("SKIP_PIPELINE", "w") as f:
-                f.write("true")
-        else:
-            with open("SKIP_PIPELINE", "w") as f:
-                f.write("false")
-
+          print(f"WARNING! Pipeline is configured to only proceed for {gambit_expected_taxon}. Found: {merlin_tag}", file=sys.stderr)
         EOF
     >>>
     output {
@@ -169,7 +164,6 @@ task gambit {
         String gambit_db_version = read_string("GAMBIT_DB_VERSION")
         String merlin_tag = read_string("MERLIN_TAG")
         String gambit_docker = docker
-        String skip_pipeline = read_string("SKIP_PIPELINE")
     }
     runtime {
         docker: "~{docker}"

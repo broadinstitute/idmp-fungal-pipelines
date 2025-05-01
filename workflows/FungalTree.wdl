@@ -212,8 +212,8 @@ task GenerateRefFiles {
         /usr/gitc/bwa index ${ref_fasta_basename}.fasta
         ls -l
 
-        #java -Xms1000m -Xmx1000m  -jar /usr/gitc/picard.jar CreateSequenceDictionary R=${ref_fasta_basename}.fasta O=${ref_fasta_basename}.dict
-        samtools view -H ${input_bam} | grep '@SQ' | cut -f 2,3 | sed 's/SN://;s/LN://' | awk '{print "@SQ\tSN:"$1"\tLN:"$2}' > ${ref_fasta_basename}.dict
+        java -Xms1000m -Xmx1000m  -jar /usr/gitc/picard.jar CreateSequenceDictionary R=${ref_fasta_basename}.fasta O=${ref_fasta_basename}.dict
+        #samtools view -H ${input_bam} | grep '@SQ' | cut -f 2,3 | sed 's/SN://;s/LN://' | awk '{print "@SQ\tSN:"$1"\tLN:"$2}' > ${ref_fasta_basename}.dict
         ls -l
 
         samtools faidx ${ref_fasta_basename}.fasta

@@ -328,7 +328,6 @@ workflow theiaeuk_illumina_pe {
         String? cladetyper_gambit_version = theiaeuk_merlin_typing.cladetyper_version
         String? cladetyper_docker_image = theiaeuk_merlin_typing.cladetyper_docker_image
         String? cladetyper_annotated_reference = theiaeuk_merlin_typing.cladetype_annotated_ref
-        File? cladetyper_fasta = theiaeuk_merlin_typing.claderef_fasta
         # Snippy Outputs
         String? theiaeuk_snippy_variants_query = theiaeuk_merlin_typing.snippy_variants_query
         String? theiaeuk_snippy_variants_query_check = theiaeuk_merlin_typing.snippy_variants_query_check

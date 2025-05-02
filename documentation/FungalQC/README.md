@@ -14,7 +14,7 @@ For full descriptions of the standard tasks, refer to [Theiagen's documentation]
 
 ## Task Descriptions and Enhancements
 
-### Task: gambit
+### Task: [gambit](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/tasks/taxon_id/task_gambit.wdl)
 
 **Purpose:**
 Taxonomic identification of assembled genome using GAMBIT.
@@ -45,7 +45,7 @@ This allows the overall FungalQC workflow to fail early if the sample is not ide
 
 ---
 
-### Task: kraken2
+### Task: [kraken2](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/tasks/taxon_id/task_kraken2.wdl)
 
 **Purpose:**
 Adds an additional taxonomic identification method alongside GAMBIT.
@@ -64,7 +64,7 @@ Adds an additional taxonomic identification method alongside GAMBIT.
 
 ---
 
-### Task: EukCC
+### Task: [EukCC](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/tasks/quality_control/advanced_metrics/task_EukCC.wdl)
 
 **Purpose:**
 Assess genome completeness and contamination for eukaryotic assemblies.
@@ -81,7 +81,7 @@ Assess genome completeness and contamination for eukaryotic assemblies.
 
 ---
 
-### Task: bam_filter_fixmates
+### Task: [bam_filter_fixmates](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/tasks/quality_control/read_filtering/task_filter_bam.wdl)
 
 **Purpose:**
 This task filters a BAM file to retain only properly paired reads and indexes the resulting BAM for downstream processing.

@@ -213,11 +213,11 @@ task GbffToFasta {
         pip install biopython
         python <<CODE
 
-         from Bio import SeqIO
-         input_file = ${ref_gbff}
-         output_file = "${ref_gbff_basename}.fasta"
-         with open(output_file, "w") as out_fasta:
-             for record in SeqIO.parse(input_file, "genbank"):
+        from Bio import SeqIO
+        input_file = ${ref_gbff}
+        output_file = "${ref_gbff_basename}.fasta"
+        with open(output_file, "w") as out_fasta:
+            for record in SeqIO.parse(input_file, "genbank"):
                  SeqIO.write(record, out_fasta, "fasta")
         CODE
 

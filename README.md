@@ -48,15 +48,18 @@ This allows the overall FungalQC workflow to fail early if the sample is not ide
 ### Task: kraken2
 
 **Purpose:**
-Classify contigs using Kraken2 to detect potential bacterial or fungal contamination.
+Adds an additional taxonomic identification method alongside GAMBIT.
 
 **Inputs:**
 - `assembly`: Contig file for classification
-- `kraken2_db`: Path to Kraken2 database
+- `kraken2_db`: Optional Path to Kraken2 database
+- `read1`:
+- `read2`:
 
 **Outputs:**
 - `kraken2_report`: Classification report
-- `kraken2_output`: Per-contig classification results
+- `classified_reads`:
+- `kraken2_report_taxon_name`:
 
 **Enhancements:**
 - No custom enhancements applied at this time. Default Kraken2 behavior is used.

@@ -794,7 +794,7 @@ task IqTree2 {
     String iqtree2_docker = docker
   }
   runtime {
-    docker: "~{docker}"
+    docker: docker
     memory: memory + " GB"
     cpu: cpu
     disks: "local-disk " + disk_size + " SSD"

@@ -685,6 +685,12 @@ task VcfToMSA {
     String docker = "biocontainers/bcftools:v1.9-1-deb_cv1"
 
     command <<<
+
+        set -euo pipefail
+
+        # index the VCF
+        bcftools index -t ${vcf}
+
         # Convert VCF to FASTA alignment
         bcftools query -l ${vcf} > sample_list.txt
 

@@ -691,7 +691,10 @@ task VcfToMSA {
 
         # index the VCF
         cp ${vcf} ${vcf_basename}.vcf.gz
+        ls -lh
+        echo "indexing the vcf"
         bcftools index -t ${vcf_basename}.vcf.gz
+        ls -lh
 
         # Convert VCF to FASTA alignment
         bcftools query -l ${vcf} > sample_list.txt

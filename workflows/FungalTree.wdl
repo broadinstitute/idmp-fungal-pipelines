@@ -221,6 +221,8 @@ task GbffToFasta {
                  SeqIO.write(record, out_fasta, "fasta")
         CODE
 
+        # strip the .1 in the reference sequence name
+        sed -i '' -E 's/^(>[^ ]+)\.[0-9]+/\1/' "${ref_gbff_basename}.fasta"
     >>>
     output {
         File reference_fasta =  "${ref_gbff_basename}.fasta"
@@ -231,7 +233,6 @@ task GbffToFasta {
         disks: "local-disk " + disk_size + " HDD"
 
     }
-
 }
 task GenerateRefFiles {
     File ref_fasta

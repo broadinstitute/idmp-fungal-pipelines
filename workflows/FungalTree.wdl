@@ -225,7 +225,12 @@ task GbffToFasta {
     output {
         File reference_fasta =  "${ref_gbff_basename}.fasta"
     }
+    runtime {
+        docker: docker
+        memory: mem_size_gb + " GB"
+        disks: "local-disk " + disk_size + " HDD"
 
+    }
 
 }
 task GenerateRefFiles {

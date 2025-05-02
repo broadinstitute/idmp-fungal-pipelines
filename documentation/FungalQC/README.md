@@ -29,7 +29,13 @@ Taxonomic identification of assembled genome using GAMBIT.
 - `gambit_report_file`: Full JSON GAMBIT report
 - `gambit_closest_genomes_file`: CSV of closest genome matches
 - `gambit_predicted_taxon`: Predicted species name
+- `gambit_predicted_taxon_rank`: Rank of the predicted taxon
+- `gambit_next_taxon`: Next closest species match
+- `gambit_next_taxon_rank`: Rank of the next closest match
+- `gambit_version`: GAMBIT software version
+- `gambit_db_version`: Version of the GAMBIT database used
 - `merlin_tag`: Filter tag used to control downstream steps
+- `gambit_docker`: Docker image used to run the GAMBIT task
 
 **Enhancements:**
 A custom Python block was added to enforce species-specific gating:
@@ -53,13 +59,13 @@ Adds an additional taxonomic identification method alongside GAMBIT.
 **Inputs:**
 - `assembly`: Contig file for classification
 - `kraken2_db`: Optional Path to Kraken2 database
-- `read1`:
-- `read2`:
+- `read1`: Paired-end read file 1
+- `read2`:  Paired-end read file 2
 
 **Outputs:**
 - `kraken2_report`: Classification report
-- `classified_reads`:
-- `kraken2_report_taxon_name`:
+- `classified_reads`: File with classified reads
+- `kraken2_report_taxon_name`: Predicted taxon name (species level)
 
 
 ---
@@ -72,12 +78,12 @@ Assess genome completeness and contamination for eukaryotic assemblies.
 **Inputs:**
 - `assembly`: Assembled genome file
 - `eukcc_db_path`: Optional Path to EukCC database
-- `contamination_percent_threshold`:
+- `contamination_percent_threshold`: Threshold for allowable contamination
 
 **Outputs:**
-- `eukcc_csv`:
-- `completeness`:
-- `contamination`:
+- `eukcc_csv`: Full EukCC result CSV file
+- `completeness`: Parsed completeness percentage
+- `contamination`: Parsed contamination percentage
 
 ---
 

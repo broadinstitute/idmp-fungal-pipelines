@@ -691,10 +691,9 @@ task VcfToMSA {
 
         # index the VCF
         cp ${vcf} ${vcf_basename}.vcf.gz
-        ls -lh
+
         echo "indexing the vcf"
         bcftools index -t ${vcf_basename}.vcf.gz
-        ls -lh
 
         # Convert VCF to FASTA alignment
         bcftools query -l ${vcf_basename}.vcf.gz > sample_list.txt
@@ -743,10 +742,13 @@ task IqTree2 {
     # multiple sed statements to get down to a string that is just "version 2.1.2"
     iqtree2 --version | grep version | sed 's|.*version|version|;s| COVID-edition for Linux.*||' | tee VERSION
 
+    echo "DEBUG: alignment file path ${alignment}"
+      ls -la ${alignment}
+
     # check if iqtree2_model input is set and output for sanity
-    if [ -n "~{iqtree2_model}" ]; then
-      echo "DEBUG: User provided iqtree2_model ~{iqtree2_model}, will use this for running iqtree2"
-      IQTREE2_MODEL="~{iqtree2_model}"
+    if [ -n "${iqtree2_model}" ]; then
+      echo "DEBUG: User provided iqtree2_model ${iqtree2_model}, will use this for running iqtree2"
+      IQTREE2_MODEL="${iqtree2_model}"
     else
       echo "DEBUG: User did not supply an iqtree2_model input, will use iqtree2's model finder"
     fi
@@ -755,9 +757,9 @@ task IqTree2 {
     echo "DEBUG: IQTREE2_MODEL is set to: " $IQTREE2_MODEL
 
     # make sure there are more than 3 genomes in the dataset
-    numGenomes=$(grep -o '>' ~{alignment} | wc -l)
+    numGenomes=$(grep -o '>' ${alignment} | wc -l)
     if [ "$numGenomes" -gt 3 ]; then
-      cp ~{alignment} ./msa.fasta
+      cp ${alignment} ./msa.fasta
 
       # run iqtree2
       #   -nt : number of CPU cores for multicore version
@@ -771,8 +773,8 @@ task IqTree2 {
           -nt AUTO \
           -s msa.fasta \
           -m $IQTREE2_MODEL \
-          -bb ~{iqtree2_bootstraps} \
-          -alrt ~{alrt} ~{iqtree2_opts}
+          -bb ${iqtree2_bootstraps} \
+          -alrt ${alrt} ${iqtree2_opts}
 
         # write the iqtree2_model used to a txt file for output as a string
         echo $IQTREE2_MODEL | tee IQTREE2_MODEL.TXT
@@ -782,8 +784,8 @@ task IqTree2 {
         iqtree2 \
           -nt AUTO \
           -s msa.fasta \
-          -bb ~{iqtree2_bootstraps} \
-          -alrt ~{alrt} ~{iqtree2_opts}
+          -bb ${iqtree2_bootstraps} \
+          -alrt ${alrt} ${iqtree2_opts}
 
         # for scenario where user did not specify iqtree2_model input nor core_genome boolean input, determine iqtree2_model used by parsing log file
         # first sed is to remove "Best-fit model: " and second sed is to remove anything after the word "chosen *", leaving only the name of the model
@@ -792,7 +794,7 @@ task IqTree2 {
       fi
 
       # rename the final output newick file
-      cp -v msa.fasta.contree ~{cluster_name}_iqtree.nwk
+      cp -v msa.fasta.contree ${cluster_name}_iqtree.nwk
     else
       echo "DEBUG: not enough genomes provided; more than 3 are required to run iqtree2"
     fi
@@ -811,6 +813,5 @@ task IqTree2 {
     disks: "local-disk " + disk_size + " SSD"
     disk: disk_size + " GB"
     preemptible: 0
-    maxRetries: 3
   }
 }

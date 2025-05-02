@@ -697,12 +697,12 @@ task VcfToMSA {
         ls -lh
 
         # Convert VCF to FASTA alignment
-        bcftools query -l ${vcf} > sample_list.txt
+        bcftools query -l ${vcf_basename}.vcf.gz > sample_list.txt
 
         # Create consensus sequence for each sample
         while read sample; do
             # Create a consensus sequence for this sample
-            bcftools consensus -f ${ref} -s $sample ${vcf} > $sample.fasta
+            bcftools consensus -f ${ref} -s $sample ${vcf_basename}.vcf.gz > $sample.fasta
 
             # Format header to just sample name
             sed -i "s/>.*/>$sample/" $sample.fasta

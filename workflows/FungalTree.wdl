@@ -677,6 +677,7 @@ task HaplotypeCaller {
 task VcfToMSA {
     File vcf
     File ref
+    String vcf_basename = basename(vcf, ".vcf.gz")
     String output_filename
 
     Int disk_size
@@ -689,8 +690,8 @@ task VcfToMSA {
         set -euo pipefail
 
         # index the VCF
-        cp ${vcf} .
-        bcftools index -t ${vcf}
+        cp ${vcf} ${vcf_basename}.vcf.gz
+        bcftools index -t ${vcf_basename}.vcf.gz
 
         # Convert VCF to FASTA alignment
         bcftools query -l ${vcf} > sample_list.txt

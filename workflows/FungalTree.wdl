@@ -31,6 +31,7 @@ workflow FungalTree {
     String run_name
 
     File ref
+    File ref_gbff
     #File ref_sa
     #File ref_bwt
     #File ref_amb
@@ -65,9 +66,14 @@ workflow FungalTree {
     String indel_filter_expr
 
     ## task calls
+    call GbffToFasta {
+        input:
+            ref_gbff = ref_gbff
+    }
+
     call GenerateRefFiles {
         input:
-            ref_fasta = ref,
+            ref_fasta = GbffToFasta.reference_fasta,
             input_bam = input_bams[0] # Just need one BAM for this?
     }
 
@@ -195,7 +201,39 @@ workflow FungalTree {
 }
 
 ## TASK DEFINITIONS
+task GbffToFasta {
+    File ref_gbff
+    String ref_gbff_basename = basename(ref_gbff, ".fasta")
 
+    Int disk_size = 50
+    Int mem_size_gb = 16
+    String docker = "python:3.11-slim"
+
+    command <<<
+        pip install biopython
+        python <<CODE
+
+        from Bio import SeqIO
+        input_file = "${ref_gbff}"
+        output_file = "${ref_gbff_basename}.fasta"
+        with open(output_file, "w") as out_fasta:
+            for record in SeqIO.parse(input_file, "genbank"):
+                 SeqIO.write(record, out_fasta, "fasta")
+        CODE
+
+        # strip the .1 in the reference sequence name
+        sed -i -E 's/^(>[^ ]+)\.[0-9]+/\1/' "${ref_gbff_basename}.fasta"
+    >>>
+    output {
+        File reference_fasta =  "${ref_gbff_basename}.fasta"
+    }
+    runtime {
+        docker: docker
+        memory: mem_size_gb + " GB"
+        disks: "local-disk " + disk_size + " HDD"
+
+    }
+}
 task GenerateRefFiles {
     File ref_fasta
     File input_bam
@@ -210,11 +248,8 @@ task GenerateRefFiles {
 
         cp ${ref_fasta} ${ref_fasta_basename}.fasta
         /usr/gitc/bwa index ${ref_fasta_basename}.fasta
-        ls -l
 
         java -Xms1000m -Xmx1000m  -jar /usr/gitc/picard.jar CreateSequenceDictionary R=${ref_fasta_basename}.fasta O=${ref_fasta_basename}.dict
-        #samtools view -H ${input_bam} | grep '@SQ' | cut -f 2,3 | sed 's/SN://;s/LN://' | awk '{print "@SQ\tSN:"$1"\tLN:"$2}' > ${ref_fasta_basename}.dict
-        ls -l
 
         samtools faidx ${ref_fasta_basename}.fasta
 

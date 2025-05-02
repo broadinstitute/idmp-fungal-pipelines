@@ -222,7 +222,7 @@ task GbffToFasta {
         CODE
 
         # strip the .1 in the reference sequence name
-        sed -i '' -E 's/^(>[^ ]+)\.[0-9]+/\1/' "${ref_gbff_basename}.fasta"
+        sed -i -E 's/^(>[^ ]+)\.[0-9]+/\1/' "${ref_gbff_basename}.fasta"
     >>>
     output {
         File reference_fasta =  "${ref_gbff_basename}.fasta"

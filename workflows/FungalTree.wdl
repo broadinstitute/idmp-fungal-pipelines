@@ -689,6 +689,7 @@ task VcfToMSA {
         set -euo pipefail
 
         # index the VCF
+        cp ${vcf} .
         bcftools index -t ${vcf}
 
         # Convert VCF to FASTA alignment

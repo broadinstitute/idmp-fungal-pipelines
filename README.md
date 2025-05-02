@@ -11,6 +11,96 @@ The workflow follows the overall structure of the TheiaEuk pipeline, including s
 
 For full descriptions of the standard tasks, refer to [Theiagen's documentation](https://theiagen.github.io/public_health_bioinformatics/latest/workflows/genomic_characterization/theiaeuk/).
 
+
+## Task Descriptions and Enhancements
+
+### Task: gambit
+
+**Purpose:**
+Taxonomic identification of assembled genome using GAMBIT.
+
+**Inputs:**
+- `assembly`: Assembly file to classify
+- `samplename`: Sample ID used in naming outputs
+- `gambit_db_genomes` and `gambit_db_signatures`: Optional custom GAMBIT database files
+- `gambit_expected_taxon`: Target taxon (e.g., "Candidozyma auris") for gating
+
+**Outputs:**
+- `gambit_report_file`: Full JSON GAMBIT report
+- `gambit_closest_genomes_file`: CSV of closest genome matches
+- `gambit_predicted_taxon`: Predicted species name
+- `merlin_tag`: Filter tag used to control downstream steps
+
+**Enhancements:**
+A custom Python block was added to enforce species-specific gating:
+
+```python
+# Write out warning if the predicted taxon is not the expected taxon
+gambit_expected_taxon = "~{gambit_expected_taxon}"
+if merlin_tag != gambit_expected_taxon:
+    print(f"WARNING! Pipeline is configured to only proceed for {gambit_expected_taxon}. Found: {merlin_tag}", file=sys.stderr)
+```
+
+This allows the overall FungalQC workflow to fail early if the sample is not identified as Candidozyma auris, preventing unnecessary downstream processing for non-target species.
+
+---
+
+### Task: kraken2
+
+**Purpose:**
+Classify contigs using Kraken2 to detect potential bacterial or fungal contamination.
+
+**Inputs:**
+- `assembly`: Contig file for classification
+- `kraken2_db`: Path to Kraken2 database
+
+**Outputs:**
+- `kraken2_report`: Classification report
+- `kraken2_output`: Per-contig classification results
+
+**Enhancements:**
+- No custom enhancements applied at this time. Default Kraken2 behavior is used.
+
+---
+
+### Task: EukCC
+
+**Purpose:**
+Assess genome completeness and contamination for eukaryotic assemblies.
+
+**Inputs:**
+- `assembly`: Assembled genome file
+
+**Outputs:**
+- `eukcc_results`: Summary completeness metrics
+
+**Enhancements:**
+- No modifications beyond default EukCC parameters. Used for quality control.
+
+---
+
+### Task: quast
+
+**Purpose:**
+Evaluate assembly metrics including N50, total contig length, and number of contigs.
+
+**Inputs:**
+- `assembly`: Assembled genome file
+
+**Outputs:**
+- `quast_report`: Summary of assembly statistics
+
+**Enhancements:**
+- No enhancements or parameter changes. Used for basic QC.
+
+---
+
+
+
+
+
+
+
 Modifications and Enhancements
 ------------------------------
 

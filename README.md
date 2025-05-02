@@ -61,8 +61,6 @@ Adds an additional taxonomic identification method alongside GAMBIT.
 - `classified_reads`:
 - `kraken2_report_taxon_name`:
 
-**Enhancements:**
-- No custom enhancements applied at this time. Default Kraken2 behavior is used.
 
 ---
 
@@ -73,12 +71,13 @@ Assess genome completeness and contamination for eukaryotic assemblies.
 
 **Inputs:**
 - `assembly`: Assembled genome file
+- `eukcc_db_path`: Optional Path to EukCC database
+- `contamination_percent_threshold`:
 
 **Outputs:**
-- `eukcc_results`: Summary completeness metrics
-
-**Enhancements:**
-- No modifications beyond default EukCC parameters. Used for quality control.
+- `eukcc_csv`:
+- `completeness`:
+- `contamination`:
 
 ---
 

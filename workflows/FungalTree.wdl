@@ -202,17 +202,17 @@ workflow FungalTree {
         disk_size = extra_large_disk_size
     }
 
-    call VcfToMSA {
+    call vcf_to_alignment {
         input:
-            vcf = HardFiltration.out,
-            ref = GenerateRefFiles.reference_fasta,
-            output_filename = "${run_name}.msa.fasta",
-            disk_size = disk_size,
-            mem_size_gb = med_mem_size_gb
+            merged_vcf = HardFiltration.out
+            #ref = GenerateRefFiles.reference_fasta,
+            #output_filename = "${run_name}.msa.fasta",
+            #disk_size = disk_size,
+            #mem_size_gb = med_mem_size_gb
     }
     call IqTree2 {
         input:
-        alignment = VcfToMSA.alignment,
+        alignment = vcf_to_alignment.snp_fasta,
         cluster_name = run_name,
         iqtree2_model = iqtree2_model,
         iqtree2_bootstraps = iqtree2_bootstraps,
@@ -760,6 +760,7 @@ task IqTree2 {
     # make sure there are more than 3 genomes in the dataset
     numGenomes=$(grep -o '>' ${alignment} | wc -l)
     if [ "$numGenomes" -gt 3 ]; then
+      echo $numGenomes
       cp ${alignment} ./msa.fasta
 
       # run iqtree2
@@ -815,4 +816,29 @@ task IqTree2 {
     disk: disk_size + " GB"
     preemptible: 0
   }
+}
+task vcf_to_alignment {
+        File merged_vcf
+        Int disk_size = 100
+        Int cpu = 4
+        Int memory = 16
+
+    command <<<
+        bgzip ${merged_vcf}
+        tabix -p vcf ${merged_vcf}.gz
+        snp-sites -c -v -o snps.fasta ${merged_vcf}.gz
+    >>>
+
+    output {
+        File snp_fasta = "snps.fasta"
+    }
+
+    runtime {
+        docker: "staphb/snpsites:latest"
+        memory: memory + " GB"
+        cpu: cpu
+        disks: "local-disk " + disk_size + " SSD"
+        disk: disk_size + " GB"
+        preemptible: 0
+    }
 }

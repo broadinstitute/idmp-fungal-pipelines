@@ -834,7 +834,7 @@ task vcf_to_alignment {
     }
 
     runtime {
-        docker: "sangerpathogens/snp-sites:latest"
+        docker: "biocontainers/snp-sites:v2.5.1_cv2"
         memory: memory + " GB"
         cpu: cpu
         disks: "local-disk " + disk_size + " SSD"

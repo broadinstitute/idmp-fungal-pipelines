@@ -47,7 +47,7 @@ if merlin_tag != gambit_expected_taxon:
     print(f"WARNING! Pipeline is configured to only proceed for {gambit_expected_taxon}. Found: {merlin_tag}", file=sys.stderr)
 ```
 
-This allows the overall FungalQC workflow to fail early if the sample is not identified as Candidozyma auris, preventing unnecessary downstream processing for non-target species.
+This allows the overall FungalQC workflow to end early if the sample is not identified as Candidozyma auris, preventing unnecessary downstream processing for non-target species.
 
 ---
 
@@ -58,7 +58,7 @@ Adds an additional taxonomic identification method alongside GAMBIT.
 
 **Inputs:**
 - `assembly`: Contig file for classification
-- `kraken2_db`: Optional Path to Kraken2 database
+- `kraken2_db`: Optional Path to Kraken2 database. If left empty, Kraken2 will use the database baked into the [Docker image](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/dockers/kraken2/Dockerfile).
 - `read1`: Paired-end read file 1
 - `read2`:  Paired-end read file 2
 
@@ -77,7 +77,7 @@ Assess genome completeness and contamination for eukaryotic assemblies.
 
 **Inputs:**
 - `assembly`: Assembled genome file
-- `eukcc_db_path`: Optional Path to EukCC database
+- `eukcc_db_path`: Optional Path to EukCC database. If left empty, EukCC will use the database baked into the [Docker image](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/dockers/eukcc/Dockerfile).
 - `contamination_percent_threshold`: Threshold for allowable contamination
 
 **Outputs:**
@@ -100,7 +100,7 @@ This task filters a BAM file to retain only properly paired reads and indexes th
 - `filtered_bai`: Filtered BAM index file
 
 **Role in Workflow:**
-This task is part of `theiaeuk_merlin_typing.wdl`, which is a refined module focused on *Candida auris* typing. Filtering for properly paired reads ensures accurate variant calling and typing within the *C. auris* analysis pipeline by removing ambiguous or low-quality alignments.
+This task is part of `theiaeuk_merlin_typing.wdl`, which is a workflow focused on *Candida auris* typing. Filtering for properly paired reads ensures accurate variant calling and typing within the *C. auris* analysis pipeline by removing ambiguous or low-quality alignments.
 
 ---
 

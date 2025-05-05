@@ -697,6 +697,7 @@ task VcfToMSA {
 
         # Convert VCF to FASTA alignment
         bcftools query -l ${vcf_basename}.vcf.gz > sample_list.txt
+        cat sample_list.txt
 
         # Create consensus sequence for each sample
         while read sample; do

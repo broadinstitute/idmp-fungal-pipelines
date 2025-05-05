@@ -834,7 +834,7 @@ task vcf_to_alignment {
     }
 
     runtime {
-        docker: "biocontainers/snp-sites:v2.5.1_cv2"
+        docker: "us.gcr.io/broad-gotc-prod/snp-sites:1.0.0"
         memory: memory + " GB"
         cpu: cpu
         disks: "local-disk " + disk_size + " SSD"

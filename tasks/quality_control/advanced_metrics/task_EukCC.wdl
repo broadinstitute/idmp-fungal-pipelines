@@ -3,7 +3,7 @@ version 1.0
 task EukCC {
 
     input {
-        String docker = "us.gcr.io/broad-gotc-prod/eukcc/eukcc_1.0.0:latest"
+        String docker = "us.gcr.io/broad-gotc-prod/eukcc/eukcc:1.0.0"
         String memory = "16"
         String disk_size = "50"
         String cpu = "8"

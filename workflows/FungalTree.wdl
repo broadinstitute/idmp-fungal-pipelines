@@ -834,7 +834,7 @@ task VCFToPhyloMatrix {
     Int disk_size = 100
     Int memory = 32
   command <<<
-    python3 vcf2matrix.py \
+    python3 /app/vcf2matrix.py \
       -i ~{vcf_file} \
       --output-prefix ~{output_prefix} \
       --output-folder ~{output_folder} \

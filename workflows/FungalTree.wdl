@@ -81,7 +81,7 @@ workflow FungalTree {
     call GenerateRefFiles {
         input:
             ref_fasta = GbffToFasta.reference_fasta,
-            input_bam = input_bams[0] # Just need one BAM for this?
+            input_bam = input_bams[0] # TODO: Just need one BAM for this?
     }
 
     # run pipeline on each sample, in parallel
@@ -202,9 +202,9 @@ workflow FungalTree {
         disk_size = extra_large_disk_size
     }
 
-    call vcf_to_alignment {
+    call VCFToPhyloMatrix {
         input:
-            merged_vcf = HardFiltration.out
+            vcf_file = HardFiltration.out
             #ref = GenerateRefFiles.reference_fasta,
             #output_filename = "${run_name}.msa.fasta",
             #disk_size = disk_size,
@@ -212,7 +212,7 @@ workflow FungalTree {
     }
     call IqTree2 {
         input:
-        alignment = vcf_to_alignment.snp_fasta,
+        alignment = VCFToPhyloMatrix.result_files,
         cluster_name = run_name,
         iqtree2_model = iqtree2_model,
         iqtree2_bootstraps = iqtree2_bootstraps,
@@ -817,25 +817,42 @@ task IqTree2 {
     preemptible: 0
   }
 }
-task vcf_to_alignment {
-        File merged_vcf
-        Int disk_size = 100
-        Int cpu = 4
-        Int memory = 16
 
-    command <<<
-        tabix -p vcf ${merged_vcf}
-        input_vcf="${merged_vcf}"
+task VCFToPhyloMatrix {
+    File vcf_file
+    String output_prefix = "output"
+    String output_folder = "./"
+    Int min_samples_locus = 4
+    Boolean phylip = true
+    Boolean fasta = false
+    Boolean nexus = false
+    Boolean nexus_binary = false
+    Boolean resolve_iupac = false
+    Boolean write_used_sites = false
+    String? outgroup
+    Int cpu = 4
+    Int disk_size = 100
+    Int memory = 32
+  command <<<
+    python3 vcf2matrix.py \
+      -i ~{vcf_file} \
+      --output-prefix ~{output_prefix} \
+      --output-folder ~{output_folder} \
+      -m ~{min_samples_locus} \
+      ~{"-p" if !phylip else ""} \
+      ~{"-f" if fasta else ""} \
+      ~{"-n" if nexus else ""} \
+      ~{"-b" if nexus_binary else ""} \
+      ~{"-r" if resolve_iupac else ""} \
+      ~{"-w" if write_used_sites else ""} \
+      ~{if defined(outgroup) then "-o " + outgroup else ""}
+  >>>
 
-        snp-sites -c -v -o snps.fasta $input_vcf
-    >>>
-
-    output {
-        File snp_fasta = "snps.fasta"
-    }
-
+  output {
+    Array[File] result_files = glob("~{output_folder}/~{output_prefix}*")
+  }
     runtime {
-        docker: "us.gcr.io/broad-gotc-prod/snp-sites:latest"
+        docker: "us.gcr.io/broad-gotc-prod/vcftomsa:1.0.0"
         memory: memory + " GB"
         cpu: cpu
         disks: "local-disk " + disk_size + " SSD"

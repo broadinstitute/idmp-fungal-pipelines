@@ -838,14 +838,9 @@ task VCFToPhyloMatrix {
       -i ~{vcf_file} \
       --output-prefix ~{output_prefix} \
       --output-folder ~{output_folder} \
-      -m ~{min_samples_locus} \
-      ~{"-p" if !phylip else ""} \
-      ~{"-f" if fasta else ""} \
-      ~{"-n" if nexus else ""} \
-      ~{"-b" if nexus_binary else ""} \
-      ~{"-r" if resolve_iupac else ""} \
-      ~{"-w" if write_used_sites else ""} \
-      ~{if defined(outgroup) then "-o " + outgroup else ""}
+      -f \
+      -m ~{min_samples_locus}
+
   >>>
 
   output {

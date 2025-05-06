@@ -824,9 +824,10 @@ task vcf_to_alignment {
         Int memory = 16
 
     command <<<
-        bgzip ${merged_vcf}
-        tabix -p vcf ${merged_vcf}.gz
-        snp-sites -c -v -o snps.fasta ${merged_vcf}.gz
+        tabix -p vcf ${merged_vcf}
+        input_vcf="${merged_vcf}"
+
+        snp-sites -c -v -o snps.fasta $input_vcf
     >>>
 
     output {

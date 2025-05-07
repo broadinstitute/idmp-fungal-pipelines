@@ -202,14 +202,13 @@ workflow FungalTree {
         disk_size = extra_large_disk_size
     }
 
-    call VCFToPhyloMatrix {
+    call VCFToFasta {
         input:
             vcf_file = HardFiltration.out
     }
     call IqTree2 {
         input:
-        alignment = VCFToPhyloMatrix.alignmnent_fasta,
-        cluster_name = run_name,
+        alignment = VCFToFasta.alignmnent_fasta,
         iqtree2_model = iqtree2_model,
         iqtree2_bootstraps = iqtree2_bootstraps,
         alrt = alrt,
@@ -221,6 +220,7 @@ workflow FungalTree {
 
     output {
         File gvcf = HardFiltration.out
+        File ml_tree = IqTree2.ml_tree
     }
 }
 
@@ -670,55 +670,6 @@ task HaplotypeCaller {
   }
 }
 
-task VcfToMSA {
-    File vcf
-    File ref
-    String vcf_basename = basename(vcf, ".vcf.gz")
-    String output_filename
-
-    Int disk_size
-    Int mem_size_gb
-
-    String docker = "biocontainers/bcftools:v1.9-1-deb_cv1"
-
-    command <<<
-
-        set -euo pipefail
-
-        # index the VCF
-        cp ${vcf} ${vcf_basename}.vcf.gz
-
-        echo "indexing the vcf"
-        bcftools index -t ${vcf_basename}.vcf.gz
-
-        # Convert VCF to FASTA alignment
-        bcftools query -l ${vcf_basename}.vcf.gz > sample_list.txt
-        cat sample_list.txt
-
-        # Create consensus sequence for each sample
-        while read sample; do
-            # Create a consensus sequence for this sample
-            bcftools consensus -f ${ref} -s $sample ${vcf_basename}.vcf.gz > $sample.fasta
-
-            # Format header to just sample name
-            sed -i "s/>.*/>$sample/" $sample.fasta
-        done < sample_list.txt
-
-        # Combine all individual FASTA files
-        cat *.fasta > ${output_filename}
-    >>>
-
-    output {
-        File alignment = "${output_filename}"
-    }
-
-    runtime {
-        docker: docker
-        memory: mem_size_gb + " GB"
-        disks: "local-disk " + disk_size + " HDD"
-    }
-}
-
 task IqTree2 {
     File alignment
     String cluster_name
@@ -739,8 +690,6 @@ task IqTree2 {
     # multiple sed statements to get down to a string that is just "version 2.1.2"
     iqtree2 --version | grep version | sed 's|.*version|version|;s| COVID-edition for Linux.*||' | tee VERSION
 
-    echo "DEBUG: alignment file path ${alignment}"
-      ls -la ${alignment}
 
     # check if iqtree2_model input is set and output for sanity
     if [ -n "${iqtree2_model}" ]; then
@@ -756,7 +705,6 @@ task IqTree2 {
     # make sure there are more than 3 genomes in the dataset
     numGenomes=$(grep -o '>' ${alignment} | wc -l)
     if [ "$numGenomes" -gt 3 ]; then
-      echo $numGenomes
       cp ${alignment} ./msa.fasta
 
       # run iqtree2
@@ -796,8 +744,6 @@ task IqTree2 {
     else
       echo "DEBUG: not enough genomes provided; more than 3 are required to run iqtree2"
     fi
-
-      ls -l
   >>>
   output {
     String date = read_string("DATE")
@@ -805,7 +751,6 @@ task IqTree2 {
     File ml_tree = "${cluster_name}_iqtree.nwk"
     String iqtree2_model_used = read_string("IQTREE2_MODEL.TXT")
     String iqtree2_docker = docker
-    File tree = "msa.fasta.iqtree"
   }
   runtime {
     docker: docker
@@ -817,7 +762,7 @@ task IqTree2 {
   }
 }
 
-task VCFToPhyloMatrix {
+task VCFToFasta {
     File vcf_file
     String vcf_basename = basename(vcf_file, ".vcf.gz")
 
@@ -829,13 +774,10 @@ task VCFToPhyloMatrix {
       -f \
       -i ${vcf_file} \
       --output-prefix ${vcf_basename}
-
-      ls -l
   >>>
-
   output {
     File alignmnent_fasta = "${vcf_basename}.min4.fasta"
-                             }
+  }
     runtime {
         docker: "us.gcr.io/broad-gotc-prod/vcftomsa:1.0.0"
         memory: memory + " GB"

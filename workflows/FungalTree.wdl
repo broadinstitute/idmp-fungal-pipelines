@@ -796,6 +796,8 @@ task IqTree2 {
     else
       echo "DEBUG: not enough genomes provided; more than 3 are required to run iqtree2"
     fi
+
+      ls -l
   >>>
   output {
     String date = read_string("DATE")
@@ -803,6 +805,7 @@ task IqTree2 {
     File ml_tree = "${cluster_name}_iqtree.nwk"
     String iqtree2_model_used = read_string("IQTREE2_MODEL.TXT")
     String iqtree2_docker = docker
+    File tree = "msa.fasta.iqtree"
   }
   runtime {
     docker: docker

@@ -218,7 +218,7 @@ task MarkDuplicates {
     File sorted_bam
     String sample_name
 
-    Int mem_size_gb
+    Int mem_size_gb = 16
     String docker = "xiaoli2020/fungi-gatk3:v1.0"
     Int cmd_mem_size_gb = mem_size_gb - 1
     Int disk_size = 50
@@ -253,7 +253,7 @@ task ReorderBam {
     String bam_prefix = basename(bam, '.bam')
 
     Int disk_size = 50
-    Int mem_size_gb
+    Int mem_size_gb = 30
     String docker = "xiaoli2020/fungi-gatk3:v1.0"
 
     Int cmd_mem_size_gb = mem_size_gb - 1

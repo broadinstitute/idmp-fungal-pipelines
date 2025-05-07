@@ -219,8 +219,10 @@ workflow FungalTree {
     }
 
     output {
-        File gvcf = HardFiltration.out
-        File ml_tree = IqTree2.ml_tree
+        File hard_filtered_gvcf = HardFiltration.out
+        File IqTree2_ml_tree = IqTree2.ml_tree
+        String IqTree2_run_date = IqTree2.date
+        String IqTree2_model_used = IqTree2.iqtree2_model_used
     }
 }
 

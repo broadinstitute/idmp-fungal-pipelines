@@ -29,37 +29,9 @@ workflow FungalTree {
     ## config params
     # input data
     String run_name
-
-    File ref
     File ref_gbff
-    #File ref_sa
-    #File ref_bwt
-    #File ref_amb
-    #File ref_ann
-    #File ref_pac
-    #File ref_dict
-    #File ref_index
     Array[String] input_samples
     Array[File] input_bams
-
-    # mem size/ disk size params
-    Int small_mem_size_gb
-    Int med_mem_size_gb
-    Int large_mem_size_gb
-    Int extra_large_mem_size_gb
-
-    Int disk_size
-    Int med_disk_size
-    Int large_disk_size
-    Int extra_large_disk_size
-
-    String docker
-
-    String picard_path
-    String gatk_path
-
-    # whether perform alignment or not to the input BAM files
-    Boolean do_align
 
     # hard filtering params: both of these params are required
     String snp_filter_expr
@@ -81,7 +53,7 @@ workflow FungalTree {
     call GenerateRefFiles {
         input:
             ref_fasta = GbffToFasta.reference_fasta,
-            input_bam = input_bams[0] # TODO: Just need one BAM for this?
+            input_bam = input_bams[0]
     }
 
     # run pipeline on each sample, in parallel
@@ -89,58 +61,17 @@ workflow FungalTree {
         String sample_name = input_samples[i]
         String input_bam = input_bams[i]
 
-        if (do_align) {
-            call SamToFastq {
-                input:
-                in_bam = input_bam,
-                sample_name = sample_name,
-                disk_size = large_disk_size,
-                mem_size_gb = small_mem_size_gb,
-                docker = docker,
-                picard_path = picard_path
-            }
-
-            call AlignAndSortBAM {
-                input:
-                sample_name = sample_name,
-                fq1 = SamToFastq.fq1,
-                fq2 = SamToFastq.fq2,
-
-                ref = ref,
-                sa = GenerateRefFiles.ref_sa,
-                bwt = GenerateRefFiles.ref_bwt,
-                amb = GenerateRefFiles.ref_amb,
-                ann = GenerateRefFiles.ref_ann,
-                pac = GenerateRefFiles.ref_pac,
-                dict = GenerateRefFiles.ref_dict,
-                fai = GenerateRefFiles.ref_index,
-                docker = docker,
-                mem_size_gb = small_mem_size_gb,
-                disk_size = large_disk_size,
-                picard_path = picard_path
-            }
-        }
-
         call MarkDuplicates {
             input:
             sample_name = sample_name,
-            #sorted_bam = select_first([AlignAndSortBAM.bam, input_bam]),
-            sorted_bam = input_bam,
-            docker = docker,
-            picard_path = picard_path,
-            mem_size_gb = small_mem_size_gb,
-            disk_size = disk_size
+            sorted_bam = input_bam
         }
 
         call ReorderBam {
             input:
             bam = MarkDuplicates.bam,
             ref = GenerateRefFiles.reference_fasta,
-            dict = GenerateRefFiles.ref_dict,
-            docker = docker,
-            picard_path = picard_path,
-            mem_size_gb = med_mem_size_gb,
-            disk_size = disk_size
+            dict = GenerateRefFiles.ref_dict
         }
 
         call HaplotypeCaller {
@@ -152,11 +83,7 @@ workflow FungalTree {
             gvcf_index = "${sample_name}.g.vcf.idx",
             ref = GenerateRefFiles.reference_fasta,
             ref_dict = GenerateRefFiles.ref_dict,
-            ref_index = GenerateRefFiles.ref_index,
-            mem_size_gb = med_mem_size_gb,
-            disk_size = med_disk_size,
-            docker = docker,
-            gatk_path = gatk_path
+            ref_index = GenerateRefFiles.ref_index
         }
     }
 
@@ -166,11 +93,7 @@ workflow FungalTree {
         vcf_index_files = HaplotypeCaller.output_gvcf_index,
         ref = GenerateRefFiles.reference_fasta,
         ref_dict = GenerateRefFiles.ref_dict,
-        ref_index = GenerateRefFiles.ref_index,
-        docker = docker,
-        gatk_path = gatk_path,
-        mem_size_gb = med_mem_size_gb,
-        disk_size = disk_size
+        ref_index = GenerateRefFiles.ref_index
     }
 
     call GenotypeGVCFs {
@@ -179,11 +102,7 @@ workflow FungalTree {
         vcf_index_file = CombineGVCFs.out_index,
         ref = GenerateRefFiles.reference_fasta,
         ref_dict = GenerateRefFiles.ref_dict,
-        ref_index = GenerateRefFiles.ref_index,
-        docker = docker,
-        gatk_path = gatk_path,
-        mem_size_gb = med_mem_size_gb,
-        disk_size = disk_size
+        ref_index = GenerateRefFiles.ref_index
     }
 
     call HardFiltration {
@@ -195,11 +114,7 @@ workflow FungalTree {
         ref = GenerateRefFiles.reference_fasta,
         ref_dict = GenerateRefFiles.ref_dict,
         ref_index = GenerateRefFiles.ref_index,
-        output_filename = "${run_name}.hard_filtered.vcf.gz",
-        docker = docker,
-        gatk_path = gatk_path,
-        mem_size_gb = extra_large_mem_size_gb,
-        disk_size = extra_large_disk_size
+        output_filename = "${run_name}.hard_filtered.vcf.gz"
     }
 
     call VCFToFasta {
@@ -213,9 +128,7 @@ workflow FungalTree {
         iqtree2_bootstraps = iqtree2_bootstraps,
         alrt = alrt,
         iqtree2_opts = iqtree2_opts,
-        disk_size = disk_size,
-        cpu = 4,
-        memory = med_mem_size_gb
+        cpu = 4
     }
 
     output {
@@ -299,108 +212,21 @@ task GenerateRefFiles {
 
     }
 }
-task SamToFastq {
-    File in_bam
-    String sample_name
-
-    Int disk_size
-    Int mem_size_gb
-    String docker
-    String picard_path
-
-    String out_fq1 = "${sample_name}.1.fq"
-    String out_fq2 = "${sample_name}.2.fq"
-    command {
-        java -Xmx${mem_size_gb}G -jar ${picard_path} SamToFastq INPUT=${in_bam} FASTQ=${out_fq1} SECOND_END_FASTQ=${out_fq2} VALIDATION_STRINGENCY=LENIENT
-    }
-    output {
-        String done = "Done"
-        File fq1 = out_fq1
-        File fq2 = out_fq2
-    }
-
-    runtime {
-        preemptible: 3
-        docker: docker
-        memory: mem_size_gb + " GB"
-        disks: "local-disk " + disk_size + " HDD"
-    }
-
-    parameter_meta {
-        picard: "The absolute path to the picard jar to execute."
-        in_bam: "The bam file to convert to fastq."
-        sample_dir: "The sample-specific directory inside output_dir for each sample."
-        sample_name: "The name of the sample as indicated by the 1st column of the gatk.samples_file json input."
-        out_fq1: "The fastq file containing the first read of each pair."
-        out_fq2: "The fastq file containing the second read of each pair"
-    }
-}
-
-
-task AlignAndSortBAM {
-    String sample_name
-
-    File fq1
-    File fq2
-
-    File ref
-    File dict
-    File amb
-    File ann
-    File bwt
-    File fai
-    File pac
-    File sa
-
-    Int disk_size
-    Int mem_size_gb
-    String docker
-    String picard_path
-
-    String read_group = "'@RG\\tID:FLOWCELL_${sample_name}\\tSM:${sample_name}\\tPL:ILLUMINA\\tLB:LIB_${sample_name}'"
-    command {
-        bwa mem -R ${read_group} ${ref} ${fq1} ${fq2} | samtools view -bS -> ${sample_name}.aligned.bam
-        java -Xmx${mem_size_gb}G -jar ${picard_path} SortSam I=${sample_name}.aligned.bam O=${sample_name}.sorted.bam SO=coordinate
-    }
-
-    output {
-        File bam = "${sample_name}.sorted.bam"
-    }
-
-    runtime {
-        task_name: "AlignBAM"
-        preemptible: 5
-        docker: docker
-        memory: mem_size_gb + " GB"
-        disks: "local-disk "+ disk_size + " HDD"
-    }
-
-    parameter_meta {
-        ref: "fasta file of reference genome"
-        sample_dir: "The sample-specific directory inside output_dir for each sample."
-        sample_name: "The name of the sample as indicated by the 1st column of the gatk.samples_file json input."
-        fq_array: "An array containing the paths to the first and second fastq files."
-        read_group: "The read group string that will be included in the bam header."
-    }
-}
-
 
 # mark duplicate reads in bam
 task MarkDuplicates {
     File sorted_bam
     String sample_name
 
-    Int disk_size
     Int mem_size_gb
-    String docker
-    String picard_path
-
+    String docker = "xiaoli2020/fungi-gatk3:v1.0"
     Int cmd_mem_size_gb = mem_size_gb - 1
+    Int disk_size = 50
 
     command {
         set -euo pipefail
 
-        java -Xmx${mem_size_gb}G -jar ${picard_path} MarkDuplicates \
+        java -Xmx${mem_size_gb}G -jar /opt/picard.jar MarkDuplicates \
             I=${sorted_bam} \
             O=${sample_name}.marked_duplicates.bam \
             M=${sample_name}.marked_duplicates.metrics
@@ -426,22 +252,21 @@ task ReorderBam {
     File bam
     String bam_prefix = basename(bam, '.bam')
 
-    Int disk_size
+    Int disk_size = 50
     Int mem_size_gb
-    String docker
-    String picard_path
+    String docker = "xiaoli2020/fungi-gatk3:v1.0"
 
     Int cmd_mem_size_gb = mem_size_gb - 1
 
     command {
         # reorder bam
-        java -Xmx${cmd_mem_size_gb}G -jar ${picard_path} ReorderSam \
+        java -Xmx${cmd_mem_size_gb}G -jar /opt/picard.jar ReorderSam \
             I=${bam} \
             O=${bam_prefix}.reordered.bam \
             R=${ref}
 
         # then index
-        java -Xmx${cmd_mem_size_gb}G -jar ${picard_path} BuildBamIndex \
+        java -Xmx${cmd_mem_size_gb}G -jar /opt/picard.jar BuildBamIndex \
             I=${bam_prefix}.reordered.bam
     }
 
@@ -470,15 +295,14 @@ task CombineGVCFs {
     String gvcf_out = "combined_gvcfs.vcf.gz"
     String gvcf_out_index = "combined_gvcfs.vcf.gz.tbi"
 
-    Int disk_size
-    Int mem_size_gb
-    String docker
-    String gatk_path
+    Int disk_size = 100
+    Int mem_size_gb = 30
+    String docker = "xiaoli2020/fungi-gatk3:v1.0"
 
     Int cmd_mem_size_gb = mem_size_gb - 1
 
     command {
-        java -Xmx${cmd_mem_size_gb}G -jar ${gatk_path} \
+        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
             -T CombineGVCFs \
             -R ${ref} \
             -o ${gvcf_out} \
@@ -491,7 +315,7 @@ task CombineGVCFs {
 
     runtime {
         preemptible: 4
-        docker:docker
+        docker: docker
         memory: mem_size_gb + " GB"
         disks: "local-disk " + disk_size + " HDD"
     }
@@ -507,15 +331,14 @@ task GenotypeGVCFs {
     File vcf_index_file
     String gvcf_out = "genotyped_gvcfs.vcf.gz"
 
-    Int disk_size
-    Int mem_size_gb
-    String docker
-    String gatk_path
+    Int disk_size = 100
+    Int mem_size_gb = 30
+    String docker = "xiaoli2020/fungi-gatk3:v1.0"
 
     Int cmd_mem_size_gb = mem_size_gb - 1
 
     command {
-        java -Xmx${cmd_mem_size_gb}G -jar ${gatk_path} \
+        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
             -T GenotypeGVCFs \
             -R ${ref} \
             -o ${gvcf_out} \
@@ -548,16 +371,15 @@ task HardFiltration {
     String snp_filter_expr
     String indel_filter_expr
 
-    Int disk_size
-    Int mem_size_gb
-    String docker
-    String gatk_path
+    Int disk_size = 200
+    Int mem_size_gb = 60
+    String docker = "xiaoli2020/fungi-gatk3:v1.0"
 
     Int cmd_mem_size_gb = mem_size_gb - 1
 
     command {
         # select snps
-        java -Xmx${cmd_mem_size_gb}G -jar ${gatk_path} \
+        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
             -T SelectVariants \
             -R ${ref} \
             -V ${vcf} \
@@ -565,7 +387,7 @@ task HardFiltration {
             -o raw_snps.g.vcf
 
         # filter snps
-        java -Xmx${cmd_mem_size_gb}G -jar ${gatk_path} \
+        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
             -T VariantFiltration \
             -R ${ref} \
             -V ${vcf} \
@@ -574,7 +396,7 @@ task HardFiltration {
             -o filtered_snps.g.vcf
 
         # select indels
-        java -Xmx${cmd_mem_size_gb}G -jar ${gatk_path}\
+        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
             -T SelectVariants \
             -R ${ref} \
             -V ${vcf} \
@@ -582,7 +404,7 @@ task HardFiltration {
             -o raw_indels.g.vcf
 
         # filter indels
-        java -Xmx${cmd_mem_size_gb}G -jar ${gatk_path} \
+        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
             -T VariantFiltration \
             -R ${ref} \
             -V ${vcf} \
@@ -591,7 +413,7 @@ task HardFiltration {
             -o filtered_indels.g.vcf
 
         # combine variants
-        java -Xmx${cmd_mem_size_gb}G -jar ${gatk_path}\
+        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar\
             -T CombineVariants \
             -R ${ref} \
             --variant filtered_snps.g.vcf \
@@ -606,7 +428,7 @@ task HardFiltration {
 
     runtime {
         preemptible: 3
-        docker:docker
+        docker: docker
         memory: mem_size_gb + " GB"
         disks: "local-disk " + disk_size + " HDD"
     }
@@ -626,17 +448,16 @@ task HaplotypeCaller {
   File ref_index
   String sample_name
 
-  Int disk_size
-  Int mem_size_gb
+  Int disk_size = 250
+  Int mem_size_gb = 30
   Int cmd_mem_size_gb = mem_size_gb - 1
 
-  String docker
-  String gatk_path
+  String docker = "xiaoli2020/fungi-gatk3:v1.0"
 
   String out = "${sample_name}.g.vcf"
 
   command {
-    java -Xmx${cmd_mem_size_gb}G -jar ${gatk_path} \
+    java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
       -T HaplotypeCaller \
       -R ${ref} \
       -I ${input_bam} \
@@ -681,7 +502,7 @@ task IqTree2 {
     String? iqtree2_opts
 
     String docker = "us-docker.pkg.dev/general-theiagen/staphb/iqtree2:2.1.2"
-    Int disk_size = 100
+    Int disk_size = 50
     Int cpu = 4
     Int memory = 32
 
@@ -758,7 +579,7 @@ task IqTree2 {
     docker: docker
     memory: memory + " GB"
     cpu: cpu
-    disks: "local-disk " + disk_size + " SSD"
+    disks: "local-disk " + disk_size + " HDD"
     disk: disk_size + " GB"
     preemptible: 0
   }
@@ -784,7 +605,7 @@ task VCFToFasta {
         docker: "us.gcr.io/broad-gotc-prod/vcftomsa:1.0.0"
         memory: memory + " GB"
         cpu: cpu
-        disks: "local-disk " + disk_size + " SSD"
+        disks: "local-disk " + disk_size + " HDD"
         disk: disk_size + " GB"
         preemptible: 0
     }

@@ -39,7 +39,7 @@ Workflow Components
 4.  **VCFToFasta**: Converts variant calls to a multi-sequence alignment FASTA
 5.  **IqTree2**: Generates a maximum likelihood phylogenetic tree
 
-Inputs
+Workflow Inputs
 ------
 
 ### FungalTree Workflow Inputs
@@ -57,7 +57,7 @@ Inputs
 | alrt | Int | SH-like approximate likelihood ratio test replicates | 1000 |
 | iqtree2_opts | String? | Additional IQ-TREE2 parameters | Optional |
 
-Outputs
+Workflow Outputs
 -------
 
 ### FungalTree Workflow Outputs

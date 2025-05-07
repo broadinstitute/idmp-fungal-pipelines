@@ -346,7 +346,7 @@ task GenotypeGVCFs {
     }
     output {
         File output_vcf_name = "${vcf_basename}.vcf.gz"
-        File output_vcf_index_name = "${vcf_basename}.vcf.gz"
+        File output_vcf_index_name = "${vcf_basename}.vcf.gz.tbi"
     }
 
     runtime {

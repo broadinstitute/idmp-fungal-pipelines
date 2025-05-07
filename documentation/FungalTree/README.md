@@ -3,7 +3,7 @@ FungalTree
 
 FungalTree is a WDL-based pipeline for variant calling and phylogenetic analysis in fungal haploid genomes. It uses a reference GenBank file and aligned BAM files to generate filtered variant calls and a maximum-likelihood phylogenetic tree via IQ-TREE2.
 
-Overview
+Workflow Overview
 --------
 
 This workflow combines multiple tools to perform:

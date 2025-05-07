@@ -205,14 +205,10 @@ workflow FungalTree {
     call VCFToPhyloMatrix {
         input:
             vcf_file = HardFiltration.out
-            #ref = GenerateRefFiles.reference_fasta,
-            #output_filename = "${run_name}.msa.fasta",
-            #disk_size = disk_size,
-            #mem_size_gb = med_mem_size_gb
     }
     call IqTree2 {
         input:
-        alignment = VCFToPhyloMatrix.result_files,
+        alignment = VCFToPhyloMatrix.alignmnent_fasta,
         cluster_name = run_name,
         iqtree2_model = iqtree2_model,
         iqtree2_bootstraps = iqtree2_bootstraps,
@@ -820,32 +816,23 @@ task IqTree2 {
 
 task VCFToPhyloMatrix {
     File vcf_file
-    String output_prefix = "output"
-    String output_folder = "./"
-    Int min_samples_locus = 4
-    Boolean phylip = true
-    Boolean fasta = false
-    Boolean nexus = false
-    Boolean nexus_binary = false
-    Boolean resolve_iupac = false
-    Boolean write_used_sites = false
-    String? outgroup
+    String vcf_basename = basename(vcf_file, ".vcf.gz")
+
     Int cpu = 4
-    Int disk_size = 100
-    Int memory = 32
+    Int disk_size = 50
+    Int memory = 16
   command <<<
     python3 /app/vcf2matrix.py \
-      -i ${vcf_file} \
-      --output-prefix ${output_prefix} \
-      #--output-folder ${output_folder} \
       -f \
-      -m ${min_samples_locus}
+      -i ${vcf_file} \
+      --output-prefix ${vcf_basename}
 
+      ls -l
   >>>
 
   output {
-    Array[File] result_files = glob("~{output_folder}/~{output_prefix}*")
-  }
+    File alignmnent_fasta = "${vcf_basename}.min4.fasta"
+                             }
     runtime {
         docker: "us.gcr.io/broad-gotc-prod/vcftomsa:1.0.0"
         memory: memory + " GB"

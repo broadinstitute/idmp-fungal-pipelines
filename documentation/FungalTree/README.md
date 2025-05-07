@@ -16,12 +16,9 @@ This workflow combines multiple tools to perform:
 Dependencies
 ------------
 
-FungalTree imports the FungalVariantCallingGatk3 workflow from the Broad Institute's fungal-wdl repository:
+FungalTree imports the FungalVariantCallingGatk3 workflow from the Broad Institute's [fungal-wdl](https://github.com/broadinstitute/fungal-wdl/blob/master/gatk3/workflows/fungal_variant_calling_gatk3.wdl
+) repository.
 
-```
-https://github.com/broadinstitute/fungal-wdl/blob/master/gatk3/workflows/fungal_variant_calling_gatk3.wdl
-
-```
 
 Modification to FungalVariantCallingGatk3
 -----------------------------------------

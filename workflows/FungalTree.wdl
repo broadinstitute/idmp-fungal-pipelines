@@ -342,7 +342,7 @@ task GenotypeGVCFs {
             -T GenotypeGVCFs \
             -R ${ref} \
             -o ${vcf_basename}.vcf.gz \
-            --variant ${vcf_file} \
+            --variant ${vcf_file}
     }
     output {
         File output_vcf_name = "${vcf_basename}.vcf.gz"

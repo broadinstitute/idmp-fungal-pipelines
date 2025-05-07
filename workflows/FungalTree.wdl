@@ -28,7 +28,7 @@
 workflow FungalTree {
     ## config params
     # input data
-    String run_name
+    String analysis_name
     File ref_gbff
     Array[String] input_samples
     Array[File] input_bams
@@ -42,7 +42,7 @@ workflow FungalTree {
     Int iqtree2_bootstraps = 1000
     Int alrt = 1000
     String? iqtree2_opts
-    String tree_name
+    #String tree_name
 
 
     call GbffToFasta {
@@ -114,7 +114,7 @@ workflow FungalTree {
         ref = GenerateRefFiles.reference_fasta,
         ref_dict = GenerateRefFiles.ref_dict,
         ref_index = GenerateRefFiles.ref_index,
-        output_filename = "${run_name}.hard_filtered.vcf.gz"
+        output_filename = "${analysis_name}.hard_filtered.vcf.gz"
     }
 
     call VCFToFasta {
@@ -129,7 +129,7 @@ workflow FungalTree {
         iqtree2_bootstraps = iqtree2_bootstraps,
         alrt = alrt,
         iqtree2_opts = iqtree2_opts,
-        cluster_name = tree_name
+        cluster_name = analysis_name
     }
 
     output {

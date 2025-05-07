@@ -16,8 +16,7 @@ This workflow combines multiple tools to perform:
 Dependencies
 ------------
 
-FungalTree imports the FungalVariantCallingGatk3 workflow from the Broad Institute's [fungal-wdl](https://github.com/broadinstitute/fungal-wdl/blob/master/gatk3/workflows/fungal_variant_calling_gatk3.wdl
-) repository.
+FungalTree imports the FungalVariantCallingGatk3 workflow from the Broad Institute's [fungal-wdl](https://github.com/broadinstitute/fungal-wdl/blob/master/gatk3/workflows/fungal_variant_calling_gatk3.wdl) repository.
 
 
 Modification to FungalVariantCallingGatk3
@@ -58,19 +57,6 @@ Inputs
 | alrt | Int | SH-like approximate likelihood ratio test replicates | 1000 |
 | iqtree2_opts | String? | Additional IQ-TREE2 parameters | Optional |
 
-### FungalVariantCallingGatk3 Inputs (as used in this workflow)
-
-| Input | Type | Description |
-| --- | --- | --- |
-| analysis_name | String | Name for the analysis run |
-| input_samples | Array[String] | Sample names |
-| input_bams | Array[File] | Pre-aligned BAM files |
-| reference_fasta | File | Reference genome in FASTA format |
-| ref_dict | File | Reference sequence dictionary |
-| ref_index | File | Reference FASTA index |
-| snp_filter_expr | String | GATK expression for SNP hard filtering |
-| indel_filter_expr | String | GATK expression for INDEL hard filtering |
-
 Outputs
 -------
 
@@ -82,12 +68,6 @@ Outputs
 | IqTree2_ml_tree | File | Maximum likelihood phylogenetic tree in Newick format |
 | IqTree2_run_date | String | Date when IQ-TREE2 was run |
 | IqTree2_model_used | String | Substitution model used by IQ-TREE2 |
-
-### FungalVariantCallingGatk3 Outputs (as used by FungalTree)
-
-| Output | Type | Description |
-| --- | --- | --- |
-| hard_filtered_gvcf | File | Filtered variant calls in gVCF format |
 
 ## Task Descriptions and Enhancements
 

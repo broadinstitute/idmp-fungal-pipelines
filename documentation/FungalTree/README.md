@@ -68,3 +68,132 @@ Constructs a robust phylogenetic tree from aligned variant sequences with statis
 - `iqtree2_model_used`: Substitution model used (either user-specified or inferred by ModelFinder)
 - `iqtree2_version`: IQ-TREE2 version string
 - `date`: Timestamp of the run
+
+
+
+FungalTree
+==========
+
+FungalTree is a WDL-based pipeline for variant calling and phylogenetic analysis in fungal haploid genomes. It uses a reference GenBank file and aligned BAM files to generate filtered variant calls and a maximum-likelihood phylogenetic tree via IQ-TREE2.
+
+Overview
+--------
+
+This workflow combines multiple tools to perform:
+
+1.  Reference preparation from GenBank format
+2.  Variant calling with GATK3
+3.  Conversion of VCF to multi-sequence alignment FASTA
+4.  Phylogenetic tree construction using IQ-TREE2
+
+Dependencies
+------------
+
+FungalTree imports the FungalVariantCallingGatk3 workflow from the Broad Institute's fungal-wdl repository:
+
+```
+https://github.com/broadinstitute/fungal-wdl/blob/master/gatk3/workflows/fungal_variant_calling_gatk3.wdl
+
+```
+
+Modification to FungalVariantCallingGatk3
+-----------------------------------------
+
+The original FungalVariantCallingGatk3 workflow includes alignment steps. In this adaptation, the workflow has been modified to:
+
+-   Skip the BWA alignment steps that were present in the original workflow
+-   Begin directly from pre-aligned BAM files
+-   Keep the variant calling and filtering functionality intact
+
+This modification improves efficiency when working with already aligned BAM files and focuses the workflow on variant calling and downstream analysis.
+
+Workflow Components
+-------------------
+
+1.  **GbffToFasta**: Converts GenBank file to FASTA format for use as reference
+2.  **GenerateRefFiles**: Creates necessary reference indices and dictionary files
+3.  **FungalVariantCallingGatk3**: Performs variant calling and filtering (using modified imported workflow)
+4.  **VCFToFasta**: Converts variant calls to a multi-sequence alignment FASTA
+5.  **IqTree2**: Generates a maximum likelihood phylogenetic tree
+
+Inputs
+------
+
+### FungalTree Workflow Inputs
+
+| Input | Type | Description | Default |
+| --- | --- | --- | --- |
+| analysis_name | String | Name for the analysis run |  |
+| ref_gbff | File | Reference genome in GenBank format |  |
+| input_samples | Array[String] | Sample names |  |
+| input_bams | Array[File] | Pre-aligned BAM files |  |
+| snp_filter_expr | String | GATK expression for SNP hard filtering |  |
+| indel_filter_expr | String | GATK expression for INDEL hard filtering |  |
+| iqtree2_model | String? | Substitution model for IQ-TREE2 | Optional |
+| iqtree2_bootstraps | Int | Number of ultrafast bootstrap replicates | 1000 |
+| alrt | Int | SH-like approximate likelihood ratio test replicates | 1000 |
+| iqtree2_opts | String? | Additional IQ-TREE2 parameters | Optional |
+
+### FungalVariantCallingGatk3 Inputs (as used in this workflow)
+
+| Input | Type | Description |
+| --- | --- | --- |
+| analysis_name | String | Name for the analysis run |
+| input_samples | Array[String] | Sample names |
+| input_bams | Array[File] | Pre-aligned BAM files |
+| reference_fasta | File | Reference genome in FASTA format |
+| ref_dict | File | Reference sequence dictionary |
+| ref_index | File | Reference FASTA index |
+| snp_filter_expr | String | GATK expression for SNP hard filtering |
+| indel_filter_expr | String | GATK expression for INDEL hard filtering |
+
+Outputs
+-------
+
+### FungalTree Workflow Outputs
+
+| Output | Type | Description |
+| --- | --- | --- |
+| hard_filtered_gvcf | File | Filtered variant calls in gVCF format |
+| IqTree2_ml_tree | File | Maximum likelihood phylogenetic tree in Newick format |
+| IqTree2_run_date | String | Date when IQ-TREE2 was run |
+| IqTree2_model_used | String | Substitution model used by IQ-TREE2 |
+
+### FungalVariantCallingGatk3 Outputs (as used by FungalTree)
+
+| Output | Type | Description |
+| --- | --- | --- |
+| hard_filtered_gvcf | File | Filtered variant calls in gVCF format |
+
+Example Usage
+-------------
+
+```
+java -jar cromwell.jar run FungalTree.wdl -i inputs.json
+
+```
+
+Where `inputs.json` might look like:
+
+```
+{
+  "FungalTree.analysis_name": "fungal_analysis_1",
+  "FungalTree.ref_gbff": "/path/to/reference.gbff",
+  "FungalTree.input_samples": ["sample1", "sample2", "sample3"],
+  "FungalTree.input_bams": ["/path/to/sample1.bam", "/path/to/sample2.bam", "/path/to/sample3.bam"],
+  "FungalTree.snp_filter_expr": "QD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0",
+  "FungalTree.indel_filter_expr": "QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0"
+}
+
+```
+
+Additional Notes
+----------------
+
+-   The workflow requires at least 4 samples to successfully run the phylogenetic tree analysis.
+-   IQ-TREE2 can automatically select an appropriate substitution model if none is specified.
+-   Common substitution models used with similar tools include:
+    -   HKY (Bactopia)
+    -   GTR+F+I (Grandeur)
+    -   GTR+G4 (Nullarbor)
+    -   GTR+G (Dryad)

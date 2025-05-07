@@ -329,7 +329,8 @@ task GenotypeGVCFs {
     File ref_index
     File vcf_file
     File vcf_index_file
-    String gvcf_out = "genotyped_gvcfs.vcf.gz"
+    String vcf_basename = basename(vcf_file, ".vcf.gz")
+
 
     Int disk_size = 100
     Int mem_size_gb = 30
@@ -340,12 +341,12 @@ task GenotypeGVCFs {
         java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
             -T GenotypeGVCFs \
             -R ${ref} \
-            -o ${gvcf_out} \
+            -o ${vcf_basename}.vcf.gz \
             --variant ${vcf_file} \
     }
     output {
-        File output_vcf_name = gvcf_out
-        File output_vcf_index_name = "${gvcf_out}.tbi"
+        File output_vcf_name = "${vcf_basename}.vcf.gz"
+        File output_vcf_index_name = "${vcf_basename}.vcf.gz"
     }
 
     runtime {

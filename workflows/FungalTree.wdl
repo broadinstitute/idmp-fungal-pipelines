@@ -835,11 +835,11 @@ task VCFToPhyloMatrix {
     Int memory = 32
   command <<<
     python3 /app/vcf2matrix.py \
-      -i ~{vcf_file} \
-      --output-prefix ~{output_prefix} \
-      --output-folder ~{output_folder} \
+      -i ${vcf_file} \
+      --output-prefix ${output_prefix} \
+      #--output-folder ${output_folder} \
       -f \
-      -m ~{min_samples_locus}
+      -m ${min_samples_locus}
 
   >>>
 

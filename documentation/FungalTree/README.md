@@ -37,3 +37,34 @@ This task prepares all required reference genome index files needed for downstre
 - `reference_fasta`: The input reference genome
 
 
+### Task: [VCFToFasta]()
+
+**Purpose:**
+This task converts a multi-sample VCF file into a multiple sequence alignment (MSA) FASTA format suitable for phylogenetic analysis.
+
+**Inputs:**
+- `vcf_file`: A gzipped multi-sample VCF file (.vcf.gz)
+
+**Outputs:**
+- `alignmnent_fasta`: MSA FASTA file containing genotype-based sequences per sample. The .min4.fasta suffix indicates a minimum of 4 alleles per site retained (as per the script’s default filtering behavior).
+
+
+
+### Task: [IqTree2]()
+
+**Purpose:**
+Constructs a robust phylogenetic tree from aligned variant sequences with statistical support values, forming the final output of the variant-to-tree workflow.
+
+**Inputs:**
+- `alignment`: FASTA file with aligned sequences (e.g. output from VCFToFasta)
+- `cluster_name`: Prefix for output tree filename
+- `iqtree2_model`:  Optional string. Substitution model to use. If not provided, IQ-TREE's ModelFinder will determine the best-fit model.
+- `iqtree2_bootstraps`: Number of ultrafast bootstrap replicates (default = 1000)
+- `alrt`: Number of SH-like approximate likelihood ratio test replicates (default = 1000)
+- `iqtree2_opts`: Optional String. User-supplied options for IQ-TREE
+
+**Outputs:**
+- `ml_tree`: Newick file containing the final phylogenetic tree (*_iqtree.nwk)
+- `iqtree2_model_used`: Substitution model used (either user-specified or inferred by ModelFinder)
+- `iqtree2_version`: IQ-TREE 2 version string
+- `date`: Timestamp of the run

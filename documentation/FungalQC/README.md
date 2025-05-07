@@ -2,6 +2,7 @@ FungalQC.wdl
 =========================
 
 This WDL workflow performs de novo genome assembly, taxonomic identification, and quality control of paired-end eukaryotic NGS data.\
+
 It is based on the [Theiagen TheiaEuk pipeline](https://theiagen.github.io/public_health_bioinformatics/latest/workflows/genomic_characterization/theiaeuk/), which provides detailed descriptions of the standard tasks and processes used.
 
 Workflow Overview
@@ -350,7 +351,6 @@ Additional Notes
 
 -   The workflow is designed for eukaryotic genomes, with default parameters optimized for fungal genomes.
 -   The default expected taxon is set to "Candidozyma auris" (Candida auris).
--   The workflow includes validation steps that can be turned off with the `skip_screen` parameter.
 -   Species-specific analysis is only performed when the identified organism matches the expected taxon.
 
 References

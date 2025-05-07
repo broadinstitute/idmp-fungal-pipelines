@@ -26,6 +26,12 @@
 
 
 workflow FungalTree {
+
+    meta {
+        description: "FungalTree is a WDL-based pipeline for variant calling and phylogenetic analysis in fungal haploid genomes, using a reference GenBank file and aligned BAM files to generate filtered variant calls and a maximum-likelihood phylogenetic tree via IQ-TREE2."
+        allowNestedInputs: true
+    }
+
     ## config params
     # input data
     String analysis_name
@@ -42,8 +48,6 @@ workflow FungalTree {
     Int iqtree2_bootstraps = 1000
     Int alrt = 1000
     String? iqtree2_opts
-    #String tree_name
-
 
     call GbffToFasta {
         input:
@@ -454,8 +458,6 @@ task HaplotypeCaller {
 
   String docker = "xiaoli2020/fungi-gatk3:v1.0"
 
-  String out = "${sample_name}.g.vcf"
-
   command {
     java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
       -T HaplotypeCaller \
@@ -470,7 +472,6 @@ task HaplotypeCaller {
   }
 
   output {
-      #To track additional outputs from your task, please manually add them below
       File output_gvcf = "${gvcf_name}"
       File output_gvcf_index = "${gvcf_index}"
   }
@@ -484,12 +485,10 @@ task HaplotypeCaller {
   }
 
   parameter_meta {
-      gatk: "Executable jar for the GenomeAnalysisTK"
       ref: "fasta file of reference genome"
       sample_name: "The name of the sample as indicated by the 1st column of the gatk.samples_file json input."
-      sample_dir: "The sample-specific directory inside output_dir for each sample."
-      in_bam: "The bam file to call HaplotypeCaller on."
-      out: "VCF file produced by haplotype caller."
+      input_bam: "The bam file to call HaplotypeCaller on."
+      output_gvcf: "VCF file produced by haplotype caller."
   }
 }
 
@@ -573,7 +572,6 @@ task IqTree2 {
     String iqtree2_version = read_string("VERSION")
     File ml_tree = "${cluster_name}_iqtree.nwk"
     String iqtree2_model_used = read_string("IQTREE2_MODEL.TXT")
-    String iqtree2_docker = docker
   }
   runtime {
     docker: docker

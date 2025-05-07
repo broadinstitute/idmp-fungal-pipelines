@@ -153,6 +153,7 @@ task GbffToFasta {
     String docker = "python:3.11-slim"
 
     command <<<
+        set -euo pipefail
         pip install biopython
         python <<CODE
 
@@ -188,6 +189,8 @@ task GenerateRefFiles {
     String docker = "us.gcr.io/broad-gotc-prod/samtools-picard-bwa:1.0.0-0.7.15-2.26.3-1634165082"
 
     command <<<
+        set -euo pipefail
+
         echo ${ref_fasta_basename}
 
         cp ${ref_fasta} ${ref_fasta_basename}.fasta

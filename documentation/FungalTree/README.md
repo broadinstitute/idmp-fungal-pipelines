@@ -30,7 +30,7 @@ The original FungalVariantCallingGatk3 workflow includes alignment steps. In thi
 
 This modification improves efficiency when working with already aligned BAM files and focuses the workflow on variant calling and downstream analysis.
 
-Workflow Components
+Workflow Tasks
 -------------------
 
 1.  **GbffToFasta**: Converts GenBank file to FASTA format for use as reference
@@ -134,10 +134,6 @@ Constructs a robust phylogenetic tree from aligned variant sequences with statis
 - `iqtree2_model_used`: Substitution model used (either user-specified or inferred by ModelFinder)
 - `iqtree2_version`: IQ-TREE2 version string
 - `date`: Timestamp of the run
-
-
-
-
 
 Additional Notes
 ----------------

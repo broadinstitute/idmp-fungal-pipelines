@@ -138,7 +138,7 @@ Constructs a robust phylogenetic tree from aligned variant sequences with statis
 Additional Notes
 ----------------
 
--   The workflow requires at least 4 samples to successfully run the phylogenetic tree analysis.
+-   The workflow requires at least 4 samples (genomes) to successfully run the phylogenetic tree analysis. The IqTree2 task specifically checks for this and will fail with an error message if fewer than 4 genomes are provided.
 -   IQ-TREE2 can automatically select an appropriate substitution model if none is specified.
 -   Common substitution models used with similar tools include:
     -   HKY (Bactopia)

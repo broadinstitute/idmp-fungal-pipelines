@@ -800,7 +800,7 @@ task IqTree2 {
   output {
     String date = read_string("DATE")
     String iqtree2_version = read_string("VERSION")
-    File ml_tree = "~{cluster_name}_iqtree.nwk"
+    File ml_tree = "${cluster_name}_iqtree.nwk"
     String iqtree2_model_used = read_string("IQTREE2_MODEL.TXT")
     String iqtree2_docker = docker
   }

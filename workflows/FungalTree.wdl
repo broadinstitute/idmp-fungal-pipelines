@@ -42,9 +42,9 @@ workflow FungalTree {
     Int iqtree2_bootstraps = 1000
     Int alrt = 1000
     String? iqtree2_opts
+    String tree_name
 
 
-    ## task calls
     call GbffToFasta {
         input:
             ref_gbff = ref_gbff
@@ -119,8 +119,9 @@ workflow FungalTree {
 
     call VCFToFasta {
         input:
-            vcf_file = HardFiltration.out
+        vcf_file = HardFiltration.out
     }
+
     call IqTree2 {
         input:
         alignment = VCFToFasta.alignmnent_fasta,
@@ -128,7 +129,7 @@ workflow FungalTree {
         iqtree2_bootstraps = iqtree2_bootstraps,
         alrt = alrt,
         iqtree2_opts = iqtree2_opts,
-        cpu = 4
+        cluster_name = tree_name
     }
 
     output {
@@ -139,7 +140,6 @@ workflow FungalTree {
     }
 }
 
-## TASK DEFINITIONS
 task GbffToFasta {
     File ref_gbff
     String ref_gbff_basename = basename(ref_gbff, ".fasta")
@@ -173,6 +173,7 @@ task GbffToFasta {
 
     }
 }
+
 task GenerateRefFiles {
     File ref_fasta
     File input_bam
@@ -298,7 +299,6 @@ task CombineGVCFs {
     Int disk_size = 100
     Int mem_size_gb = 30
     String docker = "xiaoli2020/fungi-gatk3:v1.0"
-
     Int cmd_mem_size_gb = mem_size_gb - 1
 
     command {
@@ -334,7 +334,6 @@ task GenotypeGVCFs {
     Int disk_size = 100
     Int mem_size_gb = 30
     String docker = "xiaoli2020/fungi-gatk3:v1.0"
-
     Int cmd_mem_size_gb = mem_size_gb - 1
 
     command {

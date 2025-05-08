@@ -28,7 +28,6 @@
 workflow FungalVariantCallingGatk3 {
 
     meta {
-        description: ""
         allowNestedInputs: "true"
     }
 

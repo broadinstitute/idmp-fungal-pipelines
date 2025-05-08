@@ -71,7 +71,7 @@ Workflow Outputs
 
 ## Task Descriptions and Enhancements
 
-### Task: [GbffToFasta]()
+### Task: [GbffToFasta](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/workflows/FungalTree.wdl#L74)
 
 **Purpose:**
 Convert a GenBank-format reference file to a FASTA format for downstream processing.
@@ -83,7 +83,7 @@ Convert a GenBank-format reference file to a FASTA format for downstream process
 - `reference_fasta`: Reference genome in FASTA format.
 
 
-### Task: [GenerateRefFiles]()
+### Task: [GenerateRefFiles](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/workflows/FungalTree.wdl#L109)
 
 **Purpose:**
 This task prepares all required reference genome index files needed for downstream tools including BWA, Samtools, and Picard.
@@ -103,7 +103,7 @@ This task prepares all required reference genome index files needed for downstre
 - `reference_fasta`: The input reference genome
 
 
-### Task: [VCFToFasta]()
+### Task: [VCFToFasta](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/workflows/FungalTree.wdl#L234)
 
 **Purpose:**
 This task converts a multi-sample VCF file into a multiple sequence alignment (MSA) FASTA format suitable for phylogenetic analysis.
@@ -116,7 +116,7 @@ This task converts a multi-sample VCF file into a multiple sequence alignment (M
 
 
 
-### Task: [IqTree2]()
+### Task: [IqTree2](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/workflows/FungalTree.wdl#L151)
 
 **Purpose:**
 Constructs a robust phylogenetic tree from aligned variant sequences with statistical support values, forming the final output of the variant-to-tree workflow.

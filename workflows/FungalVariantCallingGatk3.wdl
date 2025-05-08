@@ -32,8 +32,6 @@ import "../tasks/gene_typing/variant_detection/task_GenotypeGVCFs.wdl" as Genoty
 import "../tasks/gene_typing/variant_detection/task_HardFiltration.wdl" as HardFiltration
 
 
-
-
 workflow FungalVariantCallingGatk3 {
 
     meta {
@@ -52,8 +50,6 @@ workflow FungalVariantCallingGatk3 {
     # hard filtering params: both of these params are required
     String snp_filter_expr
     String indel_filter_expr
-
-
 
     # run pipeline on each sample, in parallel
     scatter(i in range(length(input_samples))) {

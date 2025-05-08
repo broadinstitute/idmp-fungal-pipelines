@@ -8,3 +8,7 @@ workflows:
   - name: FungalTree
     subclass: WDL
     primaryDescriptorPath: /workflows/FungalTree.wdl
+
+  - name: FungalVariantCallingGatk3
+    subclass: WDL
+    primaryDescriptorPath: /workflows/FungalVariantCallingGatk3.wdl

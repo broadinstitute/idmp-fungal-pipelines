@@ -15,8 +15,10 @@ import "../tasks/taxon_id/task_kraken2.wdl" as kraken2_task
 import "../tasks/quality_control/advanced_metrics/task_EukCC.wdl" as eukcc_task
 
 workflow theiaeuk_illumina_pe {
+
     meta {
         description: "De-novo genome assembly, taxonomic ID, and QC of paired-end eukaryotic NGS data"
+        allowNestedInputs: "true"
     }
     input {
         String samplename

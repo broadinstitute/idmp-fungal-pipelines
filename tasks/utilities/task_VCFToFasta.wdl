@@ -6,10 +6,10 @@ task VCFToFasta {
     Int disk_size = 50
     Int memory = 16
     command <<<
-        python3 /app/vcf2matrix.py \
-        -f \
-        -i ${vcf_file} \
-        --output-prefix ${vcf_basename}
+    python3 /app/vcf2matrix.py \
+      -f \
+      -i ${vcf_file} \
+      --output-prefix ${vcf_basename}
     >>>
     output {
         File alignment_fasta = "${vcf_basename}.min4.fasta"

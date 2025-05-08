@@ -11,9 +11,9 @@ task MarkDuplicates {
         set -euo pipefail
 
         java -Xmx${mem_size_gb}G -jar /opt/picard.jar MarkDuplicates \
-        I=${sorted_bam} \
-        O=${sample_name}.marked_duplicates.bam \
-        M=${sample_name}.marked_duplicates.metrics
+            I=${sorted_bam} \
+            O=${sample_name}.marked_duplicates.bam \
+            M=${sample_name}.marked_duplicates.metrics
     }
 
     output {

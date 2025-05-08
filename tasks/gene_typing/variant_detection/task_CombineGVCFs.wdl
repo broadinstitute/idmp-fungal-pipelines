@@ -15,10 +15,10 @@ task CombineGVCFs {
 
     command {
         java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
-        -T CombineGVCFs \
-        -R ${ref} \
-        -o ${gvcf_out} \
-        --variant ${sep=" --variant " vcf_files}
+            -T CombineGVCFs \
+            -R ${ref} \
+            -o ${gvcf_out} \
+            --variant ${sep=" --variant " vcf_files}
     }
     output {
         File out = gvcf_out

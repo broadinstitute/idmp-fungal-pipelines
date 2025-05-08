@@ -11,15 +11,15 @@ task ReorderBam {
     Int cmd_mem_size_gb = mem_size_gb - 1
 
     command {
-        # reorder bam
+        #reorder bam
         java -Xmx${cmd_mem_size_gb}G -jar /opt/picard.jar ReorderSam \
-        I=${bam} \
-        O=${bam_prefix}.reordered.bam \
-        R=${ref}
+            I=${bam} \
+            O=${bam_prefix}.reordered.bam \
+            R=${ref}
 
         # then index
         java -Xmx${cmd_mem_size_gb}G -jar /opt/picard.jar BuildBamIndex \
-        I=${bam_prefix}.reordered.bam
+            I=${bam_prefix}.reordered.bam
     }
 
     output {

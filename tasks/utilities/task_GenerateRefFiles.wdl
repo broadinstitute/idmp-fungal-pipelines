@@ -8,17 +8,14 @@ task GenerateRefFiles {
     String docker = "us.gcr.io/broad-gotc-prod/samtools-picard-bwa:1.0.0-0.7.15-2.26.3-1634165082"
 
     command <<<
-        set -euo pipefail
+       set -euo pipefail
+       cp ${ref_fasta} ${ref_fasta_basename}.fasta
 
-        echo ${ref_fasta_basename}
+       /usr/gitc/bwa index ${ref_fasta_basename}.fasta
 
-        cp ${ref_fasta} ${ref_fasta_basename}.fasta
-        /usr/gitc/bwa index ${ref_fasta_basename}.fasta
+       java -Xms1000m -Xmx1000m  -jar /usr/gitc/picard.jar CreateSequenceDictionary R=${ref_fasta_basename}.fasta O=${ref_fasta_basename}.dict
 
-        java -Xms1000m -Xmx1000m  -jar /usr/gitc/picard.jar CreateSequenceDictionary R=${ref_fasta_basename}.fasta O=${ref_fasta_basename}.dict
-
-        samtools faidx ${ref_fasta_basename}.fasta
-
+       samtools faidx ${ref_fasta_basename}.fasta
 
     >>>
     output {

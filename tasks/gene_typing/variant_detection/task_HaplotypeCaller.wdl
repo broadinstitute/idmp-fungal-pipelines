@@ -18,15 +18,15 @@ task HaplotypeCaller {
 
     command {
         java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
-        -T HaplotypeCaller \
-        -R ${ref} \
-        -I ${input_bam} \
-        -o ${gvcf_name} \
-        -ERC "GVCF" \
-        -ploidy 1 \
-        -variant_index_type LINEAR \
-        -variant_index_parameter 128000 \
-        --read_filter OverclippedRead
+            -T HaplotypeCaller \
+            -R ${ref} \
+            -I ${input_bam} \
+            -o ${gvcf_name} \
+            -ERC "GVCF" \
+            -ploidy 1 \
+            -variant_index_type LINEAR \
+            -variant_index_parameter 128000 \
+            --read_filter OverclippedRead
     }
 
     output {

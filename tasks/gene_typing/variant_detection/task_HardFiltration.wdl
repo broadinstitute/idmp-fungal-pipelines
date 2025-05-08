@@ -21,46 +21,46 @@ task HardFiltration {
     command {
         # select snps
         java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
-        -T SelectVariants \
-        -R ${ref} \
-        -V ${vcf} \
-        -selectType SNP \
-        -o raw_snps.g.vcf
+            -T SelectVariants \
+            -R ${ref} \
+            -V ${vcf} \
+            -selectType SNP \
+            -o raw_snps.g.vcf
 
         # filter snps
         java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
-        -T VariantFiltration \
-        -R ${ref} \
-        -V ${vcf} \
-        --filterExpression "${snp_filter_expr}" \
-        --filterName "snp_filter" \
-        -o filtered_snps.g.vcf
+            -T VariantFiltration \
+            -R ${ref} \
+            -V ${vcf} \
+            --filterExpression "${snp_filter_expr}" \
+            --filterName "snp_filter" \
+            -o filtered_snps.g.vcf
 
         # select indels
         java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
-        -T SelectVariants \
-        -R ${ref} \
-        -V ${vcf} \
-        -selectType INDEL \
-        -o raw_indels.g.vcf
+           -T SelectVariants \
+           -R ${ref} \
+           -V ${vcf} \
+           -selectType INDEL \
+           -o raw_indels.g.vcf
 
         # filter indels
         java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
-        -T VariantFiltration \
-        -R ${ref} \
-        -V ${vcf} \
-        --filterExpression "${indel_filter_expr}" \
-        --filterName "indel_filter" \
-        -o filtered_indels.g.vcf
+            -T VariantFiltration \
+            -R ${ref} \
+            -V ${vcf} \
+            --filterExpression "${indel_filter_expr}" \
+            --filterName "indel_filter" \
+            -o filtered_indels.g.vcf
 
         # combine variants
         java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar\
-        -T CombineVariants \
-        -R ${ref} \
-        --variant filtered_snps.g.vcf \
-        --variant filtered_indels.g.vcf \
-        -o ${output_filename} \
-        --genotypemergeoption UNSORTED
+            -T CombineVariants \
+            -R ${ref} \
+            --variant filtered_snps.g.vcf \
+            --variant filtered_indels.g.vcf \
+            -o ${output_filename} \
+            --genotypemergeoption UNSORTED
     }
 
     output {

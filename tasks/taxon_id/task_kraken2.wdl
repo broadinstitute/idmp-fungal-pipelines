@@ -9,7 +9,7 @@ task kraken2 {
         String? kraken2_db_path
         Int cpu = 4
         Int memory = 32
-        String docker = "us.gcr.io/broad-gotc-prod/kraken2/kraken2:1.0.0"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/kraken2:1.0.0"
     }
     command <<<
         set -euo pipefail

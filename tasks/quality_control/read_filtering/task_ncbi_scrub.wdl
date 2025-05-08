@@ -5,7 +5,7 @@ task ncbi_scrub_pe {
         File read1
         File read2
         String samplename
-        String docker = "us-docker.pkg.dev/general-theiagen/ncbi/sra-human-scrubber:2.2.1"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/sra-human-scrubber:2.2.1"
         Int disk_size = 100
         Int memory = 8
         Int cpu = 4
@@ -83,7 +83,7 @@ task ncbi_scrub_se {
     input {
         File read1
         String samplename
-        String docker = "us-docker.pkg.dev/general-theiagen/ncbi/sra-human-scrubber:2.2.1"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/sra-human-scrubber:2.2.1"
         Int disk_size = 100
         Int memory = 8
         Int cpu = 4

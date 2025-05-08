@@ -6,7 +6,7 @@ task bam_filter_fixmates {
         String output_prefix
         Int cpu = 2
         Int memory = 8
-        String docker = "staphb/samtools:1.19"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/samtools:1.19"
     }
 
     command <<<

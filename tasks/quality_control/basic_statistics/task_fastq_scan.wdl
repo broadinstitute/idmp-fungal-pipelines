@@ -7,7 +7,7 @@ task fastq_scan_pe {
         String read1_name = basename(basename(basename(read1, ".gz"), ".fastq"), ".fq")
         String read2_name = basename(basename(basename(read2, ".gz"), ".fastq"), ".fq")
         Int disk_size = 50
-        String docker = "us-docker.pkg.dev/general-theiagen/biocontainers/fastq-scan:1.0.1--h4ac6f70_3"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fastq-scan:1.0.1--h4ac6f70_3"
         Int memory = 2
         Int cpu = 1
     }
@@ -81,7 +81,7 @@ task fastq_scan_se {
         Int disk_size = 50
         Int memory = 2
         Int cpu = 1
-        String docker = "us-docker.pkg.dev/general-theiagen/biocontainers/fastq-scan:1.0.1--h4ac6f70_3"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fastq-scan:1.0.1--h4ac6f70_3"
     }
     command <<<
         # exit task in case anything fails in one-liners or variables are unset

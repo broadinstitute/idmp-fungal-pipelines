@@ -8,7 +8,7 @@ task cauris_cladetyper {
 
         Int cpu = 8
         Int disk_size = 100
-        String docker = "us-docker.pkg.dev/general-theiagen/biocontainers/hesslab-gambit:0.5.1--py37h8902056_0"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/hesslab-gambit:0.5.1--py37h8902056_0"
         Int memory = 16
 
         File ref_clade1 = "gs://theiagen-public-files/terra/candida_auris_refs/Cauris_Clade1_GCA_002759435.2_Cand_auris_B8441_V2_genomic.fasta"

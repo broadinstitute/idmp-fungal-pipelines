@@ -17,7 +17,7 @@ task check_reads {
 
         Int cpu = 1
         Int disk_size = 100
-        String docker = "us-docker.pkg.dev/general-theiagen/bactopia/gather_samples:2.0.2"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/gather_samples:2.0.2"
         Int memory = 2
     }
     command <<<
@@ -188,7 +188,7 @@ task check_reads_se {
 
         Int cpu = 1
         Int disk_size = 100
-        String docker = "us-docker.pkg.dev/general-theiagen/bactopia/gather_samples:2.0.2"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/gather_samples:2.0.2"
         Int memory = 2
     }
     command <<<

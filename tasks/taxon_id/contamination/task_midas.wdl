@@ -7,7 +7,7 @@ task midas {
         File midas_db = "gs://theiagen-large-public-files-rp/terra/theiaprok-files/midas/midas_db_v1.2.tar.gz"
         Int disk_size = 100
         String samplename
-        String docker = "us-docker.pkg.dev/general-theiagen/fhcrc-microbiome/midas:v1.3.2--6"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/midas:v1.3.2--6"
         Int memory = 4
         Int cpu = 4
     }

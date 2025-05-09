@@ -10,7 +10,7 @@ task kraken2_theiacov {
         Int memory = 8
         String? target_organism
         Int disk_size = 100
-        String docker_image = "us-docker.pkg.dev/general-theiagen/staphb/kraken2:2.1.2-no-db"
+        String docker_image = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/kraken2:2.1.2-no-db"
     }
     command <<<
         # date and version control
@@ -101,7 +101,7 @@ task kraken2_standalone {
         File? read2
         File kraken2_db
         String samplename
-        String docker = "us-docker.pkg.dev/general-theiagen/staphb/kraken2:2.1.2-no-db"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/kraken2:2.1.2-no-db"
         String kraken2_args = ""
         String classified_out = "classified#.fastq"
         String unclassified_out = "unclassified#.fastq"

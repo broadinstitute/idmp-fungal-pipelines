@@ -5,7 +5,7 @@ task fastp_pe {
         File read1
         File read2
         String samplename
-        String docker = "us-docker.pkg.dev/general-theiagen/staphb/fastp:0.23.2"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fastp:0.23.2"
         Int disk_size = 100
         Int fastp_window_size = 20
         Int fastp_quality_trim_score = 30
@@ -53,7 +53,7 @@ task fastp_se {
     input {
         File read1
         String samplename
-        String docker = "us-docker.pkg.dev/general-theiagen/staphb/fastp:0.23.2"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fastp:0.23.2"
         Int disk_size = 100
         Int fastp_window_size = 20
         Int fastp_quality_trim_score = 30

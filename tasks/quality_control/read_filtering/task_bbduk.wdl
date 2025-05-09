@@ -7,7 +7,7 @@ task bbduk {
         String samplename
         Int memory = 8
         Int cpu = 4
-        String docker = "us-docker.pkg.dev/general-theiagen/staphb/bbtools:38.76"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/bbtools:38.76"
         Int disk_size = 100
         File? adapters
         File? phix
@@ -63,7 +63,7 @@ task bbduk_se {
     input {
         File read1_trimmed
         String samplename
-        String docker = "us-docker.pkg.dev/general-theiagen/staphb/bbtools:38.76"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/bbtools:38.76"
         Int memory = 8
         Int cpu = 4
         Int disk_size = 100

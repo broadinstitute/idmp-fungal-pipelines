@@ -6,7 +6,7 @@ task IqTree2 {
     Int alrt = 1000 # SH-like approximate likelihood ratio test (SH-aLRT) replicates
     String? iqtree2_opts
 
-    String docker = "us-docker.pkg.dev/general-theiagen/staphb/iqtree2:2.1.2"
+    String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/iqtree2:2.1.2"
     Int disk_size = 50
     Int cpu = 4
     Int memory = 32

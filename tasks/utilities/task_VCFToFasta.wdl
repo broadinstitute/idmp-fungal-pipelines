@@ -15,7 +15,7 @@ task VCFToFasta {
         File alignment_fasta = "${vcf_basename}.min4.fasta"
     }
     runtime {
-        docker: "us.gcr.io/broad-gotc-prod/vcftomsa:1.0.0"
+        docker: "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/vcftomsa:1.0.0"
         memory: memory + " GB"
         cpu: cpu
         disks: "local-disk " + disk_size + " HDD"

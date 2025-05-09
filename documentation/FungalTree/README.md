@@ -71,7 +71,7 @@ Workflow Outputs
 
 ## Task Descriptions and Enhancements
 
-### Task: [GbffToFasta](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/workflows/FungalTree.wdl#L74)
+### Task: [GbffToFasta](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/tasks/utilities/task_GbffToFasta.wdl)
 
 **Purpose:**
 Convert a GenBank-format reference file to a FASTA format for downstream processing.
@@ -83,7 +83,7 @@ Convert a GenBank-format reference file to a FASTA format for downstream process
 - `reference_fasta`: Reference genome in FASTA format.
 
 
-### Task: [GenerateRefFiles](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/workflows/FungalTree.wdl#L109)
+### Task: [GenerateRefFiles](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/tasks/utilities/task_GenerateRefFiles.wdl)
 
 **Purpose:**
 This task prepares all required reference genome index files needed for downstream tools including BWA, Samtools, and Picard.
@@ -103,7 +103,7 @@ This task prepares all required reference genome index files needed for downstre
 - `reference_fasta`: The input reference genome
 
 
-### Task: [VCFToFasta](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/workflows/FungalTree.wdl#L234)
+### Task: [VCFToFasta](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/tasks/utilities/task_VCFToFasta.wdl)
 
 **Purpose:**
 This task converts a multi-sample VCF file into a multiple sequence alignment (MSA) FASTA format suitable for phylogenetic analysis.
@@ -116,7 +116,7 @@ This task converts a multi-sample VCF file into a multiple sequence alignment (M
 
 
 
-### Task: [IqTree2](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/workflows/FungalTree.wdl#L151)
+### Task: [IqTree2](https://github.com/broadinstitute/idmp-fungal-pipelines/blob/main/tasks/species_typing/task_IqTree2.wdl)
 
 **Purpose:**
 Constructs a robust phylogenetic tree from aligned variant sequences with statistical support values, forming the final output of the variant-to-tree workflow.

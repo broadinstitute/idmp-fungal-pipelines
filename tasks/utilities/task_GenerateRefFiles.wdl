@@ -5,7 +5,7 @@ task GenerateRefFiles {
 
     Int disk_size = 50
     Int mem_size_gb = 16
-    String docker = "us.gcr.io/broad-gotc-prod/samtools-picard-bwa:1.0.0-0.7.15-2.26.3-1634165082"
+    String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/samtools-picard-bwa:1.0.0-0.7.15-2.26.3-1634165082"
 
     command <<<
        set -euo pipefail

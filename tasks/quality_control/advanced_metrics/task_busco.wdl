@@ -7,7 +7,7 @@ task busco {
     input {
         File assembly
         String samplename
-        String docker = "us-docker.pkg.dev/general-theiagen/ezlabgva/busco:v5.7.1_cv1"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/busco:v5.7.1_cv1"
         Int memory = 8
         Int cpu = 2
         Int disk_size = 100

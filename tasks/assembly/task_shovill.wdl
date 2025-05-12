@@ -5,7 +5,7 @@ task shovill_pe {
         File read1_cleaned
         File read2_cleaned
         String samplename
-        String docker = "us-docker.pkg.dev/general-theiagen/staphb/shovill:1.1.0"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/shovill:1.1.0"
         Int disk_size = 100
         Int cpu = 4
         Int memory = 16

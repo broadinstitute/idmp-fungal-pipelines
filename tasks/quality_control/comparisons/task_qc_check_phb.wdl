@@ -55,7 +55,7 @@ task qc_check_phb {
         Int disk_size = 100
         Int memory = 8
         Int cpu = 4
-        String docker = "us-docker.pkg.dev/general-theiagen/theiagen/terra-tools:2023-03-16"
+        String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/terra-tools:2023-03-16"
     }
     command <<<
         python3 <<CODE

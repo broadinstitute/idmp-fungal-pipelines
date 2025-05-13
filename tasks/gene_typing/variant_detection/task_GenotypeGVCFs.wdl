@@ -16,15 +16,15 @@ task GenotypeGVCFs {
     }
 
     command {
-        java -Xmx${cmd_mem_size_mb}M -jar /opt/GenomeAnalysisTK.jar \
+        java -Xmx~{cmd_mem_size_mb}M -jar /opt/GenomeAnalysisTK.jar \
             -T GenotypeGVCFs \
-            -R ${ref} \
-            -o ${vcf_basename}.vcf.gz \
-            --variant ${vcf_file}
+            -R ~{ref} \
+            -o ~{vcf_basename}.vcf.gz \
+            --variant ~{vcf_file}
     }
     output {
-        File output_vcf_name = "${vcf_basename}.vcf.gz"
-        File output_vcf_index_name = "${vcf_basename}.vcf.gz.tbi"
+        File output_vcf_name = "~{vcf_basename}.vcf.gz"
+        File output_vcf_index_name = "~{vcf_basename}.vcf.gz.tbi"
     }
 
     runtime {

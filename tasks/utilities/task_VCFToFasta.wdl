@@ -7,8 +7,6 @@ task VCFToFasta {
 
     String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/vcftomsa:1.0.0"
     Int cpu = 4
-    #Int disk_size = 50
-    #Int memory = 16
 
     Int disk_size_gb = ceil((size(vcf_file, "GiB")) * 2) + 20
     Int memory_mb = ceil(size(vcf_file, "MiB") * 2) + 20000
@@ -16,11 +14,11 @@ task VCFToFasta {
     command <<<
     python3 /app/vcf2matrix.py \
       -f \
-      -i ${vcf_file} \
-      --output-prefix ${vcf_basename}
+      -i ~{vcf_file} \
+      --output-prefix ~{vcf_basename}
     >>>
     output {
-        File alignment_fasta = "${vcf_basename}.min4.fasta"
+        File alignment_fasta = "~{vcf_basename}.min4.fasta"
     }
     runtime {
         docker: docker

@@ -14,7 +14,7 @@ task HaplotypeCaller {
     Int mem_size_gb = 30
     Int cmd_mem_size_gb = mem_size_gb - 1
 
-    String docker = "xiaoli2020/fungi-gatk3:v1.0"
+    String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fungi-gatk3:v1.0"
 
     command {
         java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \

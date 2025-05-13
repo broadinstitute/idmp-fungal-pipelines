@@ -13,7 +13,8 @@ task CombineGVCFs {
 
         String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fungi-gatk3:v1.0"
         Int disk_size_gb = ceil(size(vcf_files, "GiB") * 2) + 10
-        Int memory_mb = ceil(size(vcf_files, "MiB") * 2.5) + 40000
+        #Int memory_mb = ceil(size(vcf_files, "MiB") * 2.5) + 40000
+        Int memory_mb = 40000
 
     }
     Int cmd_mem_size_mb = memory_mb - 1000

@@ -1,6 +1,11 @@
 version 1.0
 
 task CombineGVCFs {
+
+    meta {
+        allowNestedInputs: "true"
+    }
+
     input {
         File ref
         File ref_dict

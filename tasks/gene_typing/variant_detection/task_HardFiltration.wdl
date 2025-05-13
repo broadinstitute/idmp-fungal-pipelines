@@ -1,6 +1,11 @@
 version 1.0
 
 task HardFiltration {
+
+    meta {
+        allowNestedInputs: "true"
+    }
+
     input {
     # hard-filter a vcf, if vqsr not available
     # http://gatkforums.broadinstitute.org/gatk/discussion/2806/howto-apply-hard-filters-to-a-call-set

@@ -1,6 +1,11 @@
 version 1.0
 
 task GenotypeGVCFs {
+
+    meta {
+        allowNestedInputs: "true"
+    }
+
     input {
     File ref
     File ref_dict

@@ -1,6 +1,11 @@
 version 1.0
 
 task MarkDuplicates {
+
+    meta {
+        allowNestedInputs: "true"
+    }
+
     input {
     File sorted_bam
     String sample_name

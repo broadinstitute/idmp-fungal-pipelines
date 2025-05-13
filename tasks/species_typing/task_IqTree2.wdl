@@ -1,4 +1,7 @@
+version 1.0
+
 task IqTree2 {
+    input {
     File alignment
     String cluster_name
     String? iqtree2_model # For comparison to other tools use HKY for bactopia, GTR+F+I for grandeur, GTR+G4 for nullarbor, GTR+G for dryad
@@ -12,7 +15,7 @@ task IqTree2 {
     #Int memory = 32
     Int disk_size_gb = ceil((size(alignment, "GiB")) * 2) + 20
     Int memory_mb = ceil(size(alignment, "MiB") * 2) + 20000
-
+    }
     command <<<
         # Date and version control
         date | tee DATE

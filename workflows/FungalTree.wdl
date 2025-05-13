@@ -1,3 +1,5 @@
+version 1.0
+
 import "../workflows/FungalVariantCallingGatk3.wdl" as FungalVariantCallingGatk3
 import "../tasks/utilities/task_GbffToFasta.wdl" as GbffToFasta
 import "../tasks/utilities/task_GenerateRefFiles.wdl" as GenerateRefFiles
@@ -14,6 +16,8 @@ workflow FungalTree {
 
     ## config params
     # input data
+    input {
+
     String analysis_name
     File ref_gbff
     Array[String] input_samples
@@ -28,6 +32,7 @@ workflow FungalTree {
     Int iqtree2_bootstraps = 1000
     Int alrt = 1000
     String? iqtree2_opts
+    }
 
     call GbffToFasta.GbffToFasta as GbffToFasta {
         input:

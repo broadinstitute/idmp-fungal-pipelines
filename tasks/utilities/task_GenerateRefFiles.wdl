@@ -1,4 +1,7 @@
+version 1.0
+
 task GenerateRefFiles {
+    input {
     File ref_fasta
     File input_bam
     String ref_fasta_basename = basename(ref_fasta, ".fasta")
@@ -6,7 +9,7 @@ task GenerateRefFiles {
     Int disk_size = 50
     Int mem_size_gb = 16
     String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/samtools-picard-bwa:1.0.0-0.7.15-2.26.3-1634165082"
-
+    }
     command <<<
        set -euo pipefail
        cp ${ref_fasta} ${ref_fasta_basename}.fasta

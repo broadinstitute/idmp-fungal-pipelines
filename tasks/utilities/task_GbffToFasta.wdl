@@ -1,10 +1,14 @@
+version 1.0
+
 task GbffToFasta {
+    input {
     File ref_gbff
     String ref_gbff_basename = basename(ref_gbff, ".fasta")
 
     Int disk_size = 50
     Int mem_size_gb = 16
     String docker = "python:3.11-slim"
+    }
 
     command <<<
         set -euo pipefail

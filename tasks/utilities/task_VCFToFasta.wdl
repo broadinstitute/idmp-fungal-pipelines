@@ -1,4 +1,7 @@
+version 1.0
+
 task VCFToFasta {
+    input {
     File vcf_file
     String vcf_basename = basename(vcf_file, ".vcf.gz")
 
@@ -9,6 +12,7 @@ task VCFToFasta {
 
     Int disk_size_gb = ceil((size(vcf_file, "GiB")) * 2) + 20
     Int memory_mb = ceil(size(vcf_file, "MiB") * 2) + 20000
+    }
     command <<<
     python3 /app/vcf2matrix.py \
       -f \

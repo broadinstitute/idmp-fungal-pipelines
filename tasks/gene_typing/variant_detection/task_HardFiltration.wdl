@@ -1,5 +1,7 @@
+version 1.0
 
 task HardFiltration {
+    input {
     # hard-filter a vcf, if vqsr not available
     # http://gatkforums.broadinstitute.org/gatk/discussion/2806/howto-apply-hard-filters-to-a-call-set
     File ref
@@ -18,6 +20,7 @@ task HardFiltration {
 
 
     Int cmd_mem_size_mb = memory_mb - 1000
+    }
 
     command {
         # select snps

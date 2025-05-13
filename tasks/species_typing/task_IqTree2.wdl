@@ -7,9 +7,11 @@ task IqTree2 {
     String? iqtree2_opts
 
     String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/iqtree2:2.1.2"
-    Int disk_size = 50
-    Int cpu = 4
-    Int memory = 32
+    #Int disk_size = 50
+    Int cpu = 8
+    #Int memory = 32
+    Int disk_size_gb = ceil((size(alignment, "GiB")) * 2) + 20
+    Int memory_mb = ceil(size(alignment, "MiB") * 2) + 20000
 
     command <<<
         # Date and version control
@@ -70,10 +72,10 @@ task IqTree2 {
     }
     runtime {
         docker: docker
-        memory: memory + " GB"
+        memory: memory_mb + " MiB"
         cpu: cpu
-        disks: "local-disk " + disk_size + " HDD"
-        disk: disk_size + " GB"
+        disks: "local-disk " + disk_size_gb + " HDD"
+        disk: disk_size_gb + " GB"
         preemptible: 0
     }
 }

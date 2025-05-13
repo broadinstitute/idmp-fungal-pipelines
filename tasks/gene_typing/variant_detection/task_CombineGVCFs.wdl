@@ -8,13 +8,13 @@ task CombineGVCFs {
     String gvcf_out = "combined_gvcfs.vcf.gz"
     String gvcf_out_index = "combined_gvcfs.vcf.gz.tbi"
 
-    Int disk_size = 100
-    Int mem_size_gb = 30
     String docker = "xiaoli2020/fungi-gatk3:v1.0"
-    Int cmd_mem_size_gb = mem_size_gb - 1
+    Int disk_size_gb = ceil(size(vcf_files, "GiB") * 2) + 10
+    Int memory_mb = ceil(size(vcf_files, "MiB") * 2.5) + 40000
+    Int cmd_mem_size_mb = memory_mb - 1000
 
     command {
-        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
+        java -Xmx${cmd_mem_size_mb}M -jar /opt/GenomeAnalysisTK.jar \
             -T CombineGVCFs \
             -R ${ref} \
             -o ${gvcf_out} \
@@ -28,7 +28,7 @@ task CombineGVCFs {
     runtime {
         preemptible: 4
         docker: docker
-        memory: mem_size_gb + " GB"
-        disks: "local-disk " + disk_size + " HDD"
+        memory: memory_mb + " MiB"
+        disks: "local-disk " + disk_size_gb + " HDD"
     }
 }

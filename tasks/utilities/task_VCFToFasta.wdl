@@ -4,8 +4,11 @@ task VCFToFasta {
 
     String docker = "us.gcr.io/broad-gotc-prod/vcftomsa:1.0.0"
     Int cpu = 4
-    Int disk_size = 50
-    Int memory = 16
+    #Int disk_size = 50
+    #Int memory = 16
+
+    Int disk_size_gb = ceil((size(vcf_file, "GiB")) * 2) + 20
+    Int memory_mb = ceil(size(vcf_file, "MiB") * 2) + 20000
     command <<<
     python3 /app/vcf2matrix.py \
       -f \
@@ -17,10 +20,10 @@ task VCFToFasta {
     }
     runtime {
         docker: docker
-        memory: memory + " GB"
+        memory: memory_mb + " MiB"
         cpu: cpu
-        disks: "local-disk " + disk_size + " HDD"
-        disk: disk_size + " GB"
+        disks: "local-disk " + disk_size_gb + " HDD"
+        disk: disk_size_gb + " GB"
         preemptible: 0
     }
 }

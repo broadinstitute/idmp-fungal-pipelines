@@ -2,7 +2,7 @@ task VCFToFasta {
     File vcf_file
     String vcf_basename = basename(vcf_file, ".vcf.gz")
 
-    String docker = "us.gcr.io/broad-gotc-prod/vcftomsa:1.0.0"
+    String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/vcftomsa:1.0.0"
     Int cpu = 4
     Int disk_size = 50
     Int memory = 16

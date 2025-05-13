@@ -15,17 +15,17 @@ task GbffToFasta {
         pip install biopython
         python <<CODE
         from Bio import SeqIO
-        input_file = "${ref_gbff}"
-        output_file = "${ref_gbff_basename}.fasta"
+        input_file = "~{ref_gbff}"
+        output_file = "~{ref_gbff_basename}.fasta"
         with open(output_file, "w") as out_fasta:
             for record in SeqIO.parse(input_file, "genbank"):
                  SeqIO.write(record, out_fasta, "fasta")
         CODE
         # strip the .1 in the reference sequence name
-        sed -i -E 's/^(>[^ ]+)\.[0-9]+/\1/' "${ref_gbff_basename}.fasta"
+        sed -i -E 's/^(>[^ ]+)\.[0-9]+/\1/' "~{ref_gbff_basename}.fasta"
     >>>
     output {
-        File reference_fasta =  "${ref_gbff_basename}.fasta"
+        File reference_fasta =  "~{ref_gbff_basename}.fasta"
     }
     runtime {
         docker: docker

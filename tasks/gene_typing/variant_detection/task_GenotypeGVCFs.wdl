@@ -14,14 +14,20 @@ task GenotypeGVCFs {
     File vcf_index_file
     String vcf_basename = basename(vcf_file, ".vcf.gz")
 
-    Int disk_size_gb = ceil(size(vcf_file, "GiB") * 2) + 10
-    Int memory_mb = ceil(size(vcf_file, "MiB") * 2.5) + 40000
+    #Int disk_size_gb = ceil(size(vcf_file, "GiB") * 2) + 10
+    #Int memory_mb = ceil(size(vcf_file, "MiB") * 2.5) + 40000
     String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fungi-gatk3:v1.0"
-    Int cmd_mem_size_mb = memory_mb - 1000
+    #Int cmd_mem_size_mb = memory_mb - 1000
+
+
+    Int disk_size_gb = ceil(size(vcf_file, "GiB") * 2) + 20
+    Int mem_size_gb = ceil(size(vcf_file, "GiB") * 2) + 20
+    Int cmd_mem_size_gb = mem_size_gb - 1
+
     }
 
     command {
-        java -Xmx~{cmd_mem_size_mb}M -jar /opt/GenomeAnalysisTK.jar \
+        java -Xmx~{cmd_mem_size_gb}M -jar /opt/GenomeAnalysisTK.jar \
             -T GenotypeGVCFs \
             -R ~{ref} \
             -o ~{vcf_basename}.vcf.gz \
@@ -35,7 +41,7 @@ task GenotypeGVCFs {
     runtime {
         preemptible: 4
         docker: docker
-        memory: memory_mb + " MiB"
+        memory: mem_size_gb + " GB"
         disks: "local-disk " + disk_size_gb + " HDD"
     }
 }

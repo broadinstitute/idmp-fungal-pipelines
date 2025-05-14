@@ -26,7 +26,7 @@ task CombineGVCFs {
 
     }
     command {
-        java -Xmx~{cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
+        java -Xmx29G -jar /opt/GenomeAnalysisTK.jar \
             -T CombineGVCFs \
             -R ~{ref} \
             -o ~{gvcf_out} \

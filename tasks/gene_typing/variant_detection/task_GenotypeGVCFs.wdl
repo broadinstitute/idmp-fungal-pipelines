@@ -21,13 +21,13 @@ task GenotypeGVCFs {
 
 
     Int disk_size_gb = ceil(size(vcf_file, "GiB") * 2) + 20
-    Int mem_size_gb = ceil(size(vcf_file, "GiB") * 2) + 20
-    Int cmd_mem_size_gb = mem_size_gb - 1
+    Int mem_size_gb = ceil(size(vcf_file, "GiB") * 2.5) + 10
+    #Int cmd_mem_size_gb = mem_size_gb - 1
 
     }
 
     command {
-        java -Xmx~{cmd_mem_size_gb}M -jar /opt/GenomeAnalysisTK.jar \
+        java -Xmx~{mem_size_gb - 1}G -jar /opt/GenomeAnalysisTK.jar \
             -T GenotypeGVCFs \
             -R ~{ref} \
             -o ~{vcf_basename}.vcf.gz \

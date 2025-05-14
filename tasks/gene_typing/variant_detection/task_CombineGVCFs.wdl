@@ -22,11 +22,12 @@ task CombineGVCFs {
 
         Int disk_size_gb = ceil(size(vcf_files, "GiB") * 2) + 20
         Int mem_size_gb = ceil(size(vcf_files, "GiB") * 2) + 20
-        Int cmd_mem_size_gb = mem_size_gb - 1
+        #Int cmd_mem_size_gb = mem_size_gb - 1
 
     }
+    Int cmd_mem_size_gb = mem_size_gb - 1
     command {
-        java -Xmx29G -jar /opt/GenomeAnalysisTK.jar \
+        java -Xmx~{cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
             -T CombineGVCFs \
             -R ~{ref} \
             -o ~{gvcf_out} \

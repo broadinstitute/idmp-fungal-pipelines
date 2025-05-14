@@ -14,7 +14,8 @@ task IqTree2 {
     Int cpu = 8
     #Int memory = 32
     Int disk_size_gb = ceil((size(alignment, "GiB")) * 2) + 20
-    Int memory_mb = ceil(size(alignment, "MiB") * 2) + 20000
+    Int mem_size_gb = ceil(size(alignment, "GiB") * 2.5) + 10
+
     }
     command <<<
         # Date and version control
@@ -75,7 +76,7 @@ task IqTree2 {
     }
     runtime {
         docker: docker
-        memory: memory_mb + " MiB"
+        memory: mem_size_gb + " GB"
         cpu: cpu
         disks: "local-disk " + disk_size_gb + " HDD"
         disk: disk_size_gb + " GB"

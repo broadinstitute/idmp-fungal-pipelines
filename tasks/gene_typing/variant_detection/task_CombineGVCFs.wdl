@@ -18,14 +18,14 @@ task CombineGVCFs {
 
         String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fungi-gatk3:v1.0"
         Int disk_size_gb = ceil(size(vcf_files, "GiB") * 2) + 10
-        Int memory_mb = ceil(size(vcf_files, "MiB") * 2.5) + 40000
+        Int memory_gb = ceil(size(vcf_files, "GiB") * 2.5) + 4
         #Int memory_mb = 40000
     }
 
     #Int cmd_mem_size_mb = memory_mb - 1000
 
     command <<<
-        java -Xmx~{memory_mb - 1000}M -jar /opt/GenomeAnalysisTK.jar \
+        java -Xmx~{memory_gb - 1}M -jar /opt/GenomeAnalysisTK.jar \
             -T CombineGVCFs \
             -R ~{ref} \
             -o ~{gvcf_out} \
@@ -39,7 +39,7 @@ task CombineGVCFs {
     runtime {
         preemptible: 4
         docker: docker
-        memory: memory_mb + " MiB"
+        memory: memory_gb + " MiB"
         disks: "local-disk " + disk_size_gb + " HDD"
     }
 }

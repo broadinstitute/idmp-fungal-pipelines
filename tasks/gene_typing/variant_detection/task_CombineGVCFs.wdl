@@ -20,9 +20,10 @@ task CombineGVCFs {
         Int mem_size_gb = 30
         String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fungi-gatk3:v1.0"
         Int cmd_mem_size_gb = mem_size_gb - 1
-        Int disk_size_gb = ceil(size(vcf_files, "GiB") * 2) + 10
 
     }
+    Int disk_size_gb = ceil(size(vcf_files, "GiB") * 2) + 10
+
     command {
         java -Xmx~{cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
             -T CombineGVCFs \

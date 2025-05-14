@@ -25,7 +25,7 @@ task CombineGVCFs {
     #Int cmd_mem_size_mb = memory_mb - 1000
 
     command <<<
-        java -Xmx~{memory_gb - 1}M -jar /opt/GenomeAnalysisTK.jar \
+        java -Xmx~{memory_gb - 1}G -jar /opt/GenomeAnalysisTK.jar \
             -T CombineGVCFs \
             -R ~{ref} \
             -o ~{gvcf_out} \

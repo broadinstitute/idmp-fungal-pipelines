@@ -39,7 +39,7 @@ task CombineGVCFs {
     runtime {
         preemptible: 4
         docker: docker
-        memory: memory_gb + " MiB"
+        memory: memory_gb + " GB"
         disks: "local-disk " + disk_size_gb + " HDD"
     }
 }

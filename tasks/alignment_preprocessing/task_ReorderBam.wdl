@@ -1,9 +1,6 @@
 version 1.0
 
 task ReorderBam {
-    meta {
-        allowNestedInputs: "true"
-    }
 
     input {
     File ref

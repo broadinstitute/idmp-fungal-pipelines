@@ -36,7 +36,7 @@ import "../tasks/gene_typing/variant_detection/task_HardFiltration.wdl" as HardF
 workflow FungalVariantCallingGatk3 {
 
     meta {
-        allowNestedInputs: "true"
+        allowNestedInputs: true
     }
 
     input {

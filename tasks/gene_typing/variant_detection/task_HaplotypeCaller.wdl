@@ -1,9 +1,6 @@
 version 1.0
 
 task HaplotypeCaller {
-    meta {
-        allowNestedInputs: "true"
-    }
 
     input {
     File input_bam

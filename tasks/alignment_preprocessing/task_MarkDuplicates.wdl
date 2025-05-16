@@ -1,4 +1,8 @@
+version 1.0
+
 task MarkDuplicates {
+
+    input {
     File sorted_bam
     String sample_name
 
@@ -6,6 +10,7 @@ task MarkDuplicates {
     String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fungi-gatk3:v1.0"
     Int cmd_mem_size_gb = mem_size_gb - 1
     Int disk_size = 50
+    }
 
     command {
         set -euo pipefail

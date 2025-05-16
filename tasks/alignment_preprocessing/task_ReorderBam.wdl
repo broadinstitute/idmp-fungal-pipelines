@@ -1,4 +1,8 @@
+version 1.0
+
 task ReorderBam {
+
+    input {
     File ref
     File dict
     File bam
@@ -9,7 +13,7 @@ task ReorderBam {
     String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fungi-gatk3:v1.0"
 
     Int cmd_mem_size_gb = mem_size_gb - 1
-
+    }
     command {
         #reorder bam
         java -Xmx${cmd_mem_size_gb}G -jar /opt/picard.jar ReorderSam \

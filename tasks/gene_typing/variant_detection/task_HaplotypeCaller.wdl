@@ -1,4 +1,8 @@
+version 1.0
+
 task HaplotypeCaller {
+
+    input {
     File input_bam
     File input_bam_index
 
@@ -15,7 +19,7 @@ task HaplotypeCaller {
     Int cmd_mem_size_gb = mem_size_gb - 1
 
     String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fungi-gatk3:v1.0"
-
+    }
     command {
         java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
             -T HaplotypeCaller \

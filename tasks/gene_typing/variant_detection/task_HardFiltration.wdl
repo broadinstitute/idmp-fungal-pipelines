@@ -1,5 +1,8 @@
+version 1.0
 
 task HardFiltration {
+
+    input {
     # hard-filter a vcf, if vqsr not available
     # http://gatkforums.broadinstitute.org/gatk/discussion/2806/howto-apply-hard-filters-to-a-call-set
     File ref
@@ -12,65 +15,65 @@ task HardFiltration {
     String snp_filter_expr
     String indel_filter_expr
 
-    Int disk_size = 200
-    Int mem_size_gb = 60
+    Int disk_size_gb = ceil(size(vcf, "GiB") * 2) + 20
+    Int mem_size_gb = ceil(size(vcf, "GiB") * 2.5) + 10
     String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fungi-gatk3:v1.0"
 
-    Int cmd_mem_size_gb = mem_size_gb - 1
+    }
 
     command {
         # select snps
-        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
+        java -Xmx~{mem_size_gb - 1}G -jar /opt/GenomeAnalysisTK.jar \
             -T SelectVariants \
-            -R ${ref} \
-            -V ${vcf} \
+            -R ~{ref} \
+            -V ~{vcf} \
             -selectType SNP \
             -o raw_snps.g.vcf
 
         # filter snps
-        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
+        java -Xmx~{mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
             -T VariantFiltration \
-            -R ${ref} \
-            -V ${vcf} \
-            --filterExpression "${snp_filter_expr}" \
+            -R ~{ref} \
+            -V ~{vcf} \
+            --filterExpression "~{snp_filter_expr}" \
             --filterName "snp_filter" \
             -o filtered_snps.g.vcf
 
         # select indels
-        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
+        java -Xmx~{mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
            -T SelectVariants \
-           -R ${ref} \
-           -V ${vcf} \
+           -R ~{ref} \
+           -V ~{vcf} \
            -selectType INDEL \
            -o raw_indels.g.vcf
 
         # filter indels
-        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
+        java -Xmx~{mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar \
             -T VariantFiltration \
-            -R ${ref} \
-            -V ${vcf} \
-            --filterExpression "${indel_filter_expr}" \
+            -R ~{ref} \
+            -V ~{vcf} \
+            --filterExpression "~{indel_filter_expr}" \
             --filterName "indel_filter" \
             -o filtered_indels.g.vcf
 
         # combine variants
-        java -Xmx${cmd_mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar\
+        java -Xmx~{mem_size_gb}G -jar /opt/GenomeAnalysisTK.jar\
             -T CombineVariants \
-            -R ${ref} \
+            -R ~{ref} \
             --variant filtered_snps.g.vcf \
             --variant filtered_indels.g.vcf \
-            -o ${output_filename} \
+            -o ~{output_filename} \
             --genotypemergeoption UNSORTED
     }
 
     output {
-        File out = "${output_filename}"
+        File out = "~{output_filename}"
     }
 
     runtime {
         preemptible: 3
         docker: docker
         memory: mem_size_gb + " GB"
-        disks: "local-disk " + disk_size + " HDD"
+        disks: "local-disk " + disk_size_gb + " HDD"
     }
 }

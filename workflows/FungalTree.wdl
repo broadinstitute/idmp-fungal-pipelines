@@ -1,3 +1,5 @@
+version 1.0
+
 import "../workflows/FungalVariantCallingGatk3.wdl" as FungalVariantCallingGatk3
 import "../tasks/utilities/task_GbffToFasta.wdl" as GbffToFasta
 import "../tasks/utilities/task_GenerateRefFiles.wdl" as GenerateRefFiles
@@ -9,11 +11,13 @@ workflow FungalTree {
 
     meta {
         description: "FungalTree is a WDL-based pipeline for variant calling and phylogenetic analysis in fungal haploid genomes, using a reference GenBank file and aligned BAM files to generate filtered variant calls and a maximum-likelihood phylogenetic tree via IQ-TREE2."
-        allowNestedInputs: "true"
+        allowNestedInputs: true
     }
 
     ## config params
     # input data
+    input {
+
     String analysis_name
     File ref_gbff
     Array[String] input_samples
@@ -28,6 +32,7 @@ workflow FungalTree {
     Int iqtree2_bootstraps = 1000
     Int alrt = 1000
     String? iqtree2_opts
+    }
 
     call GbffToFasta.GbffToFasta as GbffToFasta {
         input:

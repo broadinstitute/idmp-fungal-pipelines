@@ -23,6 +23,7 @@
 ## be subject to different licenses. Users are responsible for checking that they are
 ## authorized to run all programs before running this script. Please see the dockers
 ## for detailed licensing information pertaining to the included programs.
+version 1.0
 
 import "../tasks/alignment_preprocessing/task_MarkDuplicates.wdl" as MarkDuplicates
 import "../tasks/alignment_preprocessing/task_ReorderBam.wdl" as ReorderBam
@@ -35,9 +36,10 @@ import "../tasks/gene_typing/variant_detection/task_HardFiltration.wdl" as HardF
 workflow FungalVariantCallingGatk3 {
 
     meta {
-        allowNestedInputs: "true"
+        allowNestedInputs: true
     }
 
+    input {
     ## config params
     # input data
     String analysis_name
@@ -50,6 +52,7 @@ workflow FungalVariantCallingGatk3 {
     # hard filtering params: both of these params are required
     String snp_filter_expr
     String indel_filter_expr
+    }
 
     # run pipeline on each sample, in parallel
     scatter(i in range(length(input_samples))) {

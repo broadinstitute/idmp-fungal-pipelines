@@ -10,13 +10,11 @@ task IqTree2 {
     String? iqtree2_opts
 
     String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/iqtree2:2.1.2"
-    #Int disk_size = 50
     Int cpu = 8
-    #Int memory = 32
     Int disk_size_gb = ceil((size(alignment, "GiB")) * 2) + 20
     Int mem_size_gb = ceil(size(alignment, "GiB") * 2.5) + 10
-
     }
+
     command <<<
         # Date and version control
         date | tee DATE
@@ -68,12 +66,14 @@ task IqTree2 {
             exit 1
         fi
     >>>
+
     output {
         String date = read_string("DATE")
         String iqtree2_version = read_string("VERSION")
         File ml_tree = "~{cluster_name}_iqtree.nwk"
         String iqtree2_model_used = read_string("IQTREE2_MODEL.TXT")
     }
+
     runtime {
         docker: docker
         memory: mem_size_gb + " GB"

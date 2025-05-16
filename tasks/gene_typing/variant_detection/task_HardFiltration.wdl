@@ -19,8 +19,6 @@ task HardFiltration {
     Int mem_size_gb = ceil(size(vcf, "GiB") * 2.5) + 10
     String docker = "us-central1-docker.pkg.dev/gcid-bacterial/gcid-bacterial/fungi-gatk3:v1.0"
 
-
-    #Int cmd_mem_size_mb = memory_mb - 1000
     }
 
     command {

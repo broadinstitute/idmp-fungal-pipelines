@@ -13,6 +13,8 @@ import "utilities/theiaeuk_merlin_typing.wdl" as theiaeuk_merlin_typing
 import "utilities/wf_read_QC_trim_pe.wdl" as read_qc
 import "../tasks/taxon_id/task_kraken2.wdl" as kraken2_task
 import "../tasks/quality_control/advanced_metrics/task_EukCC.wdl" as eukcc_task
+import "../tasks/quality_control/advanced_metrics/task_cauris_qc.wdl" as qc_flags_task
+
 
 workflow theiaeuk_illumina_pe {
 
@@ -49,12 +51,15 @@ workflow theiaeuk_illumina_pe {
         File gambit_db_genomes = "gs://gambit-databases-rp/fungal-version/1.0.0/gambit-fungal-metadata-1.0.0-20241213.gdb"
         File gambit_db_signatures = "gs://gambit-databases-rp/fungal-version/1.0.0/gambit-fungal-signatures-1.0.0-20241213.gs"
         # EukCC inputs
-        Float contamination_percent_threshold = 5.0
         String? eukcc_db_path
         # Gambit inputs
         String gambit_expected_taxon = "Candidozyma auris"
         # Krakin2 inputs
         String? kraken2_db_path
+        # QC options
+        Float min_qc_coverage = 40.0
+        Float contamination_percent_threshold = 5.0
+        Float completeness_percent_threshold = 80.0
 
     }
     call versioning.version_capture {
@@ -223,7 +228,19 @@ workflow theiaeuk_illumina_pe {
             }
         }
     }
-
+    call qc_flags_task.qc_flags {
+        input:
+            raw_read_screen = raw_check_reads.read_screen,
+            clean_read_screen = clean_check_reads.read_screen,
+            est_coverage_clean = cg_pipeline_clean.est_coverage,
+            kraken2_top_taxon_name = kraken2.kraken2_report_taxon_name,
+            gambit_predicted_taxon = gambit.gambit_predicted_taxon,
+            eukcc_completeness = EukCC.completeness,
+            eukcc_contamination = EukCC.contamination,
+            min_coverage = min_qc_coverage,
+            max_contamination = contamination_percent_threshold,
+            min_completeness = completeness_percent_threshold
+    }
     output {
         # Version Captures
         String theiaeuk_illumina_pe_version = version_capture.phb_version
@@ -323,9 +340,6 @@ workflow theiaeuk_illumina_pe {
         # Kraken2
         File? kraken2_report = kraken2.kraken2_report
         String? kraken2_top_taxon_name = kraken2.kraken2_report_taxon_name
-        # QC_Check Results
-        String? qc_check = qc_check_task.qc_check
-        File? qc_standard = qc_check_task.qc_standard
         # Cladetyper Outputs
         String? cladetyper_clade = theiaeuk_merlin_typing.clade_type
         String? cladetyper_gambit_version = theiaeuk_merlin_typing.cladetyper_version
@@ -337,5 +351,8 @@ workflow theiaeuk_illumina_pe {
         String? theiaeuk_snippy_variants_hits = theiaeuk_merlin_typing.snippy_variants_hits
         String? theiaeuk_snippy_variants_gene_query_results = theiaeuk_merlin_typing.snippy_variants_gene_query_results
         File? filtered_bam = theiaeuk_merlin_typing.filtered_bam
+        # Final QC flags
+        String qc_check = qc_flags.qc_check
+        String qc_note = qc_flags.qc_note
     }
 }

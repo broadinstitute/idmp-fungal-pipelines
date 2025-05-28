@@ -129,32 +129,34 @@ workflow theiaeuk_illumina_pe {
                     assembly = shovill_pe.assembly_fasta,
                     eukcc_db_path = eukcc_db_path
             }
+            call quast_task.quast {
+                input:
+                    assembly = shovill_pe.assembly_fasta,
+                    samplename = samplename,
+                    cpu = cpu,
+                    memory = memory
+            }
+            call cg_pipeline_task.cg_pipeline as cg_pipeline_raw {
+                input:
+                    read1 = read1,
+                    read2 = read2,
+                    samplename = samplename,
+                    genome_length = select_first([quast.genome_length, clean_check_reads.est_genome_length]),
+                    cpu = cpu,
+                    memory = memory
+            }
+            call cg_pipeline_task.cg_pipeline as cg_pipeline_clean {
+                input:
+                    read1 = read_QC_trim.read1_clean,
+                    read2 = read_QC_trim.read2_clean,
+                    samplename = samplename,
+                    genome_length = select_first([quast.genome_length, clean_check_reads.est_genome_length]),
+                    cpu = cpu,
+                    memory = memory
+            }
+            
             if (EukCC.contamination <= contamination_percent_threshold) {
-                call quast_task.quast {
-                    input:
-                        assembly = shovill_pe.assembly_fasta,
-                        samplename = samplename,
-                        cpu = cpu,
-                        memory = memory
-                }
-                call cg_pipeline_task.cg_pipeline as cg_pipeline_raw {
-                    input:
-                        read1 = read1,
-                        read2 = read2,
-                        samplename = samplename,
-                        genome_length = select_first([quast.genome_length, clean_check_reads.est_genome_length]),
-                        cpu = cpu,
-                        memory = memory
-                }
-                call cg_pipeline_task.cg_pipeline as cg_pipeline_clean {
-                    input:
-                        read1 = read_QC_trim.read1_clean,
-                        read2 = read_QC_trim.read2_clean,
-                        samplename = samplename,
-                        genome_length = select_first([quast.genome_length, clean_check_reads.est_genome_length]),
-                        cpu = cpu,
-                        memory = memory
-                }
+
                 call gambit_task.gambit {
                     input:
                         assembly = shovill_pe.assembly_fasta,
@@ -165,7 +167,7 @@ workflow theiaeuk_illumina_pe {
                         cpu = cpu,
                         memory = memory
                 }
-
+                
                 Boolean is_expected_organism = gambit.merlin_tag == gambit_expected_taxon
 
                 if (is_expected_organism) {

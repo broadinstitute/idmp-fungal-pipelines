@@ -9,8 +9,6 @@ task EukCC {
         String cpu = "8"
         String? eukcc_db_path
         File assembly
-        Float contamination_percent_threshold
-
     }
     command <<<
         set -euo pipefail
@@ -38,17 +36,6 @@ task EukCC {
         # Run EukCC2
         eukcc single --out outfolder --threads ~{cpu} ~{assembly}
 
-        # Extract contamination percentage from 3rd column, skipping header
-        contamination=$(awk -F'\t' 'NR==2 {print $3}' outfolder/eukcc.csv)
-
-        # Determine if contamination is too high (≥ threshold)
-        contamination_too_high=$(awk "BEGIN {print ($contamination >= ~{contamination_percent_threshold})}")
-
-        if [[ "$contamination_too_high" == "1" ]]; then
-            echo "The contamination level is too high: ${contamination}"
-            exit 1
-        fi
-
         # Extract completeness and contamination from eukcc.csv (columns 2 and 3)
         awk -F'\t' 'NR==2 {print $2}' outfolder/eukcc.csv > COMPLETENESS
         awk -F'\t' 'NR==2 {print $3}' outfolder/eukcc.csv > CONTAMINATION
@@ -56,8 +43,8 @@ task EukCC {
     >>>
     output {
         File eukcc_csv = "outfolder/eukcc.csv"
-        String completeness = read_string("COMPLETENESS")
-        String contamination = read_string("CONTAMINATION")
+        Float completeness = read_float("COMPLETENESS")
+        Float contamination = read_float("CONTAMINATION")
     }
     runtime {
         docker: "~{docker}"

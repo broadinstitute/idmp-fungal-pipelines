@@ -16,18 +16,67 @@ task qc_flags {
   }
   command <<<
 
-    python /scripts/bin/cauris_row.py \
-      -rs "~{raw_read_screen}" \
-      -cs "~{clean_read_screen}" \
-      -x ~{est_coverage_clean} \
-      -g "~{gambit_predicted_taxon}" \
-      -k "~{kraken2_top_taxon_name}" \
-      -c ~{eukcc_contamination} \
-      -C ~{eukcc_completeness} \
-      -mx ~{min_coverage} \
-      -Mc ~{max_contamination} \
-      -mc ~{min_completeness} \
-      -o "home/qc"
+    python3 <<CODE
+
+    from pathlib import Path
+
+    coverage = (
+      float("~{est_coverage_clean}")
+      if "~{est_coverage_clean}" != ""
+      else 0
+    )
+
+    completeness = (
+      float("~{eukcc_completeness}")
+      if "~{eukcc_completeness}" != ""
+      else 0.0
+    )
+
+    contamination = (
+      float("~{eukcc_contamination}")
+      if "~{eukcc_contamination}" != ""
+      else 100.0
+    )
+
+    kraken_taxon = "~{kraken2_top_taxon_name}"
+    gambit_taxon = "~{gambit_predicted_taxon}"
+
+    min_coverage = float("~{min_coverage}")
+    max_contamination = float("~{max_contamination}")
+    min_completeness = float("~{min_completeness}")
+
+    qc_check, qc_note = "PASS", ""
+    if "~{raw_read_screen}" != "PASS" or "~{clean_read_screen}" != "PASS":
+        # If the isolate fails the raw or clean read QC, it should fail global QC
+        qc_check = "FAIL"
+        qc_note = "Low yield/quality"
+    elif coverage < min_coverage:
+        # If the isolate does not meet the minimum coverage, it should fail global QC
+        qc_check = "FAIL"
+        qc_note = "Low coverage"
+    else:
+        if contamination > max_contamination:
+            qc_check = "FAIL"
+            qc_note = "Contamination"
+        elif completeness < min_completeness:
+            # Set incomplete samples to "FAIL"
+            qc_check = "FAIL"
+            qc_note = "Low completeness"    
+        elif (
+            gambit_taxon != "Candidozyma auris" or \
+            kraken2_taxon != "Candidozyma auris"
+        ): 
+            # If it is not Candidozyma auris, fail QC
+            qc_check = "ALERT"
+            qc_note = "Taxonomic mismatch"
+
+    # Write outputs
+    outdir = Path("home/qc")
+    outdir.mkdir(parents=True, exist_ok=True)
+    outdir.joinpath("qc_check").write_text(qc_check)
+    outdir.joinpath("qc_note").write_text(qc_note)
+
+    CODE
 
   >>>
   output {

@@ -4,7 +4,7 @@ import "../tasks/assembly/task_shovill.wdl" as shovill
 import "../tasks/quality_control/advanced_metrics/task_busco.wdl" as busco_task
 import "../tasks/quality_control/basic_statistics/task_cg_pipeline.wdl" as cg_pipeline_task
 import "../tasks/quality_control/basic_statistics/task_quast.wdl" as quast_task
-import "../tasks/quality_control/comparisons/task_qc_check_phb.wdl" as qc_check
+import "../tasks/quality_control/comparisons/task_qc_check_phb.wdl" as qc_check_phb
 import "../tasks/quality_control/comparisons/task_screen.wdl" as screen
 import "../tasks/task_versioning.wdl" as versioning
 import "../tasks/taxon_id/task_gambit.wdl" as gambit_task
@@ -187,7 +187,7 @@ workflow theiaeuk_illumina_pe {
                             docker = busco_docker_image
                     }
                     if (defined(qc_check_table)) {
-                        call qc_check.qc_check_phb as qc_check_task {
+                        call qc_check_phb.qc_check_phb as qc_check_task {
                             input:
                                 qc_check_table = qc_check_table,
                                 expected_taxon = expected_taxon,
@@ -229,19 +229,6 @@ workflow theiaeuk_illumina_pe {
                 }
             }
         }
-    }
-    call qc_flags_task.qc_flags {
-        input:
-            raw_read_screen = raw_check_reads.read_screen,
-            clean_read_screen = clean_check_reads.read_screen,
-            est_coverage_clean = cg_pipeline_clean.est_coverage,
-            kraken2_top_taxon_name = kraken2.kraken2_report_taxon_name,
-            gambit_predicted_taxon = gambit.gambit_predicted_taxon,
-            eukcc_completeness = EukCC.completeness,
-            eukcc_contamination = EukCC.contamination,
-            min_coverage = min_qc_coverage,
-            max_contamination = contamination_percent_threshold,
-            min_completeness = completeness_percent_threshold
     }
     output {
         # Version Captures
@@ -353,8 +340,5 @@ workflow theiaeuk_illumina_pe {
         String? theiaeuk_snippy_variants_hits = theiaeuk_merlin_typing.snippy_variants_hits
         String? theiaeuk_snippy_variants_gene_query_results = theiaeuk_merlin_typing.snippy_variants_gene_query_results
         File? filtered_bam = theiaeuk_merlin_typing.filtered_bam
-        # Final QC flags
-        String qc_check = qc_flags.qc_check
-        String qc_note = qc_flags.qc_note
     }
 }

@@ -71,17 +71,20 @@ task qc_flags {
             qc_note = "Taxonomic mismatch"
 
     # Write outputs
-    outdir = Path("home/qc")
-    outdir.mkdir(parents=True, exist_ok=True)
-    outdir.joinpath("qc_check").write_text(qc_check)
-    outdir.joinpath("qc_note").write_text(qc_note)
+    print("QC check: ", qc_check)
+    print("QC note: ", qc_note)
+
+    with open("qc_check", "w") as f:
+      f.write(qc_check)
+    with open("qc_note", "w") as f:
+      f.write(qc_note)
 
     CODE
 
   >>>
   output {
-    String qc_check = read_string("home/qc/qc_check")
-    String qc_note = read_string("home/qc/qc_note")
+    String qc_check = read_string("qc_check")
+    String qc_note = read_string("qc_note")
   }
   runtime {
     docker: "~{docker}"

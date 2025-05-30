@@ -16,26 +16,28 @@ task qc_flags {
     }
     command <<<
 
+        echo "Setting QC flags..."
+
         python3 <<CODE
 
         from pathlib import Path
 
         coverage = (
-        float("~{est_coverage_clean}")
-        if "~{est_coverage_clean}" != ""
-        else 0
+            float("~{est_coverage_clean}")
+            if "~{est_coverage_clean}" != ""
+            else 0
         )
 
         completeness = (
-        float("~{eukcc_completeness}")
-        if "~{eukcc_completeness}" != ""
-        else 0.0
+            float("~{eukcc_completeness}")
+            if "~{eukcc_completeness}" != ""
+            else 0.0
         )
 
         contamination = (
-        float("~{eukcc_contamination}")
-        if "~{eukcc_contamination}" != ""
-        else 100.0
+            float("~{eukcc_contamination}")
+            if "~{eukcc_contamination}" != ""
+            else 100.0
         )
 
         kraken_taxon = "~{kraken2_top_taxon_name}"
@@ -75,11 +77,13 @@ task qc_flags {
         print("QC note: ", qc_note)
 
         with open("qc_check", "w") as f:
-        f.write(qc_check)
+            f.write(qc_check)
         with open("qc_note", "w") as f:
-        f.write(qc_note)
+            f.write(qc_note)
 
         CODE
+
+        echo "Done!"
 
     >>>
     output {
@@ -90,8 +94,7 @@ task qc_flags {
         docker: docker
         memory: "8 GB"
         cpu: 1
-        disks: "local-disk 10 SSD"
-        disk: "10 GB"
+        disks: "local-disk 16 SSD"
         maxRetries: 1
         preemptible: 0
     }
